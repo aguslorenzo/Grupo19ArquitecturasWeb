@@ -64,7 +64,7 @@ public class HelperMySQL {
                 "idProducto INT NOT NULL, " +
                 "nombre VARCHAR(45), " +
                 "valor FLOAT(10,2) NOT NULL, " +
-                "CONSTRAINT producto_pk PRIMARY KEY (idProducto), ";
+                "CONSTRAINT producto_pk PRIMARY KEY (idProducto));";
         this.conn.prepareStatement(tableProducto).execute();
         this.conn.commit();
         String tableFactura = "CREATE TABLE IF NOT EXISTS factura(" +
@@ -78,8 +78,8 @@ public class HelperMySQL {
                 "idFactura INT NOT NULL, " +
                 "idProducto INT NOT NULL, " +
                 "cantidad INT NOT NULL, " +
-                "CONSTRAINT factura_producto_pk PRIMARY KEY (idFactura,idProducto), "+
-                "CONSTRAINT FK_idFactura FOREIGN KEY (idFactura) REFERENCES factura (idFactura))"+
+                "CONSTRAINT factura_producto_pk PRIMARY KEY (idFactura, idProducto), " +
+                "CONSTRAINT FK_idFactura FOREIGN KEY (idFactura) REFERENCES factura (idFactura), " +
                 "CONSTRAINT FK_idProducto FOREIGN KEY (idProducto) REFERENCES producto (idProducto))";
         this.conn.prepareStatement(tableFacturaProducto).execute();
         this.conn.commit();

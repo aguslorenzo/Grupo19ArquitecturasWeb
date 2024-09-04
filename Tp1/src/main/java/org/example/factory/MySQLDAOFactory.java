@@ -41,7 +41,7 @@ public class MySQLDAOFactory extends AbstractFactory{
         }
 
         try {
-            conn = DriverManager.getConnection(uri, "root", "password");
+            conn = DriverManager.getConnection(uri, "usuario", "password");
             conn.setAutoCommit(false);
         } catch (SQLException e) {
             e.printStackTrace();
