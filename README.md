@@ -9,7 +9,7 @@ services:
     environment:
       MYSQL_DATABASE: 'db-tpe'
       # So you don't have to use root, but you can if you like
-      MYSQL_USER: 'root'
+      MYSQL_USER: 'usuario'
       # You can use whatever password you like
       MYSQL_PASSWORD: 'password'
       # Password for root access
