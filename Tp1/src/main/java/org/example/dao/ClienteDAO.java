@@ -17,7 +17,7 @@ public class ClienteDAO {
     }
     
     public void insertCliente(Cliente cliente) {
-        String query = "INSERT INTO cliente (id, nombre, email) VALUES (?, ?, ?)";
+        String query = "INSERT INTO cliente (idCliente, nombre, email) VALUES (?, ?, ?)";
         PreparedStatement ps = null;
 
         try {

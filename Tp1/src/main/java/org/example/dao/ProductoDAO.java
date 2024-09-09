@@ -18,7 +18,7 @@ public class ProductoDAO {
     }
 
     public void insertProducto(Producto producto) {
-        String query = "INSERT INTO producto (id, nombre, valor) VALUES (?, ?, ?)";
+        String query = "INSERT INTO producto (idProducto, nombre, valor) VALUES (?, ?, ?)";
         PreparedStatement ps = null;
 
         try {

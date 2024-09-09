@@ -18,7 +18,7 @@ public class FacturaDAO {
     }
 
     public void insertFactura(Factura factura){
-        String query = "INSERT INTO factura (id, id_cliente) VALUES (?, ?)";
+        String query = "INSERT INTO factura (idFactura, idCliente) VALUES (?, ?)";
         PreparedStatement ps = null;
 
         try {
