@@ -17,7 +17,7 @@ public class ClienteDAO {
     }
     
     public void insertCliente(Cliente cliente) {
-        String query = "INSERT INTO cliente (idCliente, nombre, email) VALUES (?, ?, ?)";
+        String query = "INSERT INTO clientes (idCliente, nombre, email) VALUES (?, ?, ?)";
         PreparedStatement ps = null;
 
         try {
@@ -43,7 +43,7 @@ public class ClienteDAO {
     }
 
     public List<Cliente> selectAll() {
-        String query = "SELECT * FROM cliente";
+        String query = "SELECT * FROM clientes";
         PreparedStatement ps;
         List<Cliente> resultado = new ArrayList<>();
         try {

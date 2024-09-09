@@ -18,7 +18,7 @@ public class FacturaDAO {
     }
 
     public void insertFactura(Factura factura){
-        String query = "INSERT INTO factura (idFactura, idCliente) VALUES (?, ?)";
+        String query = "INSERT INTO facturas (idFactura, idCliente) VALUES (?, ?)";
         PreparedStatement ps = null;
 
         try {
@@ -43,7 +43,7 @@ public class FacturaDAO {
     }
 
     public List<Factura> selectAll() {
-        String query = "SELECT * FROM factura";
+        String query = "SELECT * FROM facturas";
         PreparedStatement ps;
         List<Factura> resultado = new ArrayList<>();
         try {

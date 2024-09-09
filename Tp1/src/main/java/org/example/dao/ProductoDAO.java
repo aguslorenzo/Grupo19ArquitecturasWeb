@@ -18,7 +18,7 @@ public class ProductoDAO {
     }
 
     public void insertProducto(Producto producto) {
-        String query = "INSERT INTO producto (idProducto, nombre, valor) VALUES (?, ?, ?)";
+        String query = "INSERT INTO productos (idProducto, nombre, valor) VALUES (?, ?, ?)";
         PreparedStatement ps = null;
 
         try {
@@ -44,7 +44,7 @@ public class ProductoDAO {
     }
 
     public List<Producto> selectAll() {
-        String query = "SELECT * FROM producto";
+        String query = "SELECT * FROM productos";
         PreparedStatement ps;
         List<Producto> resultado = new ArrayList<>();
         try {
