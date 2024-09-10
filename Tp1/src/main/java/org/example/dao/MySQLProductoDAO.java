@@ -76,16 +76,16 @@ public class MySQLProductoDAO implements ProductoDAO{
 
     }
 
-    public Producto obtenerProductoMasRecaudado() {
-        String sql = "SELECT p.idProducto, p.nombre, SUM(fp.cantidad * p.valor) AS recaudacion " +
+    public String obtenerProductoMasRecaudado() {
+        String res = "";
+        String query = "SELECT p.idProducto, p.nombre, SUM(fp.cantidad * p.valor) AS recaudacion " +
                 "FROM productos p " +
                 "JOIN facturas_productos fp ON p.idProducto = fp.idProducto " +
                 "GROUP BY p.idProducto, p.nombre " +
                 "ORDER BY recaudacion DESC " +
                 "LIMIT 1";
 
-        Producto producto = null;
-        try (PreparedStatement stmt = conn.prepareStatement(sql);
+        try (PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
 
             if (rs.next()) {
@@ -93,16 +93,16 @@ public class MySQLProductoDAO implements ProductoDAO{
                 String nombreProducto = rs.getString("nombre");
                 float recaudacion = rs.getFloat("recaudacion");
 
-                producto = new Producto(idProducto, nombreProducto, recaudacion);
-                System.out.println("Producto que más recaudó:");
-                System.out.println("ID: " + idProducto);
-                System.out.println("Nombre: " + nombreProducto);
-                System.out.println("Recaudación: " + recaudacion);
+                res = "Producto que más recaudó: " +
+                        "\nID: " + idProducto +
+                        "\nNombre: " + nombreProducto +
+                        "\nRecaudación: " + recaudacion;
+
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return producto;
+        return res;
     }
 }

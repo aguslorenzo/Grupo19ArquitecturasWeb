@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.dao.MySQLProductoDAO;
+import org.example.factory.AbstractFactory;
 import org.example.factory.MySQLDAOFactory;
 import org.example.utils.HelperMySQL;
 import org.example.dao.ProductoDAO;
@@ -12,7 +13,9 @@ public class Main {
         dbMySQL.createTables();
         dbMySQL.populateDB();
 
-        ProductoDAO productoDAO = new MySQLProductoDAO(MySQLDAOFactory.createConnection());
-        System.out.println(productoDAO.obtenerProductoMasRecaudado());
+        AbstractFactory factoryMysql = AbstractFactory.getDAOFactory(1); //MySQL
+        MySQLProductoDAO product = factoryMysql.getProductoDAO();
+        System.out.println(product.obtenerProductoMasRecaudado());
+
     }
 }
