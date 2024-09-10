@@ -473,7 +473,7 @@ public class HelperMySQL {
     }
 
     private void processFacturasProductos(CSVParser parser) throws SQLException{
-        MySQLFacturaProductoDAO facturaProductoDAO = new MySQLFacturaProductoDAO();
+        MySQLFacturaProductoDAO facturaProductoDAO = new MySQLFacturaProductoDAO(this.conn);
 
         for(CSVRecord row : parser) {
             if (row.size() >= 3) {

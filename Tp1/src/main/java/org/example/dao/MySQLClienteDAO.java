@@ -75,4 +75,36 @@ public class MySQLClienteDAO implements ClienteDAO{
     public void delete(Cliente cliente) {
 
     }
+
+    public List<Cliente> obtenerFacturacionClientes() {
+        List<Cliente> clientes = new ArrayList<>();
+        String query = "SELECT c.idCliente, c.nombre, c.email, f.idFactura, f.total_factura " +
+                        "FROM clientes c " +
+                        "JOIN ( " +
+                        "    SELECT f.idFactura, f.idCliente, SUM(fp.cantidad * p.valor) AS total_factura " +
+                        "    FROM facturas f " +
+                        "    JOIN facturas_productos fp ON f.idFactura = fp.idFactura " +
+                        "    JOIN productos p ON fp.idProducto = p.idProducto " +
+                        "    GROUP BY f.idFactura, f.idCliente " +
+                        ") AS f " +
+                        "ON c.idCliente = f.idCliente " +
+                        "ORDER BY f.total_factura DESC;";
+
+        try (PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                int idCliente = rs.getInt("idCliente");
+                String nombreCliente = rs.getString("nombre");
+                String emailCliente = rs.getString("email");
+
+                Cliente cliente = new Cliente(idCliente, nombreCliente, emailCliente);
+                clientes.add(cliente);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return clientes;
+    }
 }
