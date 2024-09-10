@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.dao.ProductoDAO;
+import org.example.factory.MySQLDAOFactory;
 import org.example.utils.HelperMySQL;
 
 public class Main {
@@ -7,6 +9,8 @@ public class Main {
         HelperMySQL dbMySQL = new HelperMySQL();
         //dbMySQL.dropTables();
         //dbMySQL.createTables();
-        dbMySQL.populateDB();
+        //dbMySQL.populateDB();
+        ProductoDAO productoDAO = new ProductoDAO(MySQLDAOFactory.createConnection());
+        System.out.println(productoDAO.obtenerProductoMasRecaudado());
     }
 }
