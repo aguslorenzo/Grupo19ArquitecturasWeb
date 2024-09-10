@@ -120,7 +120,7 @@ public class HelperMySQL {
             throw new RuntimeException(e);
         }
     }
-
+/*
     public void populateDB() throws Exception {
         ClienteDAO clienteDAO = new ClienteDAO(this.conn);
         FacturaDAO facturaDAO = new FacturaDAO(this.conn);
@@ -222,5 +222,293 @@ public class HelperMySQL {
 
         Iterable<CSVRecord> records = csvParser.getRecords();
         return records;
+    }
+
+    */
+
+
+//    public void populateDB() throws Exception {
+//
+//        try {
+//            System.out.println("Populating DB...");
+//            conn.setAutoCommit(false); // Desactiva autocommit para manejar las transacciones manualmente
+//            populateClientes();
+//            populateFacturas();
+//            populateProductos();
+//            populateFacturasProductos();
+//            conn.commit(); // Realiza el commit una vez que tdo ha sido procesado
+//            System.out.println("Datos insertados correctamente");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.err.println("Error al insertar datos en la base de datos: " + e.getMessage());
+//        }
+//    }
+//
+//    private void populateClientes() throws Exception {
+//        ClienteDAO clienteDAO = new ClienteDAO(this.conn);
+//
+//        try (CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new
+//                FileReader("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\clientes.csv"))){
+//            for(CSVRecord row : parser) {
+//                if(row.size() >= 3) { // Verificar que hay al menos 4 campos en el CSVRecord
+//                    String idString = row.get(0);
+//                    String nombre = row.get(1);
+//                    String email = row.get(2);
+//                    if(isValidNumber(idString) && !nombre.isEmpty() && !email.isEmpty()) {
+//                        try {
+//                            int id = Integer.parseInt(idString);
+//                            Cliente cliente = new Cliente(id, nombre, email);
+//                            clienteDAO.insertCliente(cliente);
+//                        } catch (Exception e) {
+//                            System.err.println("Error al persistir el cliente: " + e.getMessage());
+//                        }
+//                    }
+//                }
+//            }
+//            System.out.println("Clientes insertados");
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//    }
+//
+//    private void populateFacturas() throws SQLException{
+//        FacturaDAO facturaDAO = new FacturaDAO(this.conn);
+//
+//        try (CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new
+//                FileReader("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\facturas.csv"))){
+//            for(CSVRecord row : parser) {
+//                if (row.size() >= 2) {
+//                    String idString = row.get(0);
+//                    String idClienteString = row.get(1);
+//
+//                    if (isValidNumber(idString) && isValidNumber(idClienteString)) {
+//                        try {
+//                            int id = Integer.parseInt(idString);
+//                            int idCliente = Integer.parseInt(idClienteString);
+//
+//                            Factura factura = new Factura(id, idCliente);
+//                            facturaDAO.insertFactura(factura);
+//                        } catch (Exception e) {
+//                            System.err.println("Error al persistir la factura: " + e.getMessage());
+//                        }
+//                    }
+//                }
+//            }
+//            System.out.println("Facturas insertadas");
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    private void populateProductos() throws SQLException{
+//        ProductoDAO productoDAO = new ProductoDAO(this.conn);
+//
+//        try (CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new
+//                FileReader("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\productos.csv"))){
+//            for(CSVRecord row : parser) {
+//                if (row.size() >= 3) {
+//                    String idString = row.get(0);
+//                    String nombre = row.get(1);
+//                    String valorString = row.get(2);
+//
+//                    if (isValidNumber(idString) && !nombre.isEmpty() && isValidNumber(valorString)) {
+//                        try {
+//                            int id = Integer.parseInt(idString);
+//                            float valor = Float.parseFloat(valorString);
+//
+//                            Producto producto = new Producto(id, nombre, valor);
+//                            productoDAO.insertProducto(producto);
+//                        } catch (Exception e) {
+//                            System.err.println("Error al persistir el producto: " + e.getMessage());
+//                        }
+//                    }
+//                }
+//            }
+//            System.out.println("Productos insertados");
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    private void populateFacturasProductos() throws SQLException{
+//        FacturaProductoDAO facturaProductoDAO = new FacturaProductoDAO(this.conn);
+//
+//        try (CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new
+//                FileReader("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\facturas-productos.csv"))){
+//            for(CSVRecord row : parser) {
+//                if (row.size() >= 3) {
+//                    String idFacturaString = row.get(0);
+//                    String idProductoString = row.get(1);
+//                    String cantidadString = row.get(2);
+//
+//                    if (isValidNumber(idFacturaString) && isValidNumber(idProductoString) && isValidNumber(cantidadString)) {
+//                        try {
+//                            int idFactura = Integer.parseInt(idFacturaString);
+//                            int idProducto = Integer.parseInt(idProductoString);
+//                            int cantidad = Integer.parseInt(cantidadString);
+//
+//                            FacturaProducto facturaProducto = new FacturaProducto(idFactura, idProducto, cantidad);
+//                            facturaProductoDAO.insertFacturaProducto(facturaProducto);
+//                        } catch (Exception e) {
+//                            System.err.println("Error al persistir la venta: " + e.getMessage());
+//                        }
+//                    }
+//                }
+//            }
+//            System.out.println("Ventas insertadas");
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+    public void populateDB() throws Exception {
+
+        try {
+            System.out.println("Populating DB...");
+            conn.setAutoCommit(false); // Desactiva autocommit para manejar las transacciones manualmente
+            processCSV("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\clientes.csv", "Cliente");
+            processCSV("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\productos.csv", "Producto");
+            processCSV("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\facturas.csv", "Factura");
+            processCSV("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
+            //conn.commit(); // Realiza el commit una vez que tdo ha sido procesado --> Ahora lo estamos haciendo en cada DAO
+            System.out.println("Datos insertados correctamente");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Error al insertar datos en la base de datos: " + e.getMessage());
+        }
+    }
+
+    private void processCSV(String filePath, String entity){
+        System.out.println("Insertando "+ entity.toLowerCase() + "s...");
+
+        try (CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new
+                FileReader(filePath))){
+            switch (entity) {
+                case "Cliente" -> processClientes(parser);
+                case "Producto" -> processProductos(parser);
+                case "Factura" -> processFacturas(parser);
+                case "FacturaProducto" -> processFacturasProductos(parser);
+                default -> System.err.println("Datos inválidos en el archivo CSV: " + filePath);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void processClientes(CSVParser parser){
+        ClienteDAO clienteDAO = new ClienteDAO(this.conn);
+
+        for(CSVRecord row : parser) {
+            if(row.size() >= 3) { // Verificar que hay al menos 4 campos en el CSVRecord
+                String idString = row.get(0);
+                String nombre = row.get(1);
+                String email = row.get(2);
+                if(isValidNumber(idString) && !nombre.isEmpty() && !email.isEmpty()) {
+                    try {
+                        int id = Integer.parseInt(idString);
+                        Cliente cliente = new Cliente(id, nombre, email);
+                        clienteDAO.insertCliente(cliente);
+                    } catch (Exception e) {
+                        System.err.println("Error al persistir el cliente: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        System.out.println("Clientes insertados");
+
+    }
+
+    private void processFacturas(CSVParser parser) {
+        FacturaDAO facturaDAO = new FacturaDAO(this.conn);
+
+        for(CSVRecord row : parser) {
+            if (row.size() >= 2) {
+                String idString = row.get(0);
+                String idClienteString = row.get(1);
+
+                if (isValidNumber(idString) && isValidNumber(idClienteString)) {
+                    try {
+                        int id = Integer.parseInt(idString);
+                        int idCliente = Integer.parseInt(idClienteString);
+
+                        Factura factura = new Factura(id, idCliente);
+                        facturaDAO.insertFactura(factura);
+                    } catch (Exception e) {
+                        System.err.println("Error al persistir la factura: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        System.out.println("Facturas insertadas");
+
+    }
+
+    private void processProductos(CSVParser parser) {
+        ProductoDAO productoDAO = new ProductoDAO(this.conn);
+
+        for(CSVRecord row : parser) {
+            if (row.size() >= 3) {
+                String idString = row.get(0);
+                String nombre = row.get(1);
+                String valorString = row.get(2);
+
+                if (isValidNumber(idString) && !nombre.isEmpty() && isValidNumber(valorString)) {
+                    try {
+                        int id = Integer.parseInt(idString);
+                        float valor = Float.parseFloat(valorString);
+
+                        Producto producto = new Producto(id, nombre, valor);
+                        productoDAO.insertProducto(producto);
+                    } catch (Exception e) {
+                        System.err.println("Error al persistir el producto: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        System.out.println("Productos insertados");
+
+    }
+
+    private void processFacturasProductos(CSVParser parser) throws SQLException{
+        FacturaProductoDAO facturaProductoDAO = new FacturaProductoDAO(this.conn);
+
+        for(CSVRecord row : parser) {
+            if (row.size() >= 3) {
+                String idFacturaString = row.get(0);
+                String idProductoString = row.get(1);
+                String cantidadString = row.get(2);
+
+                if (isValidNumber(idFacturaString) && isValidNumber(idProductoString) && isValidNumber(cantidadString)) {
+                    try {
+                        int idFactura = Integer.parseInt(idFacturaString);
+                        int idProducto = Integer.parseInt(idProductoString);
+                        int cantidad = Integer.parseInt(cantidadString);
+
+                        FacturaProducto facturaProducto = new FacturaProducto(idFactura, idProducto, cantidad);
+                        facturaProductoDAO.insertFacturaProducto(facturaProducto);
+                    } catch (Exception e) {
+                        System.err.println("Error al persistir la venta: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        System.out.println("Ventas insertadas");
+    }
+
+    private boolean isValidNumber(String str) {
+
+        if (str == null || str.isEmpty()) return false;
+
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 }

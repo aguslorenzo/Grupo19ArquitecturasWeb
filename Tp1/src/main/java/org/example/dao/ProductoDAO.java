@@ -27,7 +27,6 @@ public class ProductoDAO {
             ps.setString(2, producto.getNombre());
             ps.setFloat(3, producto.getValor());
             ps.executeUpdate();
-            System.out.println("Producto insertada exitosamente.");
         } catch (
                 SQLException e) {
             e.printStackTrace();

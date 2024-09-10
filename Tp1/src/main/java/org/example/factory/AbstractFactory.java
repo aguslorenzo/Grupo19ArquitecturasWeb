@@ -8,6 +8,7 @@ public abstract class AbstractFactory {
 
     public static final int MYSQL_JDBC = 1;
     public static final int DERBY_JDBC = 2;
+
     public abstract ClienteDAO getClienteDAO();
     public abstract FacturaDAO getFacturaDAO();
     public abstract ProductoDAO getProductoDAO();

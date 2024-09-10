@@ -27,7 +27,6 @@ public class FacturaProductoDAO {
             ps.setInt(2, facturaProducto.getIdProducto());
             ps.setInt(3, facturaProducto.getCantidad());
             ps.executeUpdate();
-            System.out.println("FacturaProducto insertada exitosamente.");
         } catch (
                 SQLException e) {
             e.printStackTrace();

@@ -26,7 +26,6 @@ public class FacturaDAO {
             ps.setInt(1, factura.getId());
             ps.setInt(2, factura.getId_cliente());
             ps.executeUpdate();
-            System.out.println("Factura insertada exitosamente.");
         } catch (
                 SQLException e) {
             e.printStackTrace();
