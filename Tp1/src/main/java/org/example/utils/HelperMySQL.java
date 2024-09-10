@@ -1,8 +1,6 @@
 package org.example.utils;
 
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,10 +10,10 @@ import java.sql.SQLException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.example.dao.ClienteDAO;
-import org.example.dao.FacturaDAO;
-import org.example.dao.FacturaProductoDAO;
-import org.example.dao.ProductoDAO;
+import org.example.dao.MySQLClienteDAO;
+import org.example.dao.MySQLFacturaDAO;
+import org.example.dao.MySQLFacturaProductoDAO;
+import org.example.dao.MySQLProductoDAO;
 import org.example.entities.Cliente;
 import org.example.entities.Factura;
 import org.example.entities.FacturaProducto;
@@ -122,10 +120,10 @@ public class HelperMySQL {
     }
 /*
     public void populateDB() throws Exception {
-        ClienteDAO clienteDAO = new ClienteDAO(this.conn);
-        FacturaDAO facturaDAO = new FacturaDAO(this.conn);
-        ProductoDAO productoDAO = new ProductoDAO(this.conn);
-        FacturaProductoDAO facturaProductoDAO = new FacturaProductoDAO(this.conn);
+        MySQLClienteDAO clienteDAO = new MySQLClienteDAO(this.conn);
+        MySQLFacturaDAO facturaDAO = new MySQLFacturaDAO(this.conn);
+        MySQLProductoDAO productoDAO = new MySQLProductoDAO(this.conn);
+        MySQLFacturaProductoDAO facturaProductoDAO = new MySQLFacturaProductoDAO(this.conn);
 
         try {
             System.out.println("Populating DB...");
@@ -245,7 +243,7 @@ public class HelperMySQL {
 //    }
 //
 //    private void populateClientes() throws Exception {
-//        ClienteDAO clienteDAO = new ClienteDAO(this.conn);
+//        MySQLClienteDAO clienteDAO = new MySQLClienteDAO(this.conn);
 //
 //        try (CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new
 //                FileReader("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\clientes.csv"))){
@@ -274,7 +272,7 @@ public class HelperMySQL {
 //    }
 //
 //    private void populateFacturas() throws SQLException{
-//        FacturaDAO facturaDAO = new FacturaDAO(this.conn);
+//        MySQLFacturaDAO facturaDAO = new MySQLFacturaDAO(this.conn);
 //
 //        try (CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new
 //                FileReader("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\facturas.csv"))){
@@ -304,7 +302,7 @@ public class HelperMySQL {
 //    }
 //
 //    private void populateProductos() throws SQLException{
-//        ProductoDAO productoDAO = new ProductoDAO(this.conn);
+//        MySQLProductoDAO productoDAO = new MySQLProductoDAO(this.conn);
 //
 //        try (CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new
 //                FileReader("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\productos.csv"))){
@@ -335,7 +333,7 @@ public class HelperMySQL {
 //    }
 //
 //    private void populateFacturasProductos() throws SQLException{
-//        FacturaProductoDAO facturaProductoDAO = new FacturaProductoDAO(this.conn);
+//        MySQLFacturaProductoDAO facturaProductoDAO = new MySQLFacturaProductoDAO(this.conn);
 //
 //        try (CSVParser parser = CSVFormat.DEFAULT.withHeader().parse(new
 //                FileReader("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\facturas-productos.csv"))){
@@ -401,10 +399,10 @@ public class HelperMySQL {
     }
 
     private void processClientes(CSVParser parser){
-        ClienteDAO clienteDAO = new ClienteDAO(this.conn);
+        MySQLClienteDAO clienteDAO = new MySQLClienteDAO(this.conn);
 
         for(CSVRecord row : parser) {
-            if(row.size() >= 3) { // Verificar que hay al menos 4 campos en el CSVRecord
+            if(row.size() >= 3) { // Verificar que hay al menos 3 campos en el CSVRecord
                 String idString = row.get(0);
                 String nombre = row.get(1);
                 String email = row.get(2);
@@ -412,7 +410,7 @@ public class HelperMySQL {
                     try {
                         int id = Integer.parseInt(idString);
                         Cliente cliente = new Cliente(id, nombre, email);
-                        clienteDAO.insertCliente(cliente);
+                        clienteDAO.insert(cliente);
                     } catch (Exception e) {
                         System.err.println("Error al persistir el cliente: " + e.getMessage());
                     }
@@ -424,7 +422,7 @@ public class HelperMySQL {
     }
 
     private void processFacturas(CSVParser parser) {
-        FacturaDAO facturaDAO = new FacturaDAO(this.conn);
+        MySQLFacturaDAO facturaDAO = new MySQLFacturaDAO(this.conn);
 
         for(CSVRecord row : parser) {
             if (row.size() >= 2) {
@@ -437,7 +435,7 @@ public class HelperMySQL {
                         int idCliente = Integer.parseInt(idClienteString);
 
                         Factura factura = new Factura(id, idCliente);
-                        facturaDAO.insertFactura(factura);
+                        facturaDAO.insert(factura);
                     } catch (Exception e) {
                         System.err.println("Error al persistir la factura: " + e.getMessage());
                     }
@@ -449,7 +447,7 @@ public class HelperMySQL {
     }
 
     private void processProductos(CSVParser parser) {
-        ProductoDAO productoDAO = new ProductoDAO(this.conn);
+        MySQLProductoDAO productoDAO = new MySQLProductoDAO(this.conn);
 
         for(CSVRecord row : parser) {
             if (row.size() >= 3) {
@@ -463,7 +461,7 @@ public class HelperMySQL {
                         float valor = Float.parseFloat(valorString);
 
                         Producto producto = new Producto(id, nombre, valor);
-                        productoDAO.insertProducto(producto);
+                        productoDAO.insert(producto);
                     } catch (Exception e) {
                         System.err.println("Error al persistir el producto: " + e.getMessage());
                     }
@@ -475,7 +473,7 @@ public class HelperMySQL {
     }
 
     private void processFacturasProductos(CSVParser parser) throws SQLException{
-        FacturaProductoDAO facturaProductoDAO = new FacturaProductoDAO(this.conn);
+        MySQLFacturaProductoDAO facturaProductoDAO = new MySQLFacturaProductoDAO(this.conn);
 
         for(CSVRecord row : parser) {
             if (row.size() >= 3) {
@@ -490,7 +488,7 @@ public class HelperMySQL {
                         int cantidad = Integer.parseInt(cantidadString);
 
                         FacturaProducto facturaProducto = new FacturaProducto(idFactura, idProducto, cantidad);
-                        facturaProductoDAO.insertFacturaProducto(facturaProducto);
+                        facturaProductoDAO.insert(facturaProducto);
                     } catch (Exception e) {
                         System.err.println("Error al persistir la venta: " + e.getMessage());
                     }

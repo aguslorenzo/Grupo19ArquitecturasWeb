@@ -1,17 +1,17 @@
 package org.example.factory;
 
-import org.example.dao.ClienteDAO;
-import org.example.dao.FacturaDAO;
-import org.example.dao.ProductoDAO;
+import org.example.dao.MySQLClienteDAO;
+import org.example.dao.MySQLFacturaDAO;
+import org.example.dao.MySQLProductoDAO;
 
 public abstract class AbstractFactory {
 
     public static final int MYSQL_JDBC = 1;
     public static final int DERBY_JDBC = 2;
 
-    public abstract ClienteDAO getClienteDAO();
-    public abstract FacturaDAO getFacturaDAO();
-    public abstract ProductoDAO getProductoDAO();
+    public abstract MySQLClienteDAO getClienteDAO();
+    public abstract MySQLFacturaDAO getFacturaDAO();
+    public abstract MySQLProductoDAO getProductoDAO();
 
     public static AbstractFactory getDAOFactory(int whichFactory) {
         switch (whichFactory) {
