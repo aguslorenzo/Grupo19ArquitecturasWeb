@@ -4,4 +4,5 @@ import org.example.entities.Producto;
 
 public interface ProductoDAO extends CRUD<Producto> {
 
+    Producto obtenerProductoMasRecaudado();
 }
