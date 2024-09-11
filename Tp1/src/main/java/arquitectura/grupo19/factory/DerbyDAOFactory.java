@@ -1,9 +1,9 @@
-package org.example.factory;
+package arquitectura.grupo19.factory;
 
-import org.example.dao.ClienteDAOImpl;
-import org.example.dao.FacturaDAOImpl;
-import org.example.dao.ProductoDAODerby;
-import org.example.dao.ProductoDAOImpl;
+import arquitectura.grupo19.dao.FacturaDAOImpl;
+import arquitectura.grupo19.dao.ProductoDAODerby;
+import arquitectura.grupo19.dao.ClienteDAOImpl;
+import arquitectura.grupo19.dao.ProductoDAOImpl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;

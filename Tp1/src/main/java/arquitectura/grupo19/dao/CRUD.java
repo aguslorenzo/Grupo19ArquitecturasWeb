@@ -1,4 +1,4 @@
-package org.example.dao;
+package arquitectura.grupo19.dao;
 
 import java.util.List;
 import java.util.Optional;

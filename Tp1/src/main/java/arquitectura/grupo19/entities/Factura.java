@@ -1,4 +1,4 @@
-package org.example.entities;
+package arquitectura.grupo19.entities;
 
 public class Factura {
     private int id;

@@ -1,14 +1,14 @@
-package org.example.entities;
+package arquitectura.grupo19.entities;
 
-public class Producto {
+public class Cliente {
     private int id;
     private String nombre;
-    private float valor;
+    private String email;
 
-    public Producto(int id, String nombre, float valor) {
+    public Cliente(int id, String nombre, String email) {
         this.id = id;
         this.nombre = nombre;
-        this.valor = valor;
+        this.email = email;
     }
 
     public int getId() {
@@ -23,20 +23,20 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public float getValor() {
-        return valor;
+    public String getEmail() {
+        return email;
     }
 
-    public void setValor(float valor) {
-        this.valor = valor;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
     public String toString() {
-        return "Producto{" +
+        return "Cliente{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                ", valor=" + valor +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

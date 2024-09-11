@@ -1,6 +1,6 @@
-package org.example.dao;
+package arquitectura.grupo19.dao;
 
-import org.example.entities.Cliente;
+import arquitectura.grupo19.entities.Cliente;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

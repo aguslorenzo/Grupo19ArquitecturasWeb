@@ -1,6 +1,6 @@
-package org.example.dao;
+package arquitectura.grupo19.dao;
 
-import org.example.entities.Producto;
+import arquitectura.grupo19.entities.FacturaProducto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,19 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class ProductoDAOImpl implements ProductoDAO{
-    protected Connection conn;
+public class FacturaProductoDAOImpl implements FacturaProductoDAO{
+    private Connection conn;
+
+    public FacturaProductoDAOImpl(Connection conn) {
+        this.conn = conn;
+    }
 
     @Override
-    public List<Producto> getAll() {
-        String query = "SELECT * FROM productos";
+    public List<FacturaProducto> getAll() {
+        String query = "SELECT * FROM facturas_productos";
         PreparedStatement ps;
-        List<Producto> resultado = new ArrayList<>();
+        List<FacturaProducto> resultado = new ArrayList<>();
         try {
             ps = conn.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
-                resultado.add(new Producto(rs.getInt(1),rs.getString(2),rs.getFloat(3)));
+                resultado.add(new FacturaProducto(rs.getInt(1),rs.getInt(2),rs.getInt(3)));
             }
             conn.close();
         } catch (SQLException e) {
@@ -32,20 +36,20 @@ public abstract class ProductoDAOImpl implements ProductoDAO{
     }
 
     @Override
-    public Optional<Producto> getById(Integer id) {
+    public Optional<FacturaProducto> getById(Integer id) {
         return Optional.empty();
     }
 
     @Override
-    public void insert(Producto producto) {
-        String query = "INSERT INTO productos (idProducto, nombre, valor) VALUES (?, ?, ?)";
+    public void insert(FacturaProducto facturaProducto) {
+        String query = "INSERT INTO facturas_productos (idFactura, idProducto, cantidad) VALUES (?, ?, ?)";
         PreparedStatement ps = null;
 
         try {
             ps = conn.prepareStatement(query);
-            ps.setInt(1, producto.getId());
-            ps.setString(2, producto.getNombre());
-            ps.setFloat(3, producto.getValor());
+            ps.setInt(1, facturaProducto.getIdFactura());
+            ps.setInt(2, facturaProducto.getIdProducto());
+            ps.setInt(3, facturaProducto.getCantidad());
             ps.executeUpdate();
         } catch (
                 SQLException e) {
@@ -63,15 +67,12 @@ public abstract class ProductoDAOImpl implements ProductoDAO{
     }
 
     @Override
-    public void update(Producto producto) {
+    public void update(FacturaProducto facturaProducto) {
 
     }
 
     @Override
-    public void delete(Producto producto) {
+    public void delete(FacturaProducto facturaProducto) {
 
     }
-
-    public abstract String obtenerProductoMasRecaudado();
-
 }

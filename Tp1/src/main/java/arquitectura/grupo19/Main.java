@@ -1,13 +1,12 @@
-package org.example;
+package arquitectura.grupo19;
 
-import org.example.dao.ClienteDAO;
-import org.example.dao.ProductoDAO;
-import org.example.dao.ProductoDAOImpl;
-import org.example.dao.ProductoDAOMySQL;
-import org.example.entities.Cliente;
-import org.example.factory.AbstractFactory;
-import org.example.utils.HelperDerby;
-import org.example.utils.HelperMySQL;
+import arquitectura.grupo19.dao.ProductoDAO;
+import arquitectura.grupo19.dao.ClienteDAO;
+import arquitectura.grupo19.dao.ProductoDAOImpl;
+import arquitectura.grupo19.entities.Cliente;
+import arquitectura.grupo19.factory.AbstractFactory;
+import arquitectura.grupo19.utils.HelperDerby;
+import arquitectura.grupo19.utils.HelperMySQL;
 
 import java.util.List;
 

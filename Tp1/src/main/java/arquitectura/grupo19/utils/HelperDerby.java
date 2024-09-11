@@ -1,13 +1,13 @@
-package org.example.utils;
+package arquitectura.grupo19.utils;
 
+import arquitectura.grupo19.dao.*;
+import arquitectura.grupo19.entities.Cliente;
+import arquitectura.grupo19.entities.Factura;
+import arquitectura.grupo19.entities.FacturaProducto;
+import arquitectura.grupo19.entities.Producto;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.example.dao.*;
-import org.example.entities.Cliente;
-import org.example.entities.Factura;
-import org.example.entities.FacturaProducto;
-import org.example.entities.Producto;
 
 import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;

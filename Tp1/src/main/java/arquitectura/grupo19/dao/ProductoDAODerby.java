@@ -1,14 +1,14 @@
-package org.example.dao;
+package arquitectura.grupo19.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProductoDAOMySQL extends ProductoDAOImpl{
+public class ProductoDAODerby extends ProductoDAOImpl{
 
-    public ProductoDAOMySQL(Connection conn) {
-        this.conn = conn;
+    public ProductoDAODerby(Connection conn){
+        this.conn=conn;
     }
 
     @Override
@@ -19,7 +19,7 @@ public class ProductoDAOMySQL extends ProductoDAOImpl{
                 "JOIN facturas_productos fp ON p.idProducto = fp.idProducto " +
                 "GROUP BY p.idProducto, p.nombre " +
                 "ORDER BY recaudacion DESC " +
-                "LIMIT 1";
+                "FETCH FIRST 1 ROWS ONLY";
 
         try (PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {
