@@ -1,12 +1,5 @@
 package org.example.utils;
 
-import java.io.FileReader;
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -16,26 +9,29 @@ import org.example.entities.Factura;
 import org.example.entities.FacturaProducto;
 import org.example.entities.Producto;
 
-public class HelperMySQL {
+import java.io.FileReader;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.*;
+
+public class HelperDerby {
+
     private Connection conn = null;
 
-    public HelperMySQL() {//Constructor
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String uri = "jdbc:mysql://localhost:3306/db-tpe";
-
+    public HelperDerby(){
+        String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+        String uri = "jdbc:derby:MyDerbyDb; create=true";
         try {
             Class.forName(driver).getDeclaredConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                 | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException | ClassNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
         }
-
         try {
-            conn = DriverManager.getConnection(uri, "usuario", "password");
-            conn.setAutoCommit(false);
-        } catch (Exception e) {
-            e.printStackTrace();
+            conn = DriverManager.getConnection(uri);
+            /*createTables(conn);
+            conn.close();*/
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -64,41 +60,50 @@ public class HelperMySQL {
             throw new SQLException("La conexión a la base de datos no está abierta.");
         }
 
-        String dropSQL = "DROP TABLE IF EXISTS "+ tableName;
+        if(tableExists(tableName)){
+            String dropSQL = "DROP TABLE "+ tableName;
 
-        try (PreparedStatement stmt = conn.prepareStatement(dropSQL)){
-            stmt.execute();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            try (PreparedStatement stmt = conn.prepareStatement(dropSQL)){
+                stmt.execute();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
+
     }
 
     public void createTables() throws SQLException {
-        createTable("CREATE TABLE IF NOT EXISTS clientes(" +
+        if (!tableExists("clientes")){
+            createTable("CREATE TABLE clientes(" +
                     "idCliente INT NOT NULL, " +
                     "nombre VARCHAR(500), " +
                     "email VARCHAR(150), " +
-                    "CONSTRAINT clientes_pk PRIMARY KEY (idCliente));");
-
-        createTable("CREATE TABLE IF NOT EXISTS productos(" +
+                    "CONSTRAINT clientes_pk PRIMARY KEY (idCliente))");
+        }
+        if (!tableExists("productos")){
+            createTable("CREATE TABLE productos(" +
                     "idProducto INT NOT NULL, " +
                     "nombre VARCHAR(45), " +
-                    "valor FLOAT(10,2) NOT NULL, " +
-                    "CONSTRAINT productos_pk PRIMARY KEY (idProducto));");
-
-        createTable("CREATE TABLE IF NOT EXISTS facturas(" +
+                    "valor FLOAT NOT NULL, " +
+                    "CONSTRAINT productos_pk PRIMARY KEY (idProducto))");
+        }
+        if (!tableExists("facturas")){
+            createTable("CREATE TABLE facturas(" +
                     "idFactura INT NOT NULL, " +
                     "idCliente INT NOT NULL, " +
                     "CONSTRAINT facturas_pk PRIMARY KEY (idFactura), "+
-                    "CONSTRAINT FK_idCliente FOREIGN KEY (idCliente) REFERENCES clientes (idCliente));");
+                    "CONSTRAINT FK_idCliente FOREIGN KEY (idCliente) REFERENCES clientes (idCliente))");
+        }
 
-        createTable("CREATE TABLE IF NOT EXISTS facturas_productos(" +
+        if(!tableExists("facturas_productos")){
+            createTable("CREATE TABLE facturas_productos(" +
                     "idFactura INT NOT NULL, " +
                     "idProducto INT NOT NULL, " +
                     "cantidad INT NOT NULL, " +
                     "CONSTRAINT facturas_productos_pk PRIMARY KEY (idFactura, idProducto), " +
                     "CONSTRAINT FK_idFactura FOREIGN KEY (idFactura) REFERENCES facturas (idFactura), " +
-                    "CONSTRAINT FK_idProducto FOREIGN KEY (idProducto) REFERENCES productos (idProducto));");
+                    "CONSTRAINT FK_idProducto FOREIGN KEY (idProducto) REFERENCES productos (idProducto))");
+        }
 
         this.conn.commit();
         System.out.println("Tablas creadas");
@@ -121,10 +126,10 @@ public class HelperMySQL {
         try {
             System.out.println("Populating DB...");
             conn.setAutoCommit(false); // Desactiva autocommit para manejar las transacciones manualmente
-            processCSV("Tp1\\src\\main\\resources\\clientes.csv", "Cliente");
-            processCSV("Tp1\\src\\main\\resources\\productos.csv", "Producto");
-            processCSV("Tp1\\src\\main\\resources\\facturas.csv", "Factura");
-            processCSV("Tp1\\src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
+            processCSV("TP1\\src\\main\\resources\\clientes.csv", "Cliente");
+            processCSV("TP1\\src\\main\\resources\\productos.csv", "Producto");
+            processCSV("TP1\\src\\main\\resources\\facturas.csv", "Factura");
+            processCSV("TP1\\src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
             //TODO conn.commit(); // Realiza el commit una vez que tdo ha sido procesado --> Ahora lo estamos haciendo en cada DAO
             System.out.println("Datos insertados correctamente");
         } catch (Exception e) {
@@ -199,7 +204,7 @@ public class HelperMySQL {
     }
 
     private void processProductos(CSVParser parser) {
-        ProductoDAOImpl productoDAO = new ProductoDAOMySQL(this.conn);
+        ProductoDAOImpl productoDAO = new ProductoDAODerby(this.conn);
 
         for(CSVRecord row : parser) {
             if (row.size() >= 3) {
@@ -261,4 +266,13 @@ public class HelperMySQL {
             return false;
         }
     }
+
+    private boolean tableExists(String tableName) throws SQLException {
+        DatabaseMetaData meta = conn.getMetaData(); // Obtiene metadata de la base de datos
+        try (ResultSet resultSet = meta.getTables(null, null, tableName.toUpperCase(), null)) {
+            // Obtiene el resultado de la consulta al catalogo de la base de datos para la tabla especificada
+            return resultSet.next(); // Si hay resultados, la tabla existe
+        }
+    }
+
 }

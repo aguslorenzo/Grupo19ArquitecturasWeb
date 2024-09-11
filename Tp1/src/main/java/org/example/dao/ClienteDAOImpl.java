@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class MySQLClienteDAO implements ClienteDAO{
+public class ClienteDAOImpl implements ClienteDAO{
     private Connection conn;
 
-    public MySQLClienteDAO(Connection conn){
+    public ClienteDAOImpl(Connection conn){
         this.conn=conn;
     }
 
@@ -88,7 +88,7 @@ public class MySQLClienteDAO implements ClienteDAO{
                         "    GROUP BY f.idFactura, f.idCliente " +
                         ") AS f " +
                         "ON c.idCliente = f.idCliente " +
-                        "ORDER BY f.total_factura DESC;";
+                        "ORDER BY f.total_factura DESC";
 
         try (PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {

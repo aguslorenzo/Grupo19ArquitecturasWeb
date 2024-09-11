@@ -1,9 +1,10 @@
 package org.example.factory;
 
 
-import org.example.dao.MySQLClienteDAO;
-import org.example.dao.MySQLFacturaDAO;
-import org.example.dao.MySQLProductoDAO;
+import org.example.dao.ClienteDAOImpl;
+import org.example.dao.FacturaDAOImpl;
+import org.example.dao.ProductoDAOImpl;
+import org.example.dao.ProductoDAOMySQL;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -50,18 +51,18 @@ public class MySQLDAOFactory extends AbstractFactory{
     }
 
     @Override
-    public MySQLClienteDAO getClienteDAO() {
-        return new MySQLClienteDAO(createConnection());
+    public ClienteDAOImpl getClienteDAO() {
+        return new ClienteDAOImpl(createConnection());
     }
 
     @Override
-    public MySQLFacturaDAO getFacturaDAO() {
-        return new MySQLFacturaDAO(createConnection());
+    public FacturaDAOImpl getFacturaDAO() {
+        return new FacturaDAOImpl(createConnection());
     }
 
     @Override
-    public MySQLProductoDAO getProductoDAO() {
-        return new MySQLProductoDAO(createConnection());
+    public ProductoDAOImpl getProductoDAO() {
+        return new ProductoDAOMySQL(createConnection());
     }
 
 
