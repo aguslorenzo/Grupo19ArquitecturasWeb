@@ -121,10 +121,10 @@ public class HelperMySQL {
         try {
             System.out.println("Populating DB...");
             conn.setAutoCommit(false); // Desactiva autocommit para manejar las transacciones manualmente
-            processCSV("Tp1\\src\\main\\resources\\clientes.csv", "Cliente");
-            processCSV("Tp1\\src\\main\\resources\\productos.csv", "Producto");
-            processCSV("Tp1\\src\\main\\resources\\facturas.csv", "Factura");
-            processCSV("Tp1\\src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
+            processCSV("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\clientes.csv", "Cliente");
+            processCSV("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\productos.csv", "Producto");
+            processCSV("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\facturas.csv", "Factura");
+            processCSV("Grupo19ArquitecturasWeb\\Tp1\\src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
             //TODO conn.commit(); // Realiza el commit una vez que tdo ha sido procesado --> Ahora lo estamos haciendo en cada DAO
             System.out.println("Datos insertados correctamente");
         } catch (Exception e) {

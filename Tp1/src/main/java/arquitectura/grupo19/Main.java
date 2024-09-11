@@ -12,10 +12,14 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception{
+
+        System.out.println("----------------inicio mysql-----------------");
+        /*
         HelperMySQL dbMySQL = new HelperMySQL();
         dbMySQL.dropTables();
         dbMySQL.createTables();
         dbMySQL.populateDB();
+        dbMySQL.closeConnection();
 
         AbstractFactory factoryMysql = AbstractFactory.getDAOFactory(1); //MySQL
         ProductoDAO product = factoryMysql.getProductoDAO();
@@ -27,12 +31,15 @@ public class Main {
             System.out.println(c);
         }
 
+        */
+
+        System.out.println("----------------inicio derby-----------------");
+
         HelperDerby dbDerby = new HelperDerby();
         dbDerby.dropTables();
         dbDerby.createTables();
         dbDerby.populateDB();
-
-        System.out.println("----------------inicio derby-----------------");
+        dbDerby.closeConnection();
 
         AbstractFactory factoryDerby = AbstractFactory.getDAOFactory(2); //Derby
         ProductoDAOImpl productDerby = factoryDerby.getProductoDAO();
@@ -43,5 +50,8 @@ public class Main {
         for(Cliente c: clientesDerby){
             System.out.println(c);
         }
+
+
+
     }
 }

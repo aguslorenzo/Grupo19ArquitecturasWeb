@@ -28,8 +28,7 @@ public class HelperDerby {
         }
         try {
             conn = DriverManager.getConnection(uri);
-            /*createTables(conn);
-            conn.close();*/
+            conn.setAutoCommit(false);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -126,10 +125,10 @@ public class HelperDerby {
         try {
             System.out.println("Populating DB...");
             conn.setAutoCommit(false); // Desactiva autocommit para manejar las transacciones manualmente
-            processCSV("TP1\\src\\main\\resources\\clientes.csv", "Cliente");
-            processCSV("TP1\\src\\main\\resources\\productos.csv", "Producto");
-            processCSV("TP1\\src\\main\\resources\\facturas.csv", "Factura");
-            processCSV("TP1\\src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
+            processCSV("Grupo19ArquitecturasWeb\\TP1\\src\\main\\resources\\clientes.csv", "Cliente");
+            processCSV("Grupo19ArquitecturasWeb\\TP1\\src\\main\\resources\\productos.csv", "Producto");
+            processCSV("Grupo19ArquitecturasWeb\\TP1\\src\\main\\resources\\facturas.csv", "Factura");
+            processCSV("Grupo19ArquitecturasWeb\\TP1\\src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
             //TODO conn.commit(); // Realiza el commit una vez que tdo ha sido procesado --> Ahora lo estamos haciendo en cada DAO
             System.out.println("Datos insertados correctamente");
         } catch (Exception e) {
