@@ -2,9 +2,9 @@ package arquitectura.grupo19.factory;
 
 
 import arquitectura.grupo19.dao.FacturaDAOImpl;
-import arquitectura.grupo19.dao.ProductoDAOMySQL;
+import arquitectura.grupo19.dao.ProductoDAOImplMySQL;
 import arquitectura.grupo19.dao.ClienteDAOImpl;
-import arquitectura.grupo19.dao.ProductoDAOImpl;
+import arquitectura.grupo19.dao.ProductoDAOImplSQL;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -61,8 +61,8 @@ public class MySQLDAOFactory extends AbstractFactory{
     }
 
     @Override
-    public ProductoDAOImpl getProductoDAO() {
-        return new ProductoDAOMySQL(createConnection());
+    public ProductoDAOImplSQL getProductoDAO() {
+        return new ProductoDAOImplMySQL(createConnection());
     }
 
 

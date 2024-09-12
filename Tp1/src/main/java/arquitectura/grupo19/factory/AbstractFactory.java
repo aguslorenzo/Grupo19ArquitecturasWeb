@@ -2,7 +2,7 @@ package arquitectura.grupo19.factory;
 
 import arquitectura.grupo19.dao.FacturaDAOImpl;
 import arquitectura.grupo19.dao.ClienteDAOImpl;
-import arquitectura.grupo19.dao.ProductoDAOImpl;
+import arquitectura.grupo19.dao.ProductoDAOImplSQL;
 
 public abstract class AbstractFactory {
 
@@ -11,7 +11,7 @@ public abstract class AbstractFactory {
 
     public abstract ClienteDAOImpl getClienteDAO();
     public abstract FacturaDAOImpl getFacturaDAO();
-    public abstract ProductoDAOImpl getProductoDAO();
+    public abstract ProductoDAOImplSQL getProductoDAO();
 
     public static AbstractFactory getDAOFactory(int whichFactory) {
         switch (whichFactory) {

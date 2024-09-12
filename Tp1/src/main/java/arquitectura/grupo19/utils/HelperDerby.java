@@ -28,8 +28,7 @@ public class HelperDerby {
         }
         try {
             conn = DriverManager.getConnection(uri);
-            /*createTables(conn);
-            conn.close();*/
+            conn.setAutoCommit(false);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -46,8 +45,8 @@ public class HelperDerby {
     }
 
     public void dropTables() throws SQLException {
-        dropTable("facturas_productos"); // La factura-producto se debe eliminar antes que las tablas factura y producto
-        dropTable("facturas"); // La factura se debe eliminar antes que el cliente
+        dropTable("facturas_productos");
+        dropTable("facturas");
         dropTable("clientes");
         dropTable("productos");
         this.conn.commit();
@@ -126,11 +125,10 @@ public class HelperDerby {
         try {
             System.out.println("Populating DB...");
             conn.setAutoCommit(false); // Desactiva autocommit para manejar las transacciones manualmente
-            processCSV("TP1\\src\\main\\resources\\clientes.csv", "Cliente");
-            processCSV("TP1\\src\\main\\resources\\productos.csv", "Producto");
-            processCSV("TP1\\src\\main\\resources\\facturas.csv", "Factura");
-            processCSV("TP1\\src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
-            //TODO conn.commit(); // Realiza el commit una vez que tdo ha sido procesado --> Ahora lo estamos haciendo en cada DAO
+            processCSV("src\\main\\resources\\clientes.csv", "Cliente");
+            processCSV("src\\main\\resources\\productos.csv", "Producto");
+            processCSV("src\\main\\resources\\facturas.csv", "Factura");
+            processCSV("src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
             System.out.println("Datos insertados correctamente");
         } catch (Exception e) {
             e.printStackTrace();
@@ -159,7 +157,7 @@ public class HelperDerby {
         ClienteDAOImpl clienteDAO = new ClienteDAOImpl(this.conn);
 
         for(CSVRecord row : parser) {
-            if(row.size() >= 3) { // Verificar que hay al menos 3 campos en el CSVRecord
+            if(row.size() >= 3) {
                 String idString = row.get(0);
                 String nombre = row.get(1);
                 String email = row.get(2);
@@ -204,7 +202,7 @@ public class HelperDerby {
     }
 
     private void processProductos(CSVParser parser) {
-        ProductoDAOImpl productoDAO = new ProductoDAODerby(this.conn);
+        ProductoDAOImplSQL productoDAO = new ProductoDAOImplDerby(this.conn);
 
         for(CSVRecord row : parser) {
             if (row.size() >= 3) {
@@ -229,7 +227,7 @@ public class HelperDerby {
 
     }
 
-    private void processFacturasProductos(CSVParser parser) throws SQLException{
+    private void processFacturasProductos(CSVParser parser){
         FacturaProductoDAOImpl facturaProductoDAO = new FacturaProductoDAOImpl(this.conn);
 
         for(CSVRecord row : parser) {
@@ -268,9 +266,8 @@ public class HelperDerby {
     }
 
     private boolean tableExists(String tableName) throws SQLException {
-        DatabaseMetaData meta = conn.getMetaData(); // Obtiene metadata de la base de datos
+        DatabaseMetaData meta = conn.getMetaData();
         try (ResultSet resultSet = meta.getTables(null, null, tableName.toUpperCase(), null)) {
-            // Obtiene el resultado de la consulta al catalogo de la base de datos para la tabla especificada
             return resultSet.next(); // Si hay resultados, la tabla existe
         }
     }

@@ -68,27 +68,22 @@ public class ClienteDAOImpl implements ClienteDAO{
 
     @Override
     public void update(Cliente cliente) {
-
+        //TODO implementar luego si hace falta
     }
 
     @Override
     public void delete(Cliente cliente) {
-
+        //TODO implementar luego si hace falta
     }
 
     public List<Cliente> obtenerFacturacionClientes() {
         List<Cliente> clientes = new ArrayList<>();
-        String query = "SELECT c.idCliente, c.nombre, c.email, f.idFactura, f.total_factura " +
-                        "FROM clientes c " +
-                        "JOIN ( " +
-                        "    SELECT f.idFactura, f.idCliente, SUM(fp.cantidad * p.valor) AS total_factura " +
-                        "    FROM facturas f " +
-                        "    JOIN facturas_productos fp ON f.idFactura = fp.idFactura " +
-                        "    JOIN productos p ON fp.idProducto = p.idProducto " +
-                        "    GROUP BY f.idFactura, f.idCliente " +
-                        ") AS f " +
-                        "ON c.idCliente = f.idCliente " +
-                        "ORDER BY f.total_factura DESC";
+         String query = "SELECT c.idCliente, c.nombre, c.email, SUM(p.valor * fp.cantidad) AS total_facturado " +
+        "FROM clientes c JOIN facturas f ON c.idCliente = f.idCliente " +
+        "JOIN facturas_productos fp ON f.idFactura = fp.idFactura "+
+        "JOIN productos p on fp.idProducto = p.idProducto "+
+        "GROUP BY c.idCliente, c.nombre, c.email "+
+        "ORDER BY total_facturado DESC";
 
         try (PreparedStatement stmt = conn.prepareStatement(query);
              ResultSet rs = stmt.executeQuery()) {

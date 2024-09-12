@@ -121,11 +121,10 @@ public class HelperMySQL {
         try {
             System.out.println("Populating DB...");
             conn.setAutoCommit(false); // Desactiva autocommit para manejar las transacciones manualmente
-            processCSV("Tp1\\src\\main\\resources\\clientes.csv", "Cliente");
-            processCSV("Tp1\\src\\main\\resources\\productos.csv", "Producto");
-            processCSV("Tp1\\src\\main\\resources\\facturas.csv", "Factura");
-            processCSV("Tp1\\src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
-            //TODO conn.commit(); // Realiza el commit una vez que tdo ha sido procesado --> Ahora lo estamos haciendo en cada DAO
+            processCSV("src\\main\\resources\\clientes.csv", "Cliente");
+            processCSV("src\\main\\resources\\productos.csv", "Producto");
+            processCSV("src\\main\\resources\\facturas.csv", "Factura");
+            processCSV("src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
             System.out.println("Datos insertados correctamente");
         } catch (Exception e) {
             e.printStackTrace();
@@ -154,7 +153,7 @@ public class HelperMySQL {
         ClienteDAOImpl clienteDAO = new ClienteDAOImpl(this.conn);
 
         for(CSVRecord row : parser) {
-            if(row.size() >= 3) { // Verificar que hay al menos 3 campos en el CSVRecord
+            if(row.size() >= 3) {
                 String idString = row.get(0);
                 String nombre = row.get(1);
                 String email = row.get(2);
@@ -199,7 +198,7 @@ public class HelperMySQL {
     }
 
     private void processProductos(CSVParser parser) {
-        ProductoDAOImpl productoDAO = new ProductoDAOMySQL(this.conn);
+        ProductoDAOImplSQL productoDAO = new ProductoDAOImplMySQL(this.conn);
 
         for(CSVRecord row : parser) {
             if (row.size() >= 3) {

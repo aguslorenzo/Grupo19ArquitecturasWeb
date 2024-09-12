@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class ProductoDAOImpl implements ProductoDAO{
+public abstract class ProductoDAOImplSQL implements ProductoDAO{
     protected Connection conn;
 
     @Override
@@ -64,12 +64,12 @@ public abstract class ProductoDAOImpl implements ProductoDAO{
 
     @Override
     public void update(Producto producto) {
-
+        //TODO implementar luego si hace falta
     }
 
     @Override
     public void delete(Producto producto) {
-
+        //TODO implementar luego si hace falta
     }
 
     public abstract String obtenerProductoMasRecaudado();
