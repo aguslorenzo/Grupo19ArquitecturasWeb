@@ -90,7 +90,7 @@ public class ClienteDAOImpl implements ClienteDAO{
                         ") AS f " +
                         "ON c.idCliente = f.idCliente " +
                         "ORDER BY f.total_factura DESC";*/
-        String query = "SELECT c.idCliente, c.nombre, c.email, SUM(f.total_factura) AS total_facturado" +
+        String query = "SELECT c.idCliente, c.nombre, c.email, SUM(f.total_factura) AS total_facturado " +
         "FROM clientes c " +
         "JOIN ( " +
                 " SELECT f.idCliente, SUM(fp.cantidad * p.valor) AS total_factura " +
