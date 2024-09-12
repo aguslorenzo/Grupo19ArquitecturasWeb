@@ -18,7 +18,7 @@ public class DerbyDAOFactory extends AbstractFactory{
     public static final String URI = "jdbc:derby:MyDerbyDb; create=true";
     public static Connection conn;
 
-    public static synchronized DerbyDAOFactory getInstance(){ //DATO patron singleton
+    public static synchronized DerbyDAOFactory getInstance(){
         if(instance == null){
             instance = new DerbyDAOFactory();
         }

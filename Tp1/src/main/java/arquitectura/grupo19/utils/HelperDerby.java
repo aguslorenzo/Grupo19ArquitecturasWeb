@@ -45,8 +45,8 @@ public class HelperDerby {
     }
 
     public void dropTables() throws SQLException {
-        dropTable("facturas_productos"); // La factura-producto se debe eliminar antes que las tablas factura y producto
-        dropTable("facturas"); // La factura se debe eliminar antes que el cliente
+        dropTable("facturas_productos");
+        dropTable("facturas");
         dropTable("clientes");
         dropTable("productos");
         this.conn.commit();
@@ -157,7 +157,7 @@ public class HelperDerby {
         ClienteDAOImpl clienteDAO = new ClienteDAOImpl(this.conn);
 
         for(CSVRecord row : parser) {
-            if(row.size() >= 3) { // Verificar que hay al menos 3 campos en el CSVRecord
+            if(row.size() >= 3) {
                 String idString = row.get(0);
                 String nombre = row.get(1);
                 String email = row.get(2);
@@ -227,7 +227,7 @@ public class HelperDerby {
 
     }
 
-    private void processFacturasProductos(CSVParser parser) throws SQLException{
+    private void processFacturasProductos(CSVParser parser){
         FacturaProductoDAOImpl facturaProductoDAO = new FacturaProductoDAOImpl(this.conn);
 
         for(CSVRecord row : parser) {
@@ -266,9 +266,8 @@ public class HelperDerby {
     }
 
     private boolean tableExists(String tableName) throws SQLException {
-        DatabaseMetaData meta = conn.getMetaData(); // Obtiene metadata de la base de datos
+        DatabaseMetaData meta = conn.getMetaData();
         try (ResultSet resultSet = meta.getTables(null, null, tableName.toUpperCase(), null)) {
-            // Obtiene el resultado de la consulta al catalogo de la base de datos para la tabla especificada
             return resultSet.next(); // Si hay resultados, la tabla existe
         }
     }

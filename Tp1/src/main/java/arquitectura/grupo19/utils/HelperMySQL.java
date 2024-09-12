@@ -153,7 +153,7 @@ public class HelperMySQL {
         ClienteDAOImpl clienteDAO = new ClienteDAOImpl(this.conn);
 
         for(CSVRecord row : parser) {
-            if(row.size() >= 3) { // Verificar que hay al menos 3 campos en el CSVRecord
+            if(row.size() >= 3) {
                 String idString = row.get(0);
                 String nombre = row.get(1);
                 String email = row.get(2);

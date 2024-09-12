@@ -68,12 +68,12 @@ public class ClienteDAOImpl implements ClienteDAO{
 
     @Override
     public void update(Cliente cliente) {
-
+        //TODO implementar luego si hace falta
     }
 
     @Override
     public void delete(Cliente cliente) {
-
+        //TODO implementar luego si hace falta
     }
 
     public List<Cliente> obtenerFacturacionClientes() {

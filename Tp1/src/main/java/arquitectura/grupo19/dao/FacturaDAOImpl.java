@@ -67,11 +67,11 @@ public class FacturaDAOImpl implements FacturaDAO{
 
     @Override
     public void update(Factura factura) {
-
+        //TODO implementar luego si hace falta
     }
 
     @Override
     public void delete(Factura factura) {
-
+        //TODO implementar luego si hace falta
     }
 }
