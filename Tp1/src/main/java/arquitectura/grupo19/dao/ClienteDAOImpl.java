@@ -78,17 +78,6 @@ public class ClienteDAOImpl implements ClienteDAO{
 
     public List<Cliente> obtenerFacturacionClientes() {
         List<Cliente> clientes = new ArrayList<>();
-        /*String query = "SELECT c.idCliente, c.nombre, c.email, SUM(f.total_factura) AS total_facturado " +
-        "FROM clientes c " +
-        "JOIN ( " +
-                " SELECT f.idCliente, SUM(fp.cantidad * p.valor) AS total_factura " +
-                " FROM facturas f " +
-                " JOIN facturas_productos fp ON f.idFactura = fp.idFactura " +
-                " JOIN productos p ON fp.idProducto = p.idProducto " +
-                " GROUP BY f.idCliente " +
-        " ) AS f ON c.idCliente = f.idCliente " +
-        " GROUP BY c.idCliente, c.nombre, c.email " +
-        " ORDER BY total_facturado DESC";*/
          String query = "SELECT c.idCliente, c.nombre, c.email, SUM(p.valor * fp.cantidad) AS total_facturado " +
         "FROM clientes c JOIN facturas f ON c.idCliente = f.idCliente " +
         "JOIN facturas_productos fp ON f.idFactura = fp.idFactura "+
