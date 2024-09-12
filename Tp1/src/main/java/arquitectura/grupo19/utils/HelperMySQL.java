@@ -125,7 +125,6 @@ public class HelperMySQL {
             processCSV("src\\main\\resources\\productos.csv", "Producto");
             processCSV("src\\main\\resources\\facturas.csv", "Factura");
             processCSV("src\\main\\resources\\facturas-productos.csv", "FacturaProducto");
-            //TODO conn.commit(); // Realiza el commit una vez que tdo ha sido procesado --> Ahora lo estamos haciendo en cada DAO
             System.out.println("Datos insertados correctamente");
         } catch (Exception e) {
             e.printStackTrace();
