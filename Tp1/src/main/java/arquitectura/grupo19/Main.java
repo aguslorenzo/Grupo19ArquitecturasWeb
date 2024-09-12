@@ -2,7 +2,7 @@ package arquitectura.grupo19;
 
 import arquitectura.grupo19.dao.ProductoDAO;
 import arquitectura.grupo19.dao.ClienteDAO;
-import arquitectura.grupo19.dao.ProductoDAOImpl;
+import arquitectura.grupo19.dao.ProductoDAOImplSQL;
 import arquitectura.grupo19.entities.Cliente;
 import arquitectura.grupo19.factory.AbstractFactory;
 import arquitectura.grupo19.utils.HelperDerby;
@@ -14,7 +14,7 @@ public class Main {
     public static void main(String[] args) throws Exception{
 
         System.out.println("----------------inicio mysql-----------------");
-        /*
+
         HelperMySQL dbMySQL = new HelperMySQL();
         dbMySQL.dropTables();
         dbMySQL.createTables();
@@ -31,8 +31,6 @@ public class Main {
             System.out.println(c);
         }
 
-        */
-
         System.out.println("----------------inicio derby-----------------");
 
         HelperDerby dbDerby = new HelperDerby();
@@ -42,7 +40,7 @@ public class Main {
         dbDerby.closeConnection();
 
         AbstractFactory factoryDerby = AbstractFactory.getDAOFactory(2); //Derby
-        ProductoDAOImpl productDerby = factoryDerby.getProductoDAO();
+        ProductoDAOImplSQL productDerby = factoryDerby.getProductoDAO();
         System.out.println(productDerby.obtenerProductoMasRecaudado());
 
         ClienteDAO clienteDerby = factoryDerby.getClienteDAO();

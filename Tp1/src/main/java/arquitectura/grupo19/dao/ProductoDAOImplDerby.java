@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProductoDAODerby extends ProductoDAOImpl{
+public class ProductoDAOImplDerby extends ProductoDAOImplSQL {
 
-    public ProductoDAODerby(Connection conn){
+    public ProductoDAOImplDerby(Connection conn){
         this.conn=conn;
     }
 

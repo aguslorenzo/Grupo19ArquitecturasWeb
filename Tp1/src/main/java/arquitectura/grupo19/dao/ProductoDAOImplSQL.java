@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class ProductoDAOImpl implements ProductoDAO{
+public abstract class ProductoDAOImplSQL implements ProductoDAO{
     protected Connection conn;
 
     @Override
