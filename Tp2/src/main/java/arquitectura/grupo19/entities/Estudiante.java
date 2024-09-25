@@ -7,7 +7,7 @@ import java.util.List;
 public class Estudiante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int nroLibreta;
+    private long nroLibreta;
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
@@ -17,14 +17,14 @@ public class Estudiante {
     @Column(nullable = false)
     private String genero;
     @Column(nullable = false)
-    private int dni;
+    private String dni;
     @Column(nullable = false)
     private String ciudad;
     @OneToMany(mappedBy = "estudiante")
     private List<EstudianteCarrera> carreras;
     public Estudiante(){
     }
-    public Estudiante(String nombre, String apellido, int edad, String genero, int dni, String ciudad) {
+    public Estudiante(String nombre, String apellido, int edad, String genero, String dni, String ciudad) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
@@ -33,7 +33,7 @@ public class Estudiante {
         this.ciudad = ciudad;
     }
 
-    public int getNroLibreta() {
+    public long getNroLibreta() {
         return nroLibreta;
     }
 
@@ -69,11 +69,11 @@ public class Estudiante {
         this.genero = genero;
     }
 
-    public int getDni() {
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(int dni) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
 

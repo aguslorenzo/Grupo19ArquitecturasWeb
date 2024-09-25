@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class Carrera {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
@@ -19,7 +19,7 @@ public class Carrera {
         this.duracion = duracion;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
