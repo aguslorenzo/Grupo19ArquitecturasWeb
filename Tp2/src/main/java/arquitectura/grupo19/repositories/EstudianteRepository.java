@@ -5,10 +5,10 @@ import arquitectura.grupo19.entities.Estudiante;
 
 import javax.persistence.EntityManager;
 import java.sql.SQLException;
+import java.util.List;
 
-public class EstudianteRepository implements Repository<Estudiante> {
+public class EstudianteRepository implements EstudianteServices {
 
-	@Override
 	public Estudiante find(int id) {
 		EntityManager em = Db.open();
 		Estudiante e = em.find(Estudiante.class, id);
@@ -16,7 +16,6 @@ public class EstudianteRepository implements Repository<Estudiante> {
 		return e;
 	}
 
-	@Override
 	public void insert(Estudiante e){
 		EntityManager em = Db.open();
 		em.persist(e);
@@ -24,12 +23,10 @@ public class EstudianteRepository implements Repository<Estudiante> {
 		Db.close();
 	}
 
-	@Override
 	public void update(int id, Estudiante e) {
 
 	}
 
-	@Override
 	public void delete(int id) {
 		EntityManager em = Db.open();
 
@@ -41,7 +38,19 @@ public class EstudianteRepository implements Repository<Estudiante> {
 	        System.out.println("El estudiante con id " + id + " no existe.");
 	    }
 		
-
 		Db.close();
+	}
+
+	@Override
+	public List<Estudiante> obtenerEstudiantesPorGenero(String genero) {
+	    EntityManager em = Db.open();
+
+	    List<Estudiante> listado = em.createQuery(
+	            "SELECT e FROM Estudiante e WHERE e.genero = :genero", Estudiante.class)
+	            .setParameter("genero", genero)
+	            .getResultList();
+	    
+	    Db.close(); 
+	    return listado;
 	}
 }
