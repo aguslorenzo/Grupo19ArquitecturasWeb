@@ -10,8 +10,9 @@
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db-tp2?useSSL=false&amp;allowPublicKeyRetrieval=true"/>
             <property name="javax.persistence.jdbc.user" value="usuario"/>
             <property name="javax.persistence.jdbc.password" value="password"/>
+            
             <!--  Propiedad para la generacion automatica del esquema de base de datos  -->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
             <property name="show_sql" value="true"/>
         </properties>

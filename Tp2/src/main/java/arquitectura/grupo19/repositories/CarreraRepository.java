@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class CarreraRepository implements Repository<Carrera>{
 
     @Override
-    public Carrera find(long id) {
+    public Carrera find(int id) {
         EntityManager em = Db.open();
         Carrera c = em.find(Carrera.class, id);
         Db.close();
@@ -26,12 +26,23 @@ public class CarreraRepository implements Repository<Carrera>{
     }
 
     @Override
-    public void update(long id, Carrera obj) {
+    public void update(int id, Carrera obj) {
 
     }
 
     @Override
-    public void delete(long id) {
+	public void delete(int id) {
+		EntityManager em = Db.open();
 
-    }
+		Carrera c = em.find(Carrera.class, id);
+		if (c != null) {
+			em.remove(c);
+			em.getTransaction().commit();
+		} else {
+	        System.out.println("El estudiante con id " + id + " no existe.");
+	    }
+		
+
+		Db.close();
+	}
 }

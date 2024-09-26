@@ -3,8 +3,8 @@ package arquitectura.grupo19.repositories;
 import java.sql.SQLException;
 
 public interface Repository<T> {
-    T find(long id);
+    T find(int id);
     void insert(T obj) throws SQLException;
-    void update(long id, T obj);
-    void delete(long id);
+    void update(int id, T obj);
+    void delete(int id);
 }
