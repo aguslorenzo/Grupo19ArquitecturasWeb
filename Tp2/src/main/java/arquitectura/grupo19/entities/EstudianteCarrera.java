@@ -6,12 +6,12 @@ import javax.persistence.*;
 public class EstudianteCarrera {
     @Id
     @ManyToOne
-    @JoinColumn(name="idEstudiante",referencedColumnName = "nroLibreta")
+    @JoinColumn(name = "id_estudiante",referencedColumnName = "nroLibreta")
     private Estudiante estudiante;
 
     @Id
     @ManyToOne
-    @JoinColumn(name="idCarrera",referencedColumnName = "id")
+    @JoinColumn(name = "id_carrera",referencedColumnName = "id")
     private Carrera carrera;
     @Column(nullable = false)
     private int antiguedad;

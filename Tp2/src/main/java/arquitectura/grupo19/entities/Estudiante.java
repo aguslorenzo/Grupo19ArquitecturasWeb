@@ -7,7 +7,7 @@ import java.util.List;
 public class Estudiante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long nroLibreta;
+    private int nroLibreta;
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
@@ -33,7 +33,7 @@ public class Estudiante {
         this.ciudad = ciudad;
     }
 
-    public long getNroLibreta() {
+    public int getNroLibreta() {
         return nroLibreta;
     }
 

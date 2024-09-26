@@ -3,15 +3,15 @@ import java.io.Serializable;
 import java.util.Objects;
 //TODO wtf
 public class EstudianteCarreraId implements Serializable{
-    private int idEstudiante;  // Debe coincidir con los tipos y nombres de los campos en la entidad Inscripcion
-    private int idCarrera;
+    private int estudiante;
+    private int carrera;
 
     // Constructor vacío (obligatorio para JPA)
     public EstudianteCarreraId() {}
 
     public EstudianteCarreraId(int idEstudiante, int idCarrera) {
-        this.idEstudiante = idEstudiante;
-        this.idCarrera = idCarrera;
+        this.estudiante = idEstudiante;
+        this.carrera = idCarrera;
     }
 
     // Getters, Setters, equals() y hashCode() deben estar implementados
@@ -20,12 +20,12 @@ public class EstudianteCarreraId implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EstudianteCarreraId that = (EstudianteCarreraId) o;
-        return Objects.equals(idEstudiante, that.idEstudiante) &&
-                Objects.equals(idCarrera, that.idCarrera);
+        return Objects.equals(estudiante, that.estudiante) &&
+                Objects.equals(carrera, that.carrera);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEstudiante, idCarrera);
+        return Objects.hash(estudiante, carrera);
     }
 }

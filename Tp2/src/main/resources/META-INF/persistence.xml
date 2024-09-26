@@ -7,7 +7,7 @@
         <properties>
             <!--  Propiedades de configuracion de JDBC para MySQL / -->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db-tp2"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db-tp2?useSSL=false&amp;allowPublicKeyRetrieval=true"/>
             <property name="javax.persistence.jdbc.user" value="usuario"/>
             <property name="javax.persistence.jdbc.password" value="password"/>
             <!--  Propiedad para la generacion automatica del esquema de base de datos  -->

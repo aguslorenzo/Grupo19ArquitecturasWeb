@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class Carrera {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
