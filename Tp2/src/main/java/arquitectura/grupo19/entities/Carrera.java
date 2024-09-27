@@ -19,7 +19,7 @@ public class Carrera {
         this.duracion = duracion;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 

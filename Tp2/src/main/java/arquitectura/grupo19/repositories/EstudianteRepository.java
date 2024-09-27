@@ -2,9 +2,7 @@ package arquitectura.grupo19.repositories;
 
 import arquitectura.grupo19.db.Db;
 import arquitectura.grupo19.entities.Estudiante;
-
 import javax.persistence.EntityManager;
-import java.sql.SQLException;
 import java.util.List;
 
 public class EstudianteRepository implements EstudianteServices {
@@ -16,7 +14,7 @@ public class EstudianteRepository implements EstudianteServices {
 		return e;
 	}
 
-	public void insert(Estudiante e){
+	public void insert(Estudiante e) {
 		EntityManager em = Db.open();
 		em.persist(e);
 		em.getTransaction().commit();
@@ -35,22 +33,24 @@ public class EstudianteRepository implements EstudianteServices {
 			em.remove(e);
 			em.getTransaction().commit();
 		} else {
-	        System.out.println("El estudiante con id " + id + " no existe.");
-	    }
-		
+			System.out.println("El estudiante con id " + id + " no existe.");
+		}
+
 		Db.close();
 	}
 
 	@Override
 	public List<Estudiante> obtenerEstudiantesPorGenero(String genero) {
-	    EntityManager em = Db.open();
+		EntityManager em = Db.open();
 
-	    List<Estudiante> listado = em.createQuery(
-	            "SELECT e FROM Estudiante e WHERE e.genero = :genero", Estudiante.class)
-	            .setParameter("genero", genero)
-	            .getResultList();
-	    
-	    Db.close(); 
-	    return listado;
+		List<Estudiante> listado = em
+				.createQuery("SELECT e FROM Estudiante e WHERE e.genero = :genero", Estudiante.class)
+				.setParameter("genero", genero).getResultList();
+
+		Db.close();
+		return listado;
 	}
+
+
+
 }

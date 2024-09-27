@@ -9,4 +9,22 @@ public class EstudianteCarreraDTO {
     private int antiguedad;
     private boolean graduado;
     private int anioGraduacion;
+    
+	public Estudiante getEstudiante() {
+		return estudiante;
+	}
+	public Carrera getCarrera() {
+		return carrera;
+	}
+	public int getAntiguedad() {
+		return antiguedad;
+	}
+	public boolean isGraduado() {
+		return graduado;
+	}
+	public int getAnioGraduacion() {
+		return anioGraduacion;
+	}
+    
+    
 }

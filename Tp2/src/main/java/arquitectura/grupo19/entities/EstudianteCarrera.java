@@ -19,4 +19,57 @@ public class EstudianteCarrera {
     private boolean graduado;
     @Column
     private int anioGraduacion;
+    
+    public EstudianteCarrera() {
+    }
+    
+	public EstudianteCarrera(Estudiante estudiante, Carrera carrera, int antiguedad, boolean graduado,
+			int anioGraduacion) {
+		super();
+		this.estudiante = estudiante;
+		this.carrera = carrera;
+		this.antiguedad = antiguedad;
+		this.graduado = graduado;
+		this.anioGraduacion = anioGraduacion;
+	}
+
+	public int getAntiguedad() {
+		return antiguedad;
+	}
+
+	public void setAntiguedad(int antiguedad) {
+		this.antiguedad = antiguedad;
+	}
+
+	public boolean isGraduado() {
+		return graduado;
+	}
+
+	public void setGraduado(boolean graduado) {
+		this.graduado = graduado;
+	}
+
+	public int getAnioGraduacion() {
+		return anioGraduacion;
+	}
+
+	public void setAnioGraduacion(int anioGraduacion) {
+		this.anioGraduacion = anioGraduacion;
+	}
+
+	public Estudiante getEstudiante() {
+		return estudiante;
+	}
+
+	public Carrera getCarrera() {
+		return carrera;
+	}
+
+	@Override
+	public String toString() {
+		return "EstudianteCarrera [estudiante=" + estudiante + ", carrera=" + carrera + ", antiguedad=" + antiguedad
+				+ ", graduado=" + graduado + ", anioGraduacion=" + anioGraduacion + "]";
+	}
+    
+    
 }
