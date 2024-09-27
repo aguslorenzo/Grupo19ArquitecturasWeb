@@ -8,6 +8,8 @@ import arquitectura.grupo19.entities.Estudiante;
 import arquitectura.grupo19.entities.EstudianteCarrera;
 import arquitectura.grupo19.entities.EstudianteCarreraId;
 
+import java.util.List;
+
 public class EstudianteCarreraRepository  {
 
 
@@ -20,7 +22,7 @@ public class EstudianteCarreraRepository  {
 	}
 
 	
-	public void insert(EstudianteCarrera ec) {
+	public void insert(EstudianteCarrera ec) { //TODO revisar
 		Estudiante e = ec.getEstudiante();
 		Carrera c = ec.getCarrera();
 		
@@ -31,11 +33,21 @@ public class EstudianteCarreraRepository  {
 	}
 
 
-
-
 	public void delete(EstudianteCarreraId id) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public List<Carrera> getCarrerasConInscriptos(){
+		EntityManager em = Db.open();
+		List<Carrera> result = em
+				.createQuery("SELECT c FROM EstudianteCarrera ec " +
+						"JOIN ec.carrera c " +
+						"GROUP BY c " +
+						"HAVING COUNT(ec) > 0 " +
+						"ORDER BY COUNT(ec) DESC", Carrera.class)
+				.getResultList();
+		return result;
 	}
 
 }
