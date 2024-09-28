@@ -3,6 +3,7 @@ package arquitectura.grupo19.entities;
 import javax.persistence.*;
 
 @Entity
+@Table(name="carrera")
 public class Carrera {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

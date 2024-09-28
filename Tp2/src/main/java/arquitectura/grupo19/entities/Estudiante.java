@@ -4,9 +4,10 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "estudiante")
 public class Estudiante {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //TODO si da tiempo, cambiar nombre de la tabla a minuscula
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int nroLibreta;
     @Column(nullable = false)
     private String nombre;

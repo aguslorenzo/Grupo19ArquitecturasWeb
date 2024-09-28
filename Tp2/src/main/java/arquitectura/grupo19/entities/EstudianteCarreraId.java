@@ -1,7 +1,7 @@
 package arquitectura.grupo19.entities;
 import java.io.Serializable;
 import java.util.Objects;
-//TODO wtf
+
 public class EstudianteCarreraId implements Serializable{
     private int estudiante;
     private int carrera;
