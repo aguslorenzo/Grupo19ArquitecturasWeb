@@ -33,6 +33,14 @@ public class EstudianteCarrera {
 		this.anioGraduacion = anioGraduacion;
 	}
 
+	public EstudianteCarrera(Estudiante estudiante, Carrera carrera, int antiguedad, boolean graduado) {
+		super();
+		this.estudiante = estudiante;
+		this.carrera = carrera;
+		this.antiguedad = antiguedad;
+		this.graduado = graduado;
+	}
+
 	public int getAntiguedad() {
 		return antiguedad;
 	}
@@ -67,9 +75,12 @@ public class EstudianteCarrera {
 
 	@Override
 	public String toString() {
-		return "EstudianteCarrera [estudiante=" + estudiante + ", carrera=" + carrera + ", antiguedad=" + antiguedad
+		return "Carrera=" + carrera.getNombre() + ", antiguedad=" + antiguedad
 				+ ", graduado=" + graduado + ", anioGraduacion=" + anioGraduacion + "]";
 	}
-    
+//	public String toString2() {
+//		return "EstudianteCarrera [estudiante=" + estudiante + ", carrera=" + carrera + ", antiguedad=" + antiguedad
+//				+ ", graduado=" + graduado + ", anioGraduacion=" + anioGraduacion + "]";
+//	}
     
 }

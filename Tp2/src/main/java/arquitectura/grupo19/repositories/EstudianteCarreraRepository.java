@@ -21,6 +21,16 @@ public class EstudianteCarreraRepository  {
 		return ec;
 	}
 
+	public List<EstudianteCarrera> getCarrerasEstudiante(int idEstudiante){
+		EntityManager em = Db.open();
+		List<EstudianteCarrera> result = em
+				.createQuery("SELECT ec FROM EstudianteCarrera ec " +
+						"WHERE ec.estudiante.id = :idEstudiante", EstudianteCarrera.class)
+				.setParameter("idEstudiante",idEstudiante)
+				.getResultList();
+		return result;
+	}
+
 	
 	public void insert(EstudianteCarrera ec) { //TODO revisar
 		Estudiante e = ec.getEstudiante();
