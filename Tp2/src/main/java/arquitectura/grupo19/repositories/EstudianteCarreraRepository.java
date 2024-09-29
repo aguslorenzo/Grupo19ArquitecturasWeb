@@ -3,6 +3,7 @@ package arquitectura.grupo19.repositories;
 import javax.persistence.EntityManager;
 
 import arquitectura.grupo19.db.Db;
+import arquitectura.grupo19.dto.EstudianteCarreraDto;
 import arquitectura.grupo19.entities.Carrera;
 import arquitectura.grupo19.entities.Estudiante;
 import arquitectura.grupo19.entities.EstudianteCarrera;
@@ -56,6 +57,19 @@ public class EstudianteCarreraRepository  {
 						"GROUP BY c " +
 						"HAVING COUNT(ec) > 0 " +
 						"ORDER BY COUNT(ec) DESC", Carrera.class)
+				.getResultList();
+		return result;
+	}
+
+	public List<EstudianteCarreraDto> getCarrerasPorAnio(){
+		EntityManager em = Db.open();
+		List<EstudianteCarreraDto> result = em
+				.createQuery("SELECT new arquitectura.grupo19.dto.EstudianteCarreraDto(ec.carrera, ec.antiguedad," +
+						"       COUNT(ec)," +
+						"       SUM(CASE WHEN ec.graduado = true THEN 1 ELSE 0 END))" +
+						"FROM EstudianteCarrera ec " +
+						"GROUP BY ec.carrera, ec.antiguedad " +
+						"ORDER BY ec.carrera.nombre ASC, ec.antiguedad ASC", EstudianteCarreraDto.class)
 				.getResultList();
 		return result;
 	}

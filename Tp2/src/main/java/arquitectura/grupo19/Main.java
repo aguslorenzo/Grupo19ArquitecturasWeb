@@ -3,20 +3,16 @@ package arquitectura.grupo19;
 import java.util.List;
 
 import arquitectura.grupo19.dto.CarreraDto;
+import arquitectura.grupo19.dto.EstudianteCarreraDto;
 import arquitectura.grupo19.dto.EstudianteDto;
 import arquitectura.grupo19.entities.Carrera;
-import arquitectura.grupo19.entities.Estudiante;
-import arquitectura.grupo19.entities.EstudianteCarrera;
-import arquitectura.grupo19.entities.EstudianteCarreraId;
 import arquitectura.grupo19.repositories.CarreraRepository;
-import arquitectura.grupo19.repositories.EstudianteCarreraRepository;
-import arquitectura.grupo19.repositories.EstudianteRepository;
 import arquitectura.grupo19.services.CarreraService;
 import arquitectura.grupo19.services.EstudianteService;
 import arquitectura.grupo19.utils.Genero;
 
 
-public class Main { //TODO hacer diagrama de objetos
+public class Main {
     public static void main(String[] args) {
     	
     	//INSERTANDO CARRERAS
@@ -26,9 +22,6 @@ public class Main { //TODO hacer diagrama de objetos
         cr.insert(new Carrera("Ingenieria en sistemas", 6));
         cr.insert(new Carrera("Licenciatura en fisica", 6));
         cr.delete(2);
-
-        EstudianteRepository er = new EstudianteRepository();
-        EstudianteCarreraRepository ecr = new EstudianteCarreraRepository();
 
         EstudianteService estudianteService = new EstudianteService();
         CarreraService carreraService = new CarreraService();
@@ -86,6 +79,12 @@ public class Main { //TODO hacer diagrama de objetos
         else{
             System.out.println("No hay estudiantes para esa combinacion de carrera y ciudad");
         }
-   
+
+        //3- REPORTE DE CARRERAS
+        System.out.println("------------------------3---------------------------");
+        List<EstudianteCarreraDto> reporteCarreras = carreraService.getCarrerasPorAnio();
+        for (EstudianteCarreraDto c: reporteCarreras){
+            System.out.println(c);
+        }
     }
 }
