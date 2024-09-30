@@ -8,6 +8,7 @@ import arquitectura.grupo19.dto.EstudianteDto;
 import arquitectura.grupo19.entities.Carrera;
 import arquitectura.grupo19.repositories.CarreraRepository;
 import arquitectura.grupo19.services.CarreraService;
+import arquitectura.grupo19.services.EstudianteCarreraService;
 import arquitectura.grupo19.services.EstudianteService;
 import arquitectura.grupo19.utils.Genero;
 
@@ -25,6 +26,7 @@ public class Main {
 
         EstudianteService estudianteService = new EstudianteService();
         CarreraService carreraService = new CarreraService();
+        EstudianteCarreraService estudianteCarreraService= new EstudianteCarreraService();
 
         //A - INSERTANDO ESTUDIANTES - Listo
         estudianteService.insertarEstudiante(new EstudianteDto("Manuel", "Perez", 22, Genero.MASCULINO, 51125131, "La Plata"));
@@ -37,11 +39,14 @@ public class Main {
         estudianteService.insertarEstudiante(new EstudianteDto("Ramiro", "Lopez", 22, Genero.MASCULINO, 41111118 , "Azul"));
 
         //B - MATRICULANDO ESTUDIANTES - Listo
-        estudianteService.inscribirEstudianteCarrera(1,1);
-        estudianteService.inscribirEstudianteCarrera(2,3);
-        estudianteService.inscribirEstudianteCarrera(4,1);
-        estudianteService.inscribirEstudianteCarrera(5,1);
-        estudianteService.inscribirEstudianteCarrera(5,3);
+        estudianteService.inscribirEstudianteCarrera(1,1, 2010);
+        estudianteService.inscribirEstudianteCarrera(2,3, 2015);
+        estudianteService.inscribirEstudianteCarrera(4,1, 2015);
+        estudianteService.inscribirEstudianteCarrera(5,1, 2009);
+        estudianteService.inscribirEstudianteCarrera(5,3, 2020);
+        
+        //SERVICIO QUE ACTUALIZA DATOS SOBRE EL EGRESO DE UN ESTUDIANTE
+        estudianteCarreraService.egresarEstudiante(1, 1, 2020);
 
         //C - RECUPERAR TODOS LOS ESTUDIANTES ORDENADOS POR APELLIDO ASCENDENTEMENTE - Listo
         System.out.println("------------------------C---------------------------");
@@ -79,6 +84,10 @@ public class Main {
         else{
             System.out.println("No hay estudiantes para esa combinacion de carrera y ciudad");
         }
+        
+        
+       
+        
 
         //3- REPORTE DE CARRERAS
         System.out.println("------------------------3---------------------------");

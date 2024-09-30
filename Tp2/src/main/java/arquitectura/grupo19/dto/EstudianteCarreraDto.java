@@ -7,13 +7,16 @@ public class EstudianteCarreraDto {
 	private int anio;
 	private long cantInscriptos;
 	private long cantEgresados;
+	
 	public EstudianteCarreraDto(Carrera carrera, int anio, long cantInscriptos, long cantEgresados) {
-		this.carrera = carrera;
-		this.anio = anio;
-		this.cantInscriptos = cantInscriptos;
-		this.cantEgresados = cantEgresados;
+	    this.carrera = carrera;
+	    this.anio = anio;
+	    this.cantInscriptos = cantInscriptos;
+	    this.cantEgresados = cantEgresados;
 	}
 
+
+	
 	@Override
 	public String toString() {
 		return "EstudianteCarrera {" +

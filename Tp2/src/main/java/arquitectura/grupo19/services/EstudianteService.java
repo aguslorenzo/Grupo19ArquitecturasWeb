@@ -29,10 +29,10 @@ public class EstudianteService {
         estudianteRepository.insert(e);
     }
 
-    public void inscribirEstudianteCarrera(int idEstudiante, int idCarrera){
+    public void inscribirEstudianteCarrera(int idEstudiante, int idCarrera, int anioInscripcion){
         Estudiante estudiante = estudianteRepository.find(idEstudiante);
         Carrera carrera = carreraRepository.find(idCarrera);
-        estudianteCarreraRepository.insert(new EstudianteCarrera(estudiante,carrera,0,false));
+        estudianteCarreraRepository.insert(new EstudianteCarrera(estudiante,carrera,anioInscripcion,false));
     }
     public List<EstudianteDto> obtenerEstudiantesOrdenadosApellido(){
         List<Estudiante> estudiantes = estudianteRepository.obtenerEstudiantesOrdenadosApellido();

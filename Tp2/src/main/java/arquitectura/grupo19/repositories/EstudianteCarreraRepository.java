@@ -34,16 +34,20 @@ public class EstudianteCarreraRepository  {
 
 	
 	public void insert(EstudianteCarrera ec) { //TODO revisar
-		Estudiante e = ec.getEstudiante();
-		Carrera c = ec.getCarrera();
-		
 		EntityManager em = Db.open();
 		em.merge(ec);
 		em.getTransaction().commit();
 		Db.close();
 	}
 
-
+	public void update(EstudianteCarrera ec) {
+		EntityManager em = Db.open();
+		em.merge(ec);
+		em.getTransaction().commit();
+		Db.close();
+	}
+	
+	
 	public void delete(EstudianteCarreraId id) {
 		// TODO Auto-generated method stub
 
@@ -61,17 +65,18 @@ public class EstudianteCarreraRepository  {
 		return result;
 	}
 
-	public List<EstudianteCarreraDto> getCarrerasPorAnio(){
-		EntityManager em = Db.open();
-		List<EstudianteCarreraDto> result = em
-				.createQuery("SELECT new arquitectura.grupo19.dto.EstudianteCarreraDto(ec.carrera, ec.antiguedad," +
-						"       COUNT(ec)," +
-						"       SUM(CASE WHEN ec.graduado = true THEN 1 ELSE 0 END))" +
-						"FROM EstudianteCarrera ec " +
-						"GROUP BY ec.carrera, ec.antiguedad " +
-						"ORDER BY ec.carrera.nombre ASC, ec.antiguedad ASC", EstudianteCarreraDto.class)
-				.getResultList();
-		return result;
+	public List<EstudianteCarreraDto> getCarrerasPorAnio() {
+	    EntityManager em = Db.open();
+	    List<EstudianteCarreraDto> result = em
+	            .createQuery("SELECT new arquitectura.grupo19.dto.EstudianteCarreraDto(ec.carrera, MIN(ec.antiguedad)," +
+	                    " COUNT(ec), " +
+	                    " SUM(CASE WHEN ec.graduado = true THEN 1 ELSE 0 END)) " +
+	                    " FROM EstudianteCarrera ec " +
+	                    " GROUP BY ec.carrera " +
+	                    " ORDER BY ec.carrera.nombre ASC", EstudianteCarreraDto.class)
+	            .getResultList();
+	    return result;
 	}
+
 
 }
