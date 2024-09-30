@@ -33,9 +33,9 @@ public class EstudianteCarreraRepository  {
 	}
 
 	
-	public void insert(EstudianteCarrera ec) { //TODO revisar
+	public void insert(EstudianteCarrera ec) {
 		EntityManager em = Db.open();
-		em.merge(ec);
+		em.persist(ec);
 		em.getTransaction().commit();
 		Db.close();
 	}

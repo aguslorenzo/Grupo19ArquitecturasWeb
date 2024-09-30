@@ -34,6 +34,17 @@ public class EstudianteService {
         Carrera carrera = carreraRepository.find(idCarrera);
         estudianteCarreraRepository.insert(new EstudianteCarrera(estudiante,carrera,anioInscripcion,false));
     }
+
+    public void egresarEstudiante(int idEstudiante, int idCarrera, int anio) {
+        Estudiante e = estudianteRepository.find(idEstudiante);
+        Carrera c = carreraRepository.find(idCarrera);
+        EstudianteCarrera ec = estudianteCarreraRepository.find(e, c);
+
+        ec.setGraduado(true);
+        ec.setAnioGraduacion(anio);
+        estudianteCarreraRepository.update(ec);
+    }
+
     public List<EstudianteDto> obtenerEstudiantesOrdenadosApellido(){
         List<Estudiante> estudiantes = estudianteRepository.obtenerEstudiantesOrdenadosApellido();
         List<EstudianteDto> resultado = new ArrayList<>();

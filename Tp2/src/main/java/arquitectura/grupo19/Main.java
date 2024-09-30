@@ -8,7 +8,6 @@ import arquitectura.grupo19.dto.EstudianteDto;
 import arquitectura.grupo19.entities.Carrera;
 import arquitectura.grupo19.repositories.CarreraRepository;
 import arquitectura.grupo19.services.CarreraService;
-import arquitectura.grupo19.services.EstudianteCarreraService;
 import arquitectura.grupo19.services.EstudianteService;
 import arquitectura.grupo19.utils.Genero;
 
@@ -26,7 +25,6 @@ public class Main {
 
         EstudianteService estudianteService = new EstudianteService();
         CarreraService carreraService = new CarreraService();
-        EstudianteCarreraService estudianteCarreraService= new EstudianteCarreraService();
 
         //A - INSERTANDO ESTUDIANTES - Listo
         estudianteService.insertarEstudiante(new EstudianteDto("Manuel", "Perez", 22, Genero.MASCULINO, 51125131, "La Plata"));
@@ -46,7 +44,7 @@ public class Main {
         estudianteService.inscribirEstudianteCarrera(5,3, 2020);
         
         //SERVICIO QUE ACTUALIZA DATOS SOBRE EL EGRESO DE UN ESTUDIANTE
-        estudianteCarreraService.egresarEstudiante(1, 1, 2020);
+        estudianteService.egresarEstudiante(1, 1, 2020);
 
         //C - RECUPERAR TODOS LOS ESTUDIANTES ORDENADOS POR APELLIDO ASCENDENTEMENTE - Listo
         System.out.println("------------------------C---------------------------");
