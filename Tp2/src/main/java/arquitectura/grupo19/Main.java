@@ -78,9 +78,9 @@ public class Main {
             System.out.println(c);
         }
 
-        //G- RECUPERAR LOS ESTUDIANTES DE UNA CARRERA FILTRADO POR CIUDAD - Listo:qq
+        //G- RECUPERAR LOS ESTUDIANTES DE UNA CARRERA FILTRADO POR CIUDAD - Listo
         System.out.println("------------------------G---------------------------");
-        List<EstudianteDto> estudiantes3 = estudianteService.obtenerEstudiantesPorCarreraFiltrados("Tudai","Tandil");
+        List<EstudianteDto> estudiantes3 = estudianteService.obtenerEstudiantesPorCarreraFiltrados("Tuari","Tandil");
         if (estudiantes3!=null){
             for (EstudianteDto e : estudiantes3) {
                 System.out.println(e);
