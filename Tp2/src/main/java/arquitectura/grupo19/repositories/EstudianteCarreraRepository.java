@@ -35,7 +35,7 @@ public class EstudianteCarreraRepository  {
 	
 	public void insert(EstudianteCarrera ec) {
 		EntityManager em = Db.open();
-		em.persist(ec);
+		em.merge(ec);
 		em.getTransaction().commit();
 		Db.close();
 	}
@@ -68,7 +68,7 @@ public class EstudianteCarreraRepository  {
 	public List<EstudianteCarreraDto> getCarrerasPorAnio() {
 	    EntityManager em = Db.open();
 	    List<EstudianteCarreraDto> result = em
-	            .createQuery("SELECT new arquitectura.grupo19.dto.EstudianteCarreraDto(ec.carrera, MIN(ec.antiguedad)," +
+	            .createQuery("SELECT new arquitectura.grupo19.dto.EstudianteCarreraDto(ec.carrera, MIN(ec.anioInscripcion)," +
 	                    " COUNT(ec), " +
 	                    " SUM(CASE WHEN ec.graduado = true THEN 1 ELSE 0 END)) " +
 	                    " FROM EstudianteCarrera ec " +

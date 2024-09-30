@@ -14,7 +14,7 @@ public class EstudianteCarrera {
     @JoinColumn(name = "id_carrera",referencedColumnName = "id")
     private Carrera carrera;
     @Column(nullable = false)
-    private int antiguedad;
+    private int anioInscripcion;
     @Column(nullable = false)
     private boolean graduado;
     @Column
@@ -23,30 +23,30 @@ public class EstudianteCarrera {
     public EstudianteCarrera() {
     }
     
-	public EstudianteCarrera(Estudiante estudiante, Carrera carrera, int antiguedad, boolean graduado,
+	public EstudianteCarrera(Estudiante estudiante, Carrera carrera, int anioInscripcion, boolean graduado,
 			int anioGraduacion) {
 		super();
 		this.estudiante = estudiante;
 		this.carrera = carrera;
-		this.antiguedad = antiguedad;
+		this.anioInscripcion = anioInscripcion;
 		this.graduado = graduado;
 		this.anioGraduacion = anioGraduacion;
 	}
 
-	public EstudianteCarrera(Estudiante estudiante, Carrera carrera, int antiguedad, boolean graduado) {
+	public EstudianteCarrera(Estudiante estudiante, Carrera carrera, int anioInscripcion, boolean graduado) {
 		super();
 		this.estudiante = estudiante;
 		this.carrera = carrera;
-		this.antiguedad = antiguedad;
+		this.anioInscripcion = anioInscripcion;
 		this.graduado = graduado;
 	}
 
-	public int getAntiguedad() {
-		return antiguedad;
+	public int getAnioInscripcion() {
+		return anioInscripcion;
 	}
 
-	public void setAntiguedad(int antiguedad) {
-		this.antiguedad = antiguedad;
+	public void setAnioInscripcion(int anioInscripcion) {
+		this.anioInscripcion = anioInscripcion;
 	}
 
 	public boolean isGraduado() {
@@ -75,12 +75,8 @@ public class EstudianteCarrera {
 
 	@Override
 	public String toString() {
-		return "Carrera=" + carrera.getNombre() + ", antiguedad=" + antiguedad
+		return "Carrera=" + carrera.getNombre() + ", anioInscripcion=" + anioInscripcion
 				+ ", graduado=" + graduado + ", anioGraduacion=" + anioGraduacion + "]";
 	}
-//	public String toString2() {
-//		return "EstudianteCarrera [estudiante=" + estudiante + ", carrera=" + carrera + ", antiguedad=" + antiguedad
-//				+ ", graduado=" + graduado + ", anioGraduacion=" + anioGraduacion + "]";
-//	}
     
 }
