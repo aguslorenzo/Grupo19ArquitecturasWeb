@@ -40,11 +40,11 @@ public class Main {
         estudianteService.inscribirEstudianteCarrera(2,3, 2015);
         estudianteService.inscribirEstudianteCarrera(3,4, 2021);
         estudianteService.inscribirEstudianteCarrera(4,2, 2015);
-        estudianteService.inscribirEstudianteCarrera(5,1, 2009);
+        estudianteService.inscribirEstudianteCarrera(5,1, 2010);
         estudianteService.inscribirEstudianteCarrera(5,3, 2020);
         estudianteService.inscribirEstudianteCarrera(6,4, 2021);
-        estudianteService.inscribirEstudianteCarrera(7,2, 2020);
-        estudianteService.inscribirEstudianteCarrera(8,2, 2023);
+        estudianteService.inscribirEstudianteCarrera(7,2, 2015);
+        estudianteService.inscribirEstudianteCarrera(8,2, 2015);
         estudianteService.inscribirEstudianteCarrera(8,1, 2021);
 
         

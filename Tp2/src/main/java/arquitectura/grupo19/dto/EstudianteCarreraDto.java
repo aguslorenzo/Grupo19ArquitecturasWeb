@@ -15,8 +15,38 @@ public class EstudianteCarreraDto {
 	    this.cantEgresados = cantEgresados;
 	}
 
+	public Carrera getCarrera() {
+		return carrera;
+	}
 
-	
+	public int getAnio() {
+		return anio;
+	}
+
+	public long getCantInscriptos() {
+		return cantInscriptos;
+	}
+
+	public long getCantEgresados() {
+		return cantEgresados;
+	}
+
+	public void setCarrera(Carrera carrera) {
+		this.carrera = carrera;
+	}
+
+	public void setAnio(int anio) {
+		this.anio = anio;
+	}
+
+	public void setCantInscriptos(long cantInscriptos) {
+		this.cantInscriptos = cantInscriptos;
+	}
+
+	public void setCantEgresados(long cantEgresados) {
+		this.cantEgresados = cantEgresados;
+	}
+
 	@Override
 	public String toString() {
 		return "EstudianteCarrera {" +
