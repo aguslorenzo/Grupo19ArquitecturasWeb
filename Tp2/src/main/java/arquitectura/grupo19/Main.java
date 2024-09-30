@@ -21,30 +21,37 @@ public class Main {
         cr.insert(new Carrera("Tuari", 2));
         cr.insert(new Carrera("Ingenieria en sistemas", 6));
         cr.insert(new Carrera("Licenciatura en fisica", 6));
-        cr.delete(2);
 
         EstudianteService estudianteService = new EstudianteService();
         CarreraService carreraService = new CarreraService();
 
         //A - INSERTANDO ESTUDIANTES - Listo
         estudianteService.insertarEstudiante(new EstudianteDto("Manuel", "Perez", 22, Genero.MASCULINO, 51125131, "La Plata"));
-        estudianteService.insertarEstudiante(new EstudianteDto("Manuela", "Perez", 22, Genero.FEMENINO, 31719112 , "Mar del Plata"));
-        estudianteService.insertarEstudiante(new EstudianteDto("Jorge", "Perez", 22, Genero.MASCULINO, 44111513 , "Tandil"));
-        estudianteService.insertarEstudiante(new EstudianteDto("Veronica", "Perez", 22, Genero.FEMENINO, 46111114 , "Tandil"));
-        estudianteService.insertarEstudiante(new EstudianteDto("Romina", "Jolie", 22, Genero.FEMENINO, 31311615 , "Lujan"));
-        estudianteService.insertarEstudiante(new EstudianteDto("Gaston", "Rodriguez", 22, Genero.MASCULINO, 47157116 , "Balcarce"));
-        estudianteService.insertarEstudiante(new EstudianteDto("Pablo", "Disalvo", 22, Genero.MASCULINO, 51614117 , "Pergamino"));
-        estudianteService.insertarEstudiante(new EstudianteDto("Ramiro", "Lopez", 22, Genero.MASCULINO, 41111118 , "Azul"));
+        estudianteService.insertarEstudiante(new EstudianteDto("Manuela", "Perez", 37, Genero.FEMENINO, 31719112 , "Mar del Plata"));
+        estudianteService.insertarEstudiante(new EstudianteDto("Jorge", "Perez", 23, Genero.MASCULINO, 44111513 , "Tandil"));
+        estudianteService.insertarEstudiante(new EstudianteDto("Veronica", "Perez", 21, Genero.FEMENINO, 46111114 , "Tandil"));
+        estudianteService.insertarEstudiante(new EstudianteDto("Romina", "Jolie", 37, Genero.FEMENINO, 31311615 , "Lujan"));
+        estudianteService.insertarEstudiante(new EstudianteDto("Gaston", "Rodriguez", 23, Genero.MASCULINO, 47157116 , "Balcarce"));
+        estudianteService.insertarEstudiante(new EstudianteDto("Pablo", "Disalvo", 19, Genero.MASCULINO, 51614117 , "Pergamino"));
+        estudianteService.insertarEstudiante(new EstudianteDto("Ramiro", "Lopez", 27, Genero.MASCULINO, 41111118 , "Azul"));
 
         //B - MATRICULANDO ESTUDIANTES - Listo
         estudianteService.inscribirEstudianteCarrera(1,1, 2010);
         estudianteService.inscribirEstudianteCarrera(2,3, 2015);
-        estudianteService.inscribirEstudianteCarrera(4,1, 2015);
+        estudianteService.inscribirEstudianteCarrera(3,4, 2021);
+        estudianteService.inscribirEstudianteCarrera(4,2, 2015);
         estudianteService.inscribirEstudianteCarrera(5,1, 2009);
         estudianteService.inscribirEstudianteCarrera(5,3, 2020);
+        estudianteService.inscribirEstudianteCarrera(6,4, 2021);
+        estudianteService.inscribirEstudianteCarrera(7,2, 2020);
+        estudianteService.inscribirEstudianteCarrera(8,2, 2023);
+        estudianteService.inscribirEstudianteCarrera(8,1, 2021);
+
         
         //SERVICIO QUE ACTUALIZA DATOS SOBRE EL EGRESO DE UN ESTUDIANTE
-        estudianteService.egresarEstudiante(1, 1, 2020);
+        estudianteService.egresarEstudiante(5, 1, 2016);
+        estudianteService.egresarEstudiante(8, 1, 2023);
+        estudianteService.egresarEstudiante(2, 3, 2021);
 
         //C - RECUPERAR TODOS LOS ESTUDIANTES ORDENADOS POR APELLIDO ASCENDENTEMENTE - Listo
         System.out.println("------------------------C---------------------------");

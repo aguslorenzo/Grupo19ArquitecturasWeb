@@ -17,6 +17,7 @@ public class EstudianteRepository implements Repository<Estudiante> {
 
 	public void insert(Estudiante e) {
 		EntityManager em = Db.open();
+		em.getTransaction().begin();
 		em.persist(e);
 		em.getTransaction().commit();
 		Db.close();
@@ -28,9 +29,9 @@ public class EstudianteRepository implements Repository<Estudiante> {
 
 	public void delete(int id) {
 		EntityManager em = Db.open();
-
 		Estudiante e = em.find(Estudiante.class, id);
 		if (e != null) {
+			em.getTransaction().begin();
 			em.remove(e);
 			em.getTransaction().commit();
 		} else {

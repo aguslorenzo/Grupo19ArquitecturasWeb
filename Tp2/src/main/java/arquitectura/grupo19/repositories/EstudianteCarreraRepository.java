@@ -29,19 +29,23 @@ public class EstudianteCarreraRepository  {
 						"WHERE ec.estudiante.id = :idEstudiante", EstudianteCarrera.class)
 				.setParameter("idEstudiante",idEstudiante)
 				.getResultList();
+		Db.close();
 		return result;
 	}
 
 	
 	public void insert(EstudianteCarrera ec) {
 		EntityManager em = Db.open();
+		em.getTransaction().begin();
 		em.merge(ec);
 		em.getTransaction().commit();
 		Db.close();
+
 	}
 
 	public void update(EstudianteCarrera ec) {
 		EntityManager em = Db.open();
+		em.getTransaction().begin();
 		em.merge(ec);
 		em.getTransaction().commit();
 		Db.close();
@@ -62,6 +66,7 @@ public class EstudianteCarreraRepository  {
 						"HAVING COUNT(ec) > 0 " +
 						"ORDER BY COUNT(ec) DESC", Carrera.class)
 				.getResultList();
+		Db.close();
 		return result;
 	}
 
@@ -75,6 +80,7 @@ public class EstudianteCarreraRepository  {
 	                    " GROUP BY ec.carrera " +
 	                    " ORDER BY ec.carrera.nombre ASC", EstudianteCarreraDto.class)
 	            .getResultList();
+		Db.close();
 	    return result;
 	}
 

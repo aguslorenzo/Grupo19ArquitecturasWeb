@@ -12,16 +12,16 @@ public class Db {
     private Db(){
     }
 
-    public static EntityManager open(){
+    public static EntityManager open() {
         if (em == null || !em.isOpen()) {
             em = emf.createEntityManager();
-            em.getTransaction().begin();
         }
         return em;
-
     }
 
-    public static void close(){
-        em.close();
+    public static void close() {
+        if (em != null && em.isOpen()) {
+            em.close();
+        }
     }
 }
