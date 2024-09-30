@@ -13,6 +13,7 @@ public class EstudianteCarrera {
     @ManyToOne
     @JoinColumn(name = "id_carrera",referencedColumnName = "id")
     private Carrera carrera;
+
     @Column(nullable = false)
     private int anioInscripcion;
     @Column(nullable = false)

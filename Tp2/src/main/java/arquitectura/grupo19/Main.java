@@ -89,10 +89,7 @@ public class Main {
         else{
             System.out.println("No hay estudiantes para esa combinacion de carrera y ciudad");
         }
-        
-        
-       
-        
+
 
         //3- REPORTE DE CARRERAS
         System.out.println("------------------------3---------------------------");

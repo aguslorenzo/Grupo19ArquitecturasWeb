@@ -35,12 +35,13 @@ public class CarreraRepository implements Repository<Carrera>{
 
 		Carrera c = em.find(Carrera.class, id);
 		if (c != null) {
-            em.getTransaction().begin();
 			em.remove(c);
 			em.getTransaction().commit();
 		} else {
 	        System.out.println("El estudiante con id " + id + " no existe.");
 	    }
+
+
 		Db.close();
 	}
 }

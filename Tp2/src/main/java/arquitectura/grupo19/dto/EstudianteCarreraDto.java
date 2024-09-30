@@ -7,7 +7,7 @@ public class EstudianteCarreraDto {
 	private int anio;
 	private long cantInscriptos;
 	private long cantEgresados;
-	
+
 	public EstudianteCarreraDto(Carrera carrera, int anio, long cantInscriptos, long cantEgresados) {
 	    this.carrera = carrera;
 	    this.anio = anio;
@@ -50,7 +50,7 @@ public class EstudianteCarreraDto {
 	@Override
 	public String toString() {
 		return "EstudianteCarrera {" +
-				"carrera=" + carrera +
+				"carrera=" + carrera.getNombre() +
 				", anio=" + anio +
 				", cantInscriptos=" + cantInscriptos +
 				", cantEgresados=" + cantEgresados +

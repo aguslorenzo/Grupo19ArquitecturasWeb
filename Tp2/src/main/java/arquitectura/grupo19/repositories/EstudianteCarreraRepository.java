@@ -1,6 +1,7 @@
 package arquitectura.grupo19.repositories;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import arquitectura.grupo19.db.Db;
 import arquitectura.grupo19.dto.EstudianteCarreraDto;
@@ -9,8 +10,7 @@ import arquitectura.grupo19.entities.Estudiante;
 import arquitectura.grupo19.entities.EstudianteCarrera;
 import arquitectura.grupo19.entities.EstudianteCarreraId;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class EstudianteCarreraRepository  {
 
@@ -34,10 +34,11 @@ public class EstudianteCarreraRepository  {
 		return result;
 	}
 
-	
+
 	public void insert(EstudianteCarrera ec) {
 		EntityManager em = Db.open();
 		em.getTransaction().begin();
+		//TODO merge
 		em.merge(ec);
 		em.getTransaction().commit();
 		Db.close();
@@ -51,8 +52,8 @@ public class EstudianteCarreraRepository  {
 		em.getTransaction().commit();
 		Db.close();
 	}
-	
-	
+
+
 	public void delete(EstudianteCarreraId id) {
 		// TODO Auto-generated method stub
 
@@ -71,24 +72,7 @@ public class EstudianteCarreraRepository  {
 		return result;
 	}
 
-
 	/*public List<EstudianteCarreraDto> getCarrerasPorAnio() {
-		EntityManager em = Db.open();
-
-		List<EstudianteCarreraDto> result = em.createQuery(
-						"SELECT new arquitectura.grupo19.dto.EstudianteCarreraDto(ec.carrera, ec.anioInscripcion, " +
-								"COUNT(ec), " +
-								"SUM(CASE WHEN ec.graduado = true AND ec.anioGraduacion IS NOT NULL THEN 1 ELSE 0 END)) " +
-								"FROM EstudianteCarrera ec " +
-								"GROUP BY ec.carrera, ec.anioInscripcion " +
-								"ORDER BY ec.carrera.nombre ASC, ec.anioInscripcion ASC", EstudianteCarreraDto.class)
-				.getResultList();
-
-		Db.close();
-		return result;
-	}*/
-
-	public List<EstudianteCarreraDto> getCarrerasPorAnio() {
 		EntityManager em = Db.open();
 		List<Carrera> carreras = em.createQuery("SELECT c FROM Carrera c ORDER BY c.nombre ASC", Carrera.class)
 				.getResultList();
@@ -115,6 +99,47 @@ public class EstudianteCarreraRepository  {
 
 				EstudianteCarreraDto dto = new EstudianteCarreraDto(carrera, anio, cantInscriptos, cantEgresados);
 				result.add(dto);
+			}
+		}
+
+		Db.close();
+		return result;
+	}*/
+
+	public List<EstudianteCarreraDto> getCarrerasPorAnio() {
+		EntityManager em = Db.open();
+
+		List<Carrera> carreras = em.createQuery("SELECT c FROM Carrera c ORDER BY c.nombre ASC", Carrera.class)
+				.getResultList();
+
+		List<EstudianteCarreraDto> result = new ArrayList<>();
+
+		// Obtener los años de inscripción y graduación únicos
+		List<Integer> aniosInscripcion = em.createQuery(
+						"SELECT DISTINCT ec.anioInscripcion FROM EstudianteCarrera ec WHERE ec.anioInscripcion IS NOT NULL", Integer.class)
+				.getResultList();
+		List<Integer> aniosGraduacion = em.createQuery(
+						"SELECT DISTINCT ec.anioGraduacion FROM EstudianteCarrera ec WHERE ec.anioGraduacion IS NOT NULL AND ec.anioGraduacion > 0", Integer.class)
+				.getResultList();
+
+		// Combinar y eliminar duplicados
+		Set<Integer> aniosUnicos = new HashSet<>();
+		aniosUnicos.addAll(aniosInscripcion);
+		aniosUnicos.addAll(aniosGraduacion);
+
+		// Convertir el conjunto a lista y ordenarla
+		List<Integer> anios = new ArrayList<>(aniosUnicos);
+		Collections.sort(anios);
+
+		for (Carrera carrera : carreras) {
+			for (Integer anio : anios) {
+				long cantInscriptos = countInscriptosByCarreraAndAnio(carrera, anio);
+				long cantEgresados = countEgresadosByCarreraAndAnio(carrera, anio);
+
+				if(cantInscriptos != 0 || cantEgresados != 0){
+					EstudianteCarreraDto dto = new EstudianteCarreraDto(carrera, anio, cantInscriptos, cantEgresados);
+					result.add(dto);
+				}
 			}
 		}
 
