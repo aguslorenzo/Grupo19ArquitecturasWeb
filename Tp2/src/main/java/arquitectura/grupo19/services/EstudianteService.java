@@ -1,9 +1,11 @@
 package arquitectura.grupo19.services;
 
+import arquitectura.grupo19.dto.EstudianteCarreraDto;
 import arquitectura.grupo19.dto.EstudianteDto;
 import arquitectura.grupo19.entities.Carrera;
 import arquitectura.grupo19.entities.Estudiante;
 import arquitectura.grupo19.entities.EstudianteCarrera;
+import arquitectura.grupo19.entities.EstudianteCarreraId;
 import arquitectura.grupo19.repositories.CarreraRepository;
 import arquitectura.grupo19.repositories.EstudianteCarreraRepository;
 import arquitectura.grupo19.repositories.EstudianteRepository;
@@ -29,37 +31,42 @@ public class EstudianteService {
         estudianteRepository.insert(e);
     }
 
-    /*public void inscribirEstudianteCarrera(int idEstudiante, int idCarrera, int anioInscripcion){
-        Estudiante estudiante = estudianteRepository.find(idEstudiante);
-        Carrera carrera = carreraRepository.find(idCarrera);
-        estudianteCarreraRepository.insert(new EstudianteCarrera(estudiante,carrera,anioInscripcion,false));
-    }*/
-
     public void inscribirEstudianteCarrera(int idEstudiante, int idCarrera, int anioInscripcion) {
-        // Cargar la entidad Estudiante y Carrera en la misma sesión
         Estudiante estudiante = estudianteRepository.find(idEstudiante);
         Carrera carrera = carreraRepository.find(idCarrera);
 
-        // Verificar que las entidades no sean nulas
+        // Verificamos que las entidades no sean nulas
         if (estudiante == null || carrera == null) {
             throw new IllegalArgumentException("Estudiante o Carrera no encontrados");
         }
 
-        // Crear la entidad EstudianteCarrera
-        EstudianteCarrera ec = new EstudianteCarrera(estudiante, carrera, anioInscripcion, false);
+        // Verificamos si el estudiante ya está inscrito en la carrera
+        EstudianteCarreraId ecId = new EstudianteCarreraId(idEstudiante, idCarrera);
+        EstudianteCarrera existsEc = estudianteCarreraRepository.find(ecId);
+        if (existsEc != null) {
+            throw new IllegalStateException("El estudiante ya está inscrito en la carrera.");
+        }
 
-        // Insertar la entidad EstudianteCarrera usando el repositorio
+        // Creamos la entidad EstudianteCarrera y la persistimos
+        EstudianteCarrera ec = new EstudianteCarrera(estudiante, carrera, anioInscripcion, false);
         estudianteCarreraRepository.insert(ec);
     }
 
-    public void egresarEstudiante(int idEstudiante, int idCarrera, int anio) {
-        Estudiante e = estudianteRepository.find(idEstudiante);
-        Carrera c = carreraRepository.find(idCarrera);
-        EstudianteCarrera ec = estudianteCarreraRepository.find(e, c);
 
-        ec.setGraduado(true);
-        ec.setAnioGraduacion(anio);
-        estudianteCarreraRepository.update(ec);
+    public void egresarEstudiante(int idEstudiante, int idCarrera, int anio) {
+        EstudianteCarreraId ecId = new EstudianteCarreraId(idEstudiante, idCarrera);
+        EstudianteCarrera ec = estudianteCarreraRepository.find(ecId);
+
+        if (ec != null) {
+            // Si existe, actualizamos los datos del estudiante
+            ec.setGraduado(true);
+            ec.setAnioGraduacion(anio);
+            estudianteCarreraRepository.update(ecId, ec);
+
+        } else {
+            // Si no existe, lanzamos una excepción
+            System.out.println("No se encontró el estudiante con el ID o carrera especificados.");
+        }
     }
 
     public List<EstudianteDto> obtenerEstudiantesOrdenadosApellido(){

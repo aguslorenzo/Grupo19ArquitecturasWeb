@@ -5,10 +5,10 @@ import arquitectura.grupo19.entities.Carrera;
 
 import javax.persistence.EntityManager;
 
-public class CarreraRepository implements Repository<Carrera>{
+public class CarreraRepository implements Repository<Carrera, Integer>{
 
     @Override
-    public Carrera find(int id) {
+    public Carrera find(Integer id) {
         EntityManager em = Db.open();
         Carrera c = em.find(Carrera.class, id);
         Db.close();
@@ -25,12 +25,12 @@ public class CarreraRepository implements Repository<Carrera>{
     }
 
     @Override
-    public void update(int id, Carrera obj) {
+    public void update(Integer id, Carrera obj) {
 
     }
 
     @Override
-	public void delete(int id) {
+	public void delete(Integer id) {
 		EntityManager em = Db.open();
 
 		Carrera c = em.find(Carrera.class, id);

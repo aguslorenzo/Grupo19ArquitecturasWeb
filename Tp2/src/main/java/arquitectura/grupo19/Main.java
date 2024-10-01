@@ -11,7 +11,6 @@ import arquitectura.grupo19.services.CarreraService;
 import arquitectura.grupo19.services.EstudianteService;
 import arquitectura.grupo19.utils.Genero;
 
-
 public class Main {
     public static void main(String[] args) {
     	
@@ -34,6 +33,7 @@ public class Main {
         estudianteService.insertarEstudiante(new EstudianteDto("Gaston", "Rodriguez", 23, Genero.MASCULINO, 47157116 , "Balcarce"));
         estudianteService.insertarEstudiante(new EstudianteDto("Pablo", "Disalvo", 19, Genero.MASCULINO, 51614117 , "Pergamino"));
         estudianteService.insertarEstudiante(new EstudianteDto("Ramiro", "Lopez", 27, Genero.MASCULINO, 41111118 , "Azul"));
+        estudianteService.insertarEstudiante(new EstudianteDto("Maria", "Gonzalez", 25, Genero.FEMENINO, 40482951 , "Tandil"));
 
         //B - MATRICULANDO ESTUDIANTES
         estudianteService.inscribirEstudianteCarrera(1,1, 2010);
@@ -46,6 +46,7 @@ public class Main {
         estudianteService.inscribirEstudianteCarrera(7,2, 2015);
         estudianteService.inscribirEstudianteCarrera(8,2, 2015);
         estudianteService.inscribirEstudianteCarrera(8,1, 2021);
+        estudianteService.inscribirEstudianteCarrera(9,2, 2021);
 
         //SERVICIO QUE ACTUALIZA DATOS SOBRE EL EGRESO DE UN ESTUDIANTE
         estudianteService.egresarEstudiante(5, 1, 2016);

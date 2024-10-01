@@ -6,15 +6,17 @@ import arquitectura.grupo19.entities.Estudiante;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class EstudianteRepository implements Repository<Estudiante> {
+public class EstudianteRepository implements Repository<Estudiante, Integer> {
 
-	public Estudiante find(int id) {
+	@Override
+	public Estudiante find(Integer id) {
 		EntityManager em = Db.open();
 		Estudiante e = em.find(Estudiante.class, id);
 		Db.close();
 		return e;
 	}
 
+	@Override
 	public void insert(Estudiante e) {
 		EntityManager em = Db.open();
 		em.getTransaction().begin();
@@ -23,11 +25,13 @@ public class EstudianteRepository implements Repository<Estudiante> {
 		Db.close();
 	}
 
-	public void update(int id, Estudiante e) {
+	@Override
+	public void update(Integer id, Estudiante e) {
 
 	}
 
-	public void delete(int id) {
+	@Override
+	public void delete(Integer id) {
 		EntityManager em = Db.open();
 		Estudiante e = em.find(Estudiante.class, id);
 		if (e != null) {
