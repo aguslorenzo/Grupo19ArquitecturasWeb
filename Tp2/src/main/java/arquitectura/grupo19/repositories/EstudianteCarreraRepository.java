@@ -29,11 +29,9 @@ public class EstudianteCarreraRepository implements Repository<EstudianteCarrera
 			Estudiante estudiante = em.find(Estudiante.class, ec.getEstudiante().getNroLibreta());
 			Carrera carrera = em.find(Carrera.class, ec.getCarrera().getId());
 
-			// Asignamos las entidades gestionadas a la nueva entidad
 			ec.setEstudiante(estudiante);
 			ec.setCarrera(carrera);
 
-			// Persistimos la nueva entidad
 			em.persist(ec);
 
 			em.getTransaction().commit();
@@ -58,7 +56,7 @@ public class EstudianteCarreraRepository implements Repository<EstudianteCarrera
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			e.printStackTrace(); // Manejo de excepciones
+			e.printStackTrace();
 		} finally {
 			Db.close();
 		}
@@ -66,7 +64,7 @@ public class EstudianteCarreraRepository implements Repository<EstudianteCarrera
 
 	@Override
 	public void delete(EstudianteCarreraId id) {
-		// TODO Auto-generated method stub
+		// TODO completar si hace falta
 	}
 
 	public List<EstudianteCarrera> getCarrerasEstudiante(int idEstudiante){
@@ -120,7 +118,6 @@ public class EstudianteCarreraRepository implements Repository<EstudianteCarrera
 	public List<Integer> getAnios(){
 		EntityManager em = Db.open();
 
-		// Obtener los años de inscripción y graduación únicos
 		List<Integer> aniosInscripcion = em.createQuery(
 						"SELECT DISTINCT ec.anioInscripcion FROM EstudianteCarrera ec WHERE ec.anioInscripcion IS NOT NULL", Integer.class)
 				.getResultList();
@@ -133,7 +130,6 @@ public class EstudianteCarreraRepository implements Repository<EstudianteCarrera
 		aniosUnicos.addAll(aniosInscripcion);
 		aniosUnicos.addAll(aniosGraduacion);
 
-		// Convertir el conjunto a lista y ordenarla
 		List<Integer> anios = new ArrayList<>(aniosUnicos);
 		Collections.sort(anios);
 

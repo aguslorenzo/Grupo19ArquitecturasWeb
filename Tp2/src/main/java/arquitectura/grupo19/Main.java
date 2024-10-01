@@ -2,13 +2,10 @@ package arquitectura.grupo19;
 
 import java.util.List;
 
-import arquitectura.grupo19.dto.CarreraDto;
-import arquitectura.grupo19.dto.EstudianteCarreraDto;
-import arquitectura.grupo19.dto.EstudianteDto;
+import arquitectura.grupo19.dto.*;
 import arquitectura.grupo19.entities.Carrera;
 import arquitectura.grupo19.repositories.CarreraRepository;
-import arquitectura.grupo19.services.CarreraService;
-import arquitectura.grupo19.services.EstudianteService;
+import arquitectura.grupo19.services.*;
 import arquitectura.grupo19.utils.Genero;
 
 public class Main {

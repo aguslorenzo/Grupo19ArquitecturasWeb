@@ -6,7 +6,7 @@ public class EstudianteCarreraId implements Serializable{
     private int estudiante;
     private int carrera;
 
-    // Constructor vacío (obligatorio para JPA)
+    // Constructor vacío ya que es obligatorio para JPA
     public EstudianteCarreraId() {}
 
     public EstudianteCarreraId(int idEstudiante, int idCarrera) {
@@ -14,7 +14,6 @@ public class EstudianteCarreraId implements Serializable{
         this.carrera = idCarrera;
     }
 
-    // Getters, Setters, equals() y hashCode() deben estar implementados
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

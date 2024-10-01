@@ -26,7 +26,7 @@ public class CarreraRepository implements Repository<Carrera, Integer>{
 
     @Override
     public void update(Integer id, Carrera obj) {
-
+        // TODO completar si hace falta
     }
 
     @Override

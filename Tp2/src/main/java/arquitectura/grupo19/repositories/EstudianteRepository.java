@@ -1,7 +1,6 @@
 package arquitectura.grupo19.repositories;
 
 import arquitectura.grupo19.db.Db;
-import arquitectura.grupo19.entities.Carrera;
 import arquitectura.grupo19.entities.Estudiante;
 import javax.persistence.EntityManager;
 import java.util.Arrays;
@@ -87,15 +86,11 @@ public class EstudianteRepository implements Repository<Estudiante, Integer> {
 	public List<Estudiante> obtenerEstudiantesOrdenadosPor(String campoOrden, boolean ascendente) {
 		EntityManager em = Db.open();
 
-		// Lista de campos válidos para el ordenamiento
 		List<String> camposValidos = Arrays.asList("nroLibreta", "nombre", "apellido", "edad", "genero", "dni", "ciudad");
-
-		// Validamos que el campo pasado sea uno de los permitidos
 		if (!camposValidos.contains(campoOrden)) {
 			throw new IllegalArgumentException("Campo de ordenación no válido: " + campoOrden);
 		}
 
-		// Construimos la consulta dinámicamente usando el campoOrden
 		String direccionOrden = ascendente ? "ASC" : "DESC";
 		String consulta = "SELECT e FROM Estudiante e ORDER BY e." + campoOrden + " " + direccionOrden;
 

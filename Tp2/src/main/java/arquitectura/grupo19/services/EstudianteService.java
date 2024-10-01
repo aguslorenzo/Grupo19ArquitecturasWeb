@@ -34,7 +34,7 @@ public class EstudianteService {
             throw new IllegalArgumentException("Estudiante o Carrera no encontrados");
         }
 
-        // Verificamos si el estudiante ya está inscrito en la carrera
+        // Verificamos si el estudiante ya está inscripto en la carrera
         EstudianteCarreraId ecId = new EstudianteCarreraId(idEstudiante, idCarrera);
         EstudianteCarrera existsEc = estudianteCarreraRepository.find(ecId);
         if (existsEc != null) {
