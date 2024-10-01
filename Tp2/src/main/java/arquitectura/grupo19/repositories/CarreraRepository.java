@@ -41,7 +41,6 @@ public class CarreraRepository implements Repository<Carrera, Integer>{
 	        System.out.println("El estudiante con id " + id + " no existe.");
 	    }
 
-
 		Db.close();
 	}
 }

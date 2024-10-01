@@ -97,5 +97,13 @@ public class Main {
         for (EstudianteCarreraDto c: reporteCarreras){
             System.out.println(c);
         }
+
+        //EXTRA: OBTENER ESTUDIANTES ORDENADOS POR CUALQUIER CAMPO:
+        String campoOrden = "nombre";
+        System.out.println("\n---------ESTUDIANTES ORDENADOS POR "+campoOrden+"--------------");
+        List<EstudianteDto> estudiantes4 = estudianteService.obtenerEstudiantesOrdenadosPor(campoOrden, true); //true=ascendente; false=descendiente
+        for (EstudianteDto e : estudiantes4){
+            System.out.println(e);
+        }
     }
 }

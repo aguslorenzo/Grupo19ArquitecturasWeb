@@ -4,6 +4,7 @@ import arquitectura.grupo19.db.Db;
 import arquitectura.grupo19.entities.Carrera;
 import arquitectura.grupo19.entities.Estudiante;
 import javax.persistence.EntityManager;
+import java.util.Arrays;
 import java.util.List;
 
 public class EstudianteRepository implements Repository<Estudiante, Integer> {
@@ -45,7 +46,7 @@ public class EstudianteRepository implements Repository<Estudiante, Integer> {
 		Db.close();
 	}
 
-	public List<Estudiante> obtenerEstudiantesOrdenadosApellido(){//TODO generalizar si da el tiempo
+	public List<Estudiante> obtenerEstudiantesOrdenadosApellido(){
 		EntityManager em = Db.open();
 
 		List<Estudiante> listado = em
@@ -82,6 +83,26 @@ public class EstudianteRepository implements Repository<Estudiante, Integer> {
 		return resultado;
 	}
 
+	// EXTRA: OBTENER ESTUDIANTES ORDENADOS POR CUALQUIER CAMPO
+	public List<Estudiante> obtenerEstudiantesOrdenadosPor(String campoOrden, boolean ascendente) {
+		EntityManager em = Db.open();
 
+		// Lista de campos válidos para el ordenamiento
+		List<String> camposValidos = Arrays.asList("nroLibreta", "nombre", "apellido", "edad", "genero", "dni", "ciudad");
+
+		// Validamos que el campo pasado sea uno de los permitidos
+		if (!camposValidos.contains(campoOrden)) {
+			throw new IllegalArgumentException("Campo de ordenación no válido: " + campoOrden);
+		}
+
+		// Construimos la consulta dinámicamente usando el campoOrden
+		String direccionOrden = ascendente ? "ASC" : "DESC";
+		String consulta = "SELECT e FROM Estudiante e ORDER BY e." + campoOrden + " " + direccionOrden;
+
+		List<Estudiante> listado = em.createQuery(consulta, Estudiante.class).getResultList();
+
+		Db.close();
+		return listado;
+	}
 
 }

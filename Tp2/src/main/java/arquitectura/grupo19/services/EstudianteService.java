@@ -1,14 +1,8 @@
 package arquitectura.grupo19.services;
 
-import arquitectura.grupo19.dto.EstudianteCarreraDto;
 import arquitectura.grupo19.dto.EstudianteDto;
-import arquitectura.grupo19.entities.Carrera;
-import arquitectura.grupo19.entities.Estudiante;
-import arquitectura.grupo19.entities.EstudianteCarrera;
-import arquitectura.grupo19.entities.EstudianteCarreraId;
-import arquitectura.grupo19.repositories.CarreraRepository;
-import arquitectura.grupo19.repositories.EstudianteCarreraRepository;
-import arquitectura.grupo19.repositories.EstudianteRepository;
+import arquitectura.grupo19.entities.*;
+import arquitectura.grupo19.repositories.*;
 import arquitectura.grupo19.utils.Genero;
 
 import java.util.ArrayList;
@@ -103,5 +97,15 @@ public class EstudianteService {
     private EstudianteDto convertirEstudiante(Estudiante estudiante){
         List<EstudianteCarrera> infoCarreras = estudianteCarreraRepository.getCarrerasEstudiante(estudiante.getNroLibreta());
         return new EstudianteDto(estudiante.getNroLibreta(),estudiante.getNombre(),estudiante.getApellido(),estudiante.getEdad(), Genero.fromCodigo(estudiante.getGenero()),estudiante.getDni(),estudiante.getCiudad(),infoCarreras);
+    }
+
+    // EXTRA: OBTENER ESTUDIANTES ORDENADOS POR CUALQUIER CAMPO
+    public List<EstudianteDto> obtenerEstudiantesOrdenadosPor(String campoOrden, boolean ascendente){
+        List<Estudiante> estudiantes = estudianteRepository.obtenerEstudiantesOrdenadosPor(campoOrden, ascendente);
+        List<EstudianteDto> resultado = new ArrayList<>();
+        for (Estudiante e : estudiantes){
+            resultado.add(convertirEstudiante(e));
+        }
+        return resultado;
     }
 }
