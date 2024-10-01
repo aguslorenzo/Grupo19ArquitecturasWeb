@@ -29,10 +29,27 @@ public class EstudianteService {
         estudianteRepository.insert(e);
     }
 
-    public void inscribirEstudianteCarrera(int idEstudiante, int idCarrera, int anioInscripcion){
+    /*public void inscribirEstudianteCarrera(int idEstudiante, int idCarrera, int anioInscripcion){
         Estudiante estudiante = estudianteRepository.find(idEstudiante);
         Carrera carrera = carreraRepository.find(idCarrera);
         estudianteCarreraRepository.insert(new EstudianteCarrera(estudiante,carrera,anioInscripcion,false));
+    }*/
+
+    public void inscribirEstudianteCarrera(int idEstudiante, int idCarrera, int anioInscripcion) {
+        // Cargar la entidad Estudiante y Carrera en la misma sesión
+        Estudiante estudiante = estudianteRepository.find(idEstudiante);
+        Carrera carrera = carreraRepository.find(idCarrera);
+
+        // Verificar que las entidades no sean nulas
+        if (estudiante == null || carrera == null) {
+            throw new IllegalArgumentException("Estudiante o Carrera no encontrados");
+        }
+
+        // Crear la entidad EstudianteCarrera
+        EstudianteCarrera ec = new EstudianteCarrera(estudiante, carrera, anioInscripcion, false);
+
+        // Insertar la entidad EstudianteCarrera usando el repositorio
+        estudianteCarreraRepository.insert(ec);
     }
 
     public void egresarEstudiante(int idEstudiante, int idCarrera, int anio) {

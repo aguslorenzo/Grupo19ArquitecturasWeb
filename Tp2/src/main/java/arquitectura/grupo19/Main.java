@@ -25,7 +25,7 @@ public class Main {
         EstudianteService estudianteService = new EstudianteService();
         CarreraService carreraService = new CarreraService();
 
-        //A - INSERTANDO ESTUDIANTES - Listo
+        //A - INSERTANDO ESTUDIANTES
         estudianteService.insertarEstudiante(new EstudianteDto("Manuel", "Perez", 22, Genero.MASCULINO, 51125131, "La Plata"));
         estudianteService.insertarEstudiante(new EstudianteDto("Manuela", "Perez", 37, Genero.FEMENINO, 31719112 , "Mar del Plata"));
         estudianteService.insertarEstudiante(new EstudianteDto("Jorge", "Perez", 23, Genero.MASCULINO, 44111513 , "Tandil"));
@@ -35,7 +35,7 @@ public class Main {
         estudianteService.insertarEstudiante(new EstudianteDto("Pablo", "Disalvo", 19, Genero.MASCULINO, 51614117 , "Pergamino"));
         estudianteService.insertarEstudiante(new EstudianteDto("Ramiro", "Lopez", 27, Genero.MASCULINO, 41111118 , "Azul"));
 
-        //B - MATRICULANDO ESTUDIANTES - Listo
+        //B - MATRICULANDO ESTUDIANTES
         estudianteService.inscribirEstudianteCarrera(1,1, 2010);
         estudianteService.inscribirEstudianteCarrera(2,3, 2015);
         estudianteService.inscribirEstudianteCarrera(3,4, 2021);
@@ -47,38 +47,37 @@ public class Main {
         estudianteService.inscribirEstudianteCarrera(8,2, 2015);
         estudianteService.inscribirEstudianteCarrera(8,1, 2021);
 
-        
         //SERVICIO QUE ACTUALIZA DATOS SOBRE EL EGRESO DE UN ESTUDIANTE
         estudianteService.egresarEstudiante(5, 1, 2016);
         estudianteService.egresarEstudiante(8, 1, 2023);
         estudianteService.egresarEstudiante(2, 3, 2021);
 
-        //C - RECUPERAR TODOS LOS ESTUDIANTES ORDENADOS POR APELLIDO ASCENDENTEMENTE - Listo
+        //C - RECUPERAR TODOS LOS ESTUDIANTES ORDENADOS POR APELLIDO ASCENDENTEMENTE
         System.out.println("------------------------C---------------------------");
         List<EstudianteDto> estudiantes = estudianteService.obtenerEstudiantesOrdenadosApellido();
         for (EstudianteDto e : estudiantes){
             System.out.println(e);
         }
 
-        //D - RECUPERAR ESTUDIANTE POR LIBRETA (ID) - Listo
+        //D - RECUPERAR ESTUDIANTE POR LIBRETA (ID)
         System.out.println("------------------------D---------------------------");
         System.out.println(estudianteService.obtenerEstudiantePorLibreta(4));
 
-        //E - LISTANDO ESTUDIANTES POR GENERO - Listo
+        //E - LISTANDO ESTUDIANTES POR GENERO
         System.out.println("------------------------E---------------------------");
         List<EstudianteDto> estudiantes2 = estudianteService.obtenerEstudiantesPorGenero(Genero.FEMENINO);
         for (EstudianteDto e: estudiantes2){
             System.out.println(e);
         }
 
-        //F - RECUPERAR LAS CARRERAS CON ESTUDIANTES INSCRIPTOS Y ORDENAR POR CANTIDAD DE INSCRIPTOS - Listo
+        //F - RECUPERAR LAS CARRERAS CON ESTUDIANTES INSCRIPTOS Y ORDENAR POR CANTIDAD DE INSCRIPTOS
         System.out.println("------------------------F---------------------------");
         List<CarreraDto> carreras = carreraService.getCarrerasConInscriptos();
         for (CarreraDto c : carreras){
             System.out.println(c);
         }
 
-        //G- RECUPERAR LOS ESTUDIANTES DE UNA CARRERA FILTRADO POR CIUDAD - Listo
+        //G- RECUPERAR LOS ESTUDIANTES DE UNA CARRERA FILTRADO POR CIUDAD
         System.out.println("------------------------G---------------------------");
         List<EstudianteDto> estudiantes3 = estudianteService.obtenerEstudiantesPorCarreraFiltrados("Tuari","Tandil");
         if (estudiantes3!=null){

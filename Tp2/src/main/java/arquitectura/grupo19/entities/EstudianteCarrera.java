@@ -1,5 +1,6 @@
 package arquitectura.grupo19.entities;
 import javax.persistence.*;
+
 @Entity
 @Table(name = "estudiante_carrera")
 @IdClass(EstudianteCarreraId.class)
@@ -69,6 +70,10 @@ public class EstudianteCarrera {
 	public Estudiante getEstudiante() {
 		return estudiante;
 	}
+
+	public void setEstudiante(Estudiante e){this.estudiante = e;}
+
+	public void setCarrera(Carrera c){this.carrera = c;}
 
 	public Carrera getCarrera() {
 		return carrera;
