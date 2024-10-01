@@ -141,7 +141,7 @@ public class EstudianteCarreraRepository implements Repository<EstudianteCarrera
 		return anios;
 	}
 
-	//TODO metodos aux para generar reporte
+	//Métodos aux para generar reporte
 	public long countInscriptosByCarreraAndAnio(Carrera carrera, int anio) {
 		EntityManager em = Db.open();
 		return (long) em.createQuery(
