@@ -9,7 +9,7 @@ import java.time.Year;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
+
 public class EstudianteCarrera {
 
     @Id
@@ -33,9 +33,13 @@ public class EstudianteCarrera {
     @Column(nullable = false)
     private int antiguedad;
 
+    public EstudianteCarrera() {    	
+    };
+    
     public EstudianteCarrera(Estudiante estudiante, Carrera carrera, int inscripcion, int graduacion, int antiguedad) {
         this.estudiante = estudiante;
         this.carrera = carrera;
+        //this.id = id;
         this.inscripcion = inscripcion;
         this.graduacion = graduacion;
         this.antiguedad = antiguedad;

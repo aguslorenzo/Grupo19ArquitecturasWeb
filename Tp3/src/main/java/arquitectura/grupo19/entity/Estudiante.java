@@ -8,11 +8,10 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
+
 public class Estudiante {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int nroLibreta;
+    private int dni;
 
     @Column(nullable = false)
     private String nombre;
@@ -23,16 +22,22 @@ public class Estudiante {
     @Column(nullable = false)
     private String genero;
     @Column(nullable = false)
-    private int dni;
+    private int nroLibreta;
+
     @Column(nullable = false)
     private String ciudad;
+    
+    public Estudiante() {
+    	
+    }
 
-    public Estudiante(String nombre, String apellido, int edad, String genero, int dni, String ciudad) {
+    public Estudiante(String nombre, String apellido, int edad, String genero, int dni, String ciudad, int nroLibreta) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
         this.genero = genero;
         this.dni = dni;
         this.ciudad = ciudad;
+        this.nroLibreta = nroLibreta;
     }
 }
