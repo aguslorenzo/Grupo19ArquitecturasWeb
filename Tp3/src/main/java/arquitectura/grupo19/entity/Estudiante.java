@@ -40,4 +40,6 @@ public class Estudiante {
         this.ciudad = ciudad;
         this.nroLibreta = nroLibreta;
     }
+
+
 }

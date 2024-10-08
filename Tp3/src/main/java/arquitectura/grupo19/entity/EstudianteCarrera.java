@@ -24,22 +24,30 @@ public class EstudianteCarrera {
     @JoinColumn(name = "id_carrera", nullable = false)
     private Carrera carrera;
 
+    @Getter
     @Column(nullable = false)
     private int inscripcion;
 
     @Column(nullable = false)
-    private int graduacion = 0;
+    private int graduacion;
 
     @Column(nullable = false)
     private int antiguedad;
 
     public EstudianteCarrera() {    	
     };
+
+    public EstudianteCarrera(Estudiante estudiante, Carrera carrera, int inscripcion) {
+        this.estudiante = estudiante;
+        this.carrera = carrera;
+        this.inscripcion = inscripcion;
+        this.graduacion = 0;
+        this.antiguedad = 0;
+    }
     
     public EstudianteCarrera(Estudiante estudiante, Carrera carrera, int inscripcion, int graduacion, int antiguedad) {
         this.estudiante = estudiante;
         this.carrera = carrera;
-        //this.id = id;
         this.inscripcion = inscripcion;
         this.graduacion = graduacion;
         this.antiguedad = antiguedad;
@@ -55,4 +63,5 @@ public class EstudianteCarrera {
             this.antiguedad = this.graduacion - this.inscripcion;
         }
     }
+
 }
