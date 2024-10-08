@@ -4,6 +4,7 @@ package arquitectura.grupo19.dto;
  * Es importante que estén todos los métodos getter y setter, debido a que Jackson (biblioteca de
  * procesamiento de JSON) necesita estos métodos para poder serializar (convertir objetos Java a JSON)
  * y deserializar (convertir objetos JSON a java) los objetos correctamente.
+ * TODO Consulta sobre esto...el setId tambien? No genera ningun problema de seguridad, no?
  */
 public class EstudianteCarreraDTO {
     private int id;
