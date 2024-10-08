@@ -26,6 +26,7 @@ public class EstudianteCarreraService {
     @Autowired
     private EstudianteCarreraRepository estudianteCarreraRepository;
 
+    // OBTENER TODAS LAS MATRICULAS
     /**
      * Convierte entidades en un DTO que tiene solo los atributos necesarios. Esto sirve para
      * tener un control más claro sobre qué datos se envían en las respuestas JSON
@@ -47,6 +48,7 @@ public class EstudianteCarreraService {
         return dto;
     }
 
+    // MATRICULAR ESTUDIANTE
     public EstudianteCarrera matricularEstudiante(int estudianteId, int carreraId) {
         Estudiante estudiante = estudianteRepository.findById(estudianteId)
                 .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
