@@ -40,12 +40,12 @@ public class EstudianteCarreraService {
     }
 
     private EstudianteCarreraDTO convertToDTO(EstudianteCarrera estudianteCarrera) {
-        EstudianteCarreraDTO dto = new EstudianteCarreraDTO();
-        dto.setId(estudianteCarrera.getId());
-        dto.setIdEstudiante(estudianteCarrera.getEstudiante().getDni());
-        dto.setIdCarrera(estudianteCarrera.getCarrera().getId());
-        dto.setAnioInscripcion(estudianteCarrera.getInscripcion());
-        return dto;
+        int id = estudianteCarrera.getId();
+        int idEstudiante = estudianteCarrera.getEstudiante().getDni();
+        int idCarrera = estudianteCarrera.getCarrera().getId();
+        int anioInscripcion = estudianteCarrera.getInscripcion();
+
+        return new EstudianteCarreraDTO(id, idEstudiante, idCarrera, anioInscripcion);
     }
 
     // MATRICULAR ESTUDIANTE
