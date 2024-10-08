@@ -41,4 +41,10 @@ public class EstudianteController {
         }
     }
 
+    @GetMapping("/genero/{genero}")
+    public ResponseEntity<List<Estudiante>> obtenerEstudiantesPorGenero(@PathVariable String genero){
+        List<Estudiante> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
+        return ResponseEntity.ok(estudiantes);
+    }
+
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface CarreraRepository extends JpaRepository<Carrera,Integer> {
-     @Query("SELECT new arquitectura.grupo19.dto.CarreraDTO(c.id, c.nombre, c.duracion) FROM Carrera c " +
+    @Query("SELECT new arquitectura.grupo19.dto.CarreraDTO(c.id, c.nombre, c.duracion) FROM Carrera c " +
            "JOIN EstudianteCarrera ec ON ec.carrera.id = c.id " +
            "GROUP BY c.id, c.nombre, c.duracion " +
            "HAVING COUNT(ec.estudiante) > 0" +

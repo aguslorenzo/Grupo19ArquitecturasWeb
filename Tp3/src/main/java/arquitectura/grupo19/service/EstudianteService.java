@@ -26,5 +26,7 @@ public class EstudianteService {
         return estudianteRepository.findByNroLibreta(nroLibreta)
                 .orElseThrow(() -> new EstudianteNotFoundException("No se encontró un estudiante con el número de libreta " + nroLibreta));
     }
-
+    public List<Estudiante> obtenerEstudiantesPorGenero(String genero){
+        return estudianteRepository.findByGenero(genero);
+    }
 }
