@@ -1,11 +1,16 @@
 package arquitectura.grupo19.service;
 
+
+import arquitectura.grupo19.dto.EstudianteDTO;
 import arquitectura.grupo19.entity.Estudiante;
+
 import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
+import arquitectura.grupo19.repository.EstudianteCarreraRepository;
 import arquitectura.grupo19.repository.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -13,6 +18,8 @@ import java.util.List;
 public class EstudianteService {
     @Autowired
     private EstudianteRepository estudianteRepository;
+    @Autowired
+    private EstudianteCarreraRepository estudianteCarreraRepository;
 
     public List<Estudiante> obtenerEstudiantes(){
         return estudianteRepository.findAll();
@@ -32,6 +39,12 @@ public class EstudianteService {
     	}	
     }
     
+    // OBTENER ESTUDIANTE POR CARRERA FILTRANDO CIUDAD
+    public List<Estudiante> obtenerEstudiantesPorCarreraFiltrados(String carrera, String ciudad){
+    	List<Estudiante> estudiantes =  estudianteRepository.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad);
+         return estudiantes;
+    }
+    
     // RECUPERAR UN ESTUDIANTE EN BASE A SU NUMERO DE LIBRETA UNIVERSITARIA
     public Estudiante buscarEstudiantePorNroLibreta(int nroLibreta) {
         return estudianteRepository.findByNroLibreta(nroLibreta)
@@ -43,4 +56,7 @@ public class EstudianteService {
     public List<Estudiante> obtenerEstudiantesPorGenero(String genero){
         return estudianteRepository.findByGenero(genero);
     }
+    
+    
+ 
 }

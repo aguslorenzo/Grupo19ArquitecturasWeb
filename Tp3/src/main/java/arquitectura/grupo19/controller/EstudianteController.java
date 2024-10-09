@@ -1,6 +1,7 @@
 package arquitectura.grupo19.controller;
 
 
+import arquitectura.grupo19.dto.EstudianteDTO;
 import arquitectura.grupo19.entity.Estudiante;
 import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
 import arquitectura.grupo19.service.EstudianteService;
@@ -69,11 +70,11 @@ public class EstudianteController {
         List<Estudiante> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
         return ResponseEntity.ok(estudiantes);
     }
-/*
+
     @GetMapping("/obtenerFiltrados/{carrera}/{ciudad}")
-    public ResponseEntity<List<EstudianteDTO>> obtenerEstudiantesPorCarreraFiltrados(String carrera, String ciudad){
+    public ResponseEntity<List<Estudiante>> obtenerEstudiantesPorCarreraFiltrados(@PathVariable String carrera,@PathVariable String ciudad){
     	
-    	List<EstudianteDTO> estudiantesFiltrados = new ArrayList<EstudianteDTO>();
+    	List<Estudiante> estudiantesFiltrados = new ArrayList<Estudiante>();
     	try {
     		estudiantesFiltrados.addAll(estudianteService.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad));
 		} catch (Exception e) {
@@ -88,5 +89,5 @@ public class EstudianteController {
 	    }
 		return ResponseEntity.ok(estudiantesFiltrados);
     }
-    */
+   
 }
