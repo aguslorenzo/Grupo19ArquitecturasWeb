@@ -2,6 +2,7 @@ package arquitectura.grupo19.service;
 
 import arquitectura.grupo19.dto.CarreraDTO;
 import arquitectura.grupo19.entity.Carrera;
+import arquitectura.grupo19.exceptions.CarreraNotFoundException;
 import arquitectura.grupo19.repository.CarreraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,9 @@ public class CarreraService {
     private CarreraRepository carreraRepository;
     public List<Carrera> getCarrerasConInscriptos(){
         List<CarreraDTO> carreraDTOs = carreraRepository.getCarrerasConInscriptos();
-
-        // Convertir la lista de DTOs a la lista de entidades Carrera
+        if(carreraDTOs.isEmpty()){
+            throw new CarreraNotFoundException("No se encontraron carreras con inscriptos.");
+        }
         List<Carrera> carreras = carreraDTOs.stream()
                 .map(dto -> {
                     Carrera carrera = new Carrera();
@@ -26,7 +28,6 @@ public class CarreraService {
                     return carrera;
                 })
                 .collect(Collectors.toList());
-
         return carreras;
     }
 }
