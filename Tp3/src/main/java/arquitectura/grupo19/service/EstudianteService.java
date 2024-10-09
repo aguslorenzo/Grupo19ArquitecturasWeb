@@ -1,11 +1,9 @@
 package arquitectura.grupo19.service;
 
 
-import arquitectura.grupo19.dto.EstudianteDTO;
 import arquitectura.grupo19.entity.Estudiante;
 
 import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
-import arquitectura.grupo19.repository.EstudianteCarreraRepository;
 import arquitectura.grupo19.repository.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -18,8 +16,7 @@ import java.util.List;
 public class EstudianteService {
     @Autowired
     private EstudianteRepository estudianteRepository;
-    @Autowired
-    private EstudianteCarreraRepository estudianteCarreraRepository;
+
 
     public List<Estudiante> obtenerEstudiantes(){
         return estudianteRepository.findAll();
@@ -30,7 +27,6 @@ public class EstudianteService {
     }
 
     // OBTENER ESTUDIANTES POR CRITERIO Y ORDEN
-    // ENDPOINT: http://localhost:8080/estudiantes/obtenerPorCriterio?criterio=nombre&asc=true
     public List<Estudiante> obtenerEstudiantesOrdenadosPorCriterio(String criterio, Boolean asc){
     	if(asc) {
     		return estudianteRepository.findAll(Sort.by(criterio).ascending());
@@ -39,7 +35,7 @@ public class EstudianteService {
     	}	
     }
     
-    // OBTENER ESTUDIANTE POR CARRERA FILTRANDO CIUDAD
+    // OBTENER ESTUDIANTE SEGUN CARRERA FILTRANDO CIUDAD
     public List<Estudiante> obtenerEstudiantesPorCarreraFiltrados(String carrera, String ciudad){
     	List<Estudiante> estudiantes =  estudianteRepository.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad);
          return estudiantes;

@@ -1,6 +1,5 @@
 package arquitectura.grupo19.repository;
 
-import arquitectura.grupo19.dto.EstudianteDTO;
 import arquitectura.grupo19.entity.Estudiante;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

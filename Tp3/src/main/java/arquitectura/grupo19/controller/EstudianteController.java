@@ -1,7 +1,5 @@
 package arquitectura.grupo19.controller;
 
-
-import arquitectura.grupo19.dto.EstudianteDTO;
 import arquitectura.grupo19.entity.Estudiante;
 import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
 import arquitectura.grupo19.service.EstudianteService;
@@ -45,23 +43,13 @@ public class EstudianteController {
     }
     
     @GetMapping("/obtenerPorCriterio/{criterio}/{asc}")
-	public ResponseEntity<List<Estudiante>> obtenerEstudiantesOrdenadosPorCriterio(@PathVariable  String criterio, @PathVariable  boolean asc) {
-
+	public ResponseEntity<?> obtenerEstudiantesOrdenadosPorCriterio(@PathVariable  String criterio, @PathVariable  boolean asc) {
 		List<Estudiante> estudiantesOrdenados = new ArrayList<Estudiante>();
-
 		try {
 			estudiantesOrdenados.addAll(estudianteService.obtenerEstudiantesOrdenadosPorCriterio(criterio, asc));
 		} catch (Exception e) {
-			System.out.println("Error al buscar el listado" + e);
-			return ResponseEntity.ok(estudiantesOrdenados);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
-		
-		if (estudiantesOrdenados.isEmpty()) {
-	        System.out.println("No se encontraron estudiantes");
-	    } else {
-	        System.out.println("Listado ordenado según criterio exitoso");
-	    }
-		
 		return ResponseEntity.ok(estudiantesOrdenados);
 	}
 
@@ -83,21 +71,16 @@ public class EstudianteController {
     }
 
     @GetMapping("/obtenerFiltrados/{carrera}/{ciudad}")
-    public ResponseEntity<List<Estudiante>> obtenerEstudiantesPorCarreraFiltrados(@PathVariable String carrera,@PathVariable String ciudad){
-    	
+    public ResponseEntity<?> obtenerEstudiantesPorCarreraFiltrados(@PathVariable String carrera,@PathVariable String ciudad){
+    	 if(ciudad==null || ciudad.trim().isEmpty()){
+             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La ciudad no puede estar vacía.");
+         }
     	List<Estudiante> estudiantesFiltrados = new ArrayList<Estudiante>();
     	try {
     		estudiantesFiltrados.addAll(estudianteService.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad));
 		} catch (Exception e) {
-			System.out.println("Error al buscar el listado" + e);
-			return ResponseEntity.ok(estudiantesFiltrados);
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
-		
-		if (estudiantesFiltrados.isEmpty()) {
-	        System.out.println("No se encontraron estudiantes");
-	    } else {
-	        System.out.println("Listado ordenado según criterio exitoso");
-	    }
 		return ResponseEntity.ok(estudiantesFiltrados);
     }
    
