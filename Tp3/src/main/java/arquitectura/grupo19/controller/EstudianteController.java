@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,6 +41,27 @@ public class EstudianteController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
+    
+    @GetMapping("/obtenerPorCriterio")
+	public ResponseEntity<List<Estudiante>> obtenerEstudiantesOrdenadosPorCriterio(@RequestParam String criterio, @RequestParam boolean asc) {
+
+		List<Estudiante> estudiantesOrdenados = new ArrayList<Estudiante>();
+
+		try {
+			estudiantesOrdenados.addAll(estudianteService.obtenerEstudiantesOrdenadosPorCriterio(criterio, asc));
+		} catch (Exception e) {
+			System.out.println("Error al buscar el listado" + e);
+			return ResponseEntity.ok(estudiantesOrdenados);
+		}
+		
+		if (estudiantesOrdenados.isEmpty()) {
+	        System.out.println("No se encontraron estudiantes");
+	    } else {
+	        System.out.println("Listado ordenado según criterio exitoso");
+	    }
+		
+		return ResponseEntity.ok(estudiantesOrdenados);
+	}
 
     @GetMapping("/genero/{genero}")
     public ResponseEntity<List<Estudiante>> obtenerEstudiantesPorGenero(@PathVariable String genero){
