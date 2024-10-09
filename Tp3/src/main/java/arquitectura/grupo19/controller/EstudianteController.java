@@ -66,9 +66,20 @@ public class EstudianteController {
 	}
 
     @GetMapping("/genero/{genero}")
-    public ResponseEntity<List<Estudiante>> obtenerEstudiantesPorGenero(@PathVariable String genero){
-        List<Estudiante> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
-        return ResponseEntity.ok(estudiantes);
+    public ResponseEntity<?> obtenerEstudiantesPorGenero(@PathVariable String genero){
+        if(genero==null || genero.trim().isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El género no puede estar vacío.");
+        }
+        try {
+            List<Estudiante> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
+            return ResponseEntity.ok(estudiantes);
+        }
+        catch (EstudianteNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error inesperado.");
+        }
     }
 
     @GetMapping("/obtenerFiltrados/{carrera}/{ciudad}")
