@@ -1,5 +1,6 @@
 package arquitectura.grupo19.controller;
 
+
 import arquitectura.grupo19.entity.Estudiante;
 import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
 import arquitectura.grupo19.service.EstudianteService;
@@ -42,8 +43,8 @@ public class EstudianteController {
         }
     }
     
-    @GetMapping("/obtenerPorCriterio")
-	public ResponseEntity<List<Estudiante>> obtenerEstudiantesOrdenadosPorCriterio(@RequestParam String criterio, @RequestParam boolean asc) {
+    @GetMapping("/obtenerPorCriterio/{criterio}/{asc}")
+	public ResponseEntity<List<Estudiante>> obtenerEstudiantesOrdenadosPorCriterio(@PathVariable  String criterio, @PathVariable  boolean asc) {
 
 		List<Estudiante> estudiantesOrdenados = new ArrayList<Estudiante>();
 
@@ -68,5 +69,24 @@ public class EstudianteController {
         List<Estudiante> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
         return ResponseEntity.ok(estudiantes);
     }
-
+/*
+    @GetMapping("/obtenerFiltrados/{carrera}/{ciudad}")
+    public ResponseEntity<List<EstudianteDTO>> obtenerEstudiantesPorCarreraFiltrados(String carrera, String ciudad){
+    	
+    	List<EstudianteDTO> estudiantesFiltrados = new ArrayList<EstudianteDTO>();
+    	try {
+    		estudiantesFiltrados.addAll(estudianteService.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad));
+		} catch (Exception e) {
+			System.out.println("Error al buscar el listado" + e);
+			return ResponseEntity.ok(estudiantesFiltrados);
+		}
+		
+		if (estudiantesFiltrados.isEmpty()) {
+	        System.out.println("No se encontraron estudiantes");
+	    } else {
+	        System.out.println("Listado ordenado según criterio exitoso");
+	    }
+		return ResponseEntity.ok(estudiantesFiltrados);
+    }
+    */
 }
