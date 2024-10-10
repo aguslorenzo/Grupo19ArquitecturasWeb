@@ -44,8 +44,9 @@ public class EstudianteCarreraService {
         int idEstudiante = estudianteCarrera.getEstudiante().getDni();
         int idCarrera = estudianteCarrera.getCarrera().getId();
         int anioInscripcion = estudianteCarrera.getInscripcion();
+        int anioGraduacion = estudianteCarrera.getGraduacion();
 
-        return new EstudianteCarreraDTO(id, idEstudiante, idCarrera, anioInscripcion);
+        return new EstudianteCarreraDTO(id, idEstudiante, idCarrera, anioInscripcion, anioGraduacion);
     }
 
     // MATRICULAR ESTUDIANTE
