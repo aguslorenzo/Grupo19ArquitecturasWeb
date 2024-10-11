@@ -42,9 +42,9 @@ public class EstudianteController {
         }
     }
     
-    @GetMapping("/obtenerPorCriterio/{criterio}/{asc}")
-	public ResponseEntity<?> obtenerEstudiantesOrdenadosPorCriterio(@PathVariable  String criterio, @PathVariable  boolean asc) {
-		List<Estudiante> estudiantesOrdenados = new ArrayList<Estudiante>();
+    @GetMapping("/ordenados")
+	public ResponseEntity<?> obtenerEstudiantesOrdenadosPorCriterio(@RequestParam  String criterio, @RequestParam  boolean asc) {
+		List<Estudiante> estudiantesOrdenados = new ArrayList<>();
 		try {
 			estudiantesOrdenados.addAll(estudianteService.obtenerEstudiantesOrdenadosPorCriterio(criterio, asc));
 		} catch (Exception e) {
@@ -70,12 +70,12 @@ public class EstudianteController {
         }
     }
 
-    @GetMapping("/obtenerFiltrados/{carrera}/{ciudad}")
+    @GetMapping("/filtrados/{carrera}/{ciudad}")
     public ResponseEntity<?> obtenerEstudiantesPorCarreraFiltrados(@PathVariable String carrera,@PathVariable String ciudad){
     	 if(ciudad==null || ciudad.trim().isEmpty()){
              return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La ciudad no puede estar vacía.");
          }
-    	List<Estudiante> estudiantesFiltrados = new ArrayList<Estudiante>();
+    	List<Estudiante> estudiantesFiltrados = new ArrayList<>();
     	try {
     		estudiantesFiltrados.addAll(estudianteService.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad));
 		} catch (Exception e) {

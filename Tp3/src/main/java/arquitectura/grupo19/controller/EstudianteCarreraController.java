@@ -27,6 +27,10 @@ public class EstudianteCarreraController {
 
     /*
     TODO charlar si dejamos así y por defecto la fecha es la actual + antiguedad y graduacion en 0 o damos opcion a mas datos
+    TODO tambien charlar si esto lo dejamos acá o sacamos los endpoints de este controller a estudianteController y carreraController
+    Sino no tiene sentido tener "generar reporte" en carrera y tambien debería estar aca
+    Mismo con el método de getCarrerasConInscriptos, tambien deberia estar acá
+    y el controller de carrera quedaría solo para operaciones "basicas" de crud para carrera
      */
     @PostMapping("/estudiante/{idEstudiante}/carrera/{idCarrera}")
     public ResponseEntity<?> matricularEstudiante(@PathVariable int idEstudiante, @PathVariable int idCarrera) {

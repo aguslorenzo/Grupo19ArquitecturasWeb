@@ -29,19 +29,15 @@ public class CarreraService {
     
     
     public List<Carrera> getCarrerasConInscriptos(){
-        List<CarreraDTO> carreraDTOs = carreraRepository.getCarrerasConInscriptos();
-        if(carreraDTOs.isEmpty()){
+		//TODO contemplar devolver lista vacia en lugar de excepcion
+		List<CarreraDTO> result = new ArrayList<>();
+        List<Carrera> carreras = carreraRepository.getCarrerasConInscriptos();
+        if(carreras.isEmpty()){
             throw new CarreraNotFoundException("No se encontraron carreras con inscriptos.");
         }
-        List<Carrera> carreras = carreraDTOs.stream()
-                .map(dto -> {
-                    Carrera carrera = new Carrera();
-                    carrera.setId(dto.getId());
-                    carrera.setNombre(dto.getNombre());
-                    carrera.setDuracion(dto.getDuracion());
-                    return carrera;
-                })
-                .collect(Collectors.toList());
+		for (Carrera c: carreras){
+			result.add(convertToDTO(c));
+		}
         return carreras;
     }
     
@@ -86,5 +82,9 @@ public class CarreraService {
 
 		public Integer countEgresadosByCarreraAndAnio(int carrera, int anio) {
 			return estudianteCarreraRepository.countEgresadosByCarreraAndAnio(carrera, anio);
+		}
+
+		private CarreraDTO convertToDTO(Carrera c){
+			return new CarreraDTO(c.getId(),c.getNombre(),c.getDuracion());
 		}
 }
