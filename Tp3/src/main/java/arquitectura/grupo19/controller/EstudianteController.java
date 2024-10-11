@@ -23,8 +23,8 @@ public class EstudianteController {
         return ResponseEntity.ok(estudiantes);
     }
 
-    @PostMapping("/guardar")
-    public ResponseEntity<Estudiante> guardarEstudiante(@RequestBody Estudiante estudiante) {
+    @PostMapping
+    public ResponseEntity<Estudiante> altaEstudiante(@RequestBody Estudiante estudiante) {
         Estudiante nuevoEstudiante = estudianteService.guardarEstudiante(estudiante);
         return ResponseEntity.ok(nuevoEstudiante);
     }

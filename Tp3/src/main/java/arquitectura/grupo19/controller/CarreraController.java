@@ -36,7 +36,7 @@ public class CarreraController {
    
     
     @GetMapping("/reporte")
-    @JsonView(EstudianteCarreraDTO.VistaSimple.class) //ESTO SE UTILIZA PARA SELECCIONAR LA VISTA DEL JSON
+    @JsonView(EstudianteCarreraDTO.VistaReporte.class) //TODO ESTO SE UTILIZA PARA SELECCIONAR LA VISTA DEL JSON
     public ResponseEntity<?> getReporteDeCarrerasPorAnio(){
     	try {
     		List<EstudianteCarreraDTO> carreras = carreraService.getReporteDeCarrerasPorAnio();
