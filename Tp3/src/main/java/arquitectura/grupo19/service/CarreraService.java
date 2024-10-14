@@ -26,8 +26,7 @@ public class CarreraService {
     private CarreraRepository carreraRepository;
     @Autowired 
     private EstudianteCarreraRepository estudianteCarreraRepository;
-    
-    
+
     public List<Carrera> getCarrerasConInscriptos(){
 		//TODO contemplar devolver lista vacia en lugar de excepcion
 		List<CarreraDTO> result = new ArrayList<>();
@@ -75,7 +74,7 @@ public class CarreraService {
 		Collections.sort(anios);
 		return anios;
 	}
-	//Métodos aux para generar reporte
+		//Métodos aux para generar reporte
 		public Integer countInscriptosByCarreraAndAnio(int carrera, int anio) {
 			return estudianteCarreraRepository.countInscriptosByCarreraAndAnio(carrera, anio);
 		}

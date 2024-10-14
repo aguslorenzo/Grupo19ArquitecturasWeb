@@ -1,6 +1,5 @@
 package arquitectura.grupo19.service;
 
-
 import arquitectura.grupo19.entity.Estudiante;
 
 import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
@@ -9,14 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-
 import java.util.List;
 
 @Service
 public class EstudianteService {
     @Autowired
     private EstudianteRepository estudianteRepository;
-
 
     public List<Estudiante> obtenerEstudiantes(){
         return estudianteRepository.findAll();
@@ -46,6 +43,7 @@ public class EstudianteService {
         return estudianteRepository.findByNroLibreta(nroLibreta)
                 .orElseThrow(() -> new EstudianteNotFoundException("No se encontró un estudiante con el número de libreta " + nroLibreta));
     }
+
     // RECUPERAR ESTUDIANTES POR GENERO
     public List<Estudiante> obtenerEstudiantesPorGenero(String genero){
         List<Estudiante> estudiantes = estudianteRepository.findByGenero(genero);
@@ -54,7 +52,4 @@ public class EstudianteService {
         }
         return estudiantes;
     }
-    
-    
- 
 }

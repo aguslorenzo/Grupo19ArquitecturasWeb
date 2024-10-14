@@ -57,9 +57,7 @@ public class DbHelper {
 			throw new RuntimeException(e);
 		}
 	}
-
 	private void processEstudiante(CSVParser parser) {
-
 		for (CSVRecord row : parser) {
 			if (row.size() >= 7) {
 				String dniString = row.get(0);
@@ -97,7 +95,6 @@ public class DbHelper {
 	private void processCarrera(CSVParser parser) {
 		for (CSVRecord row : parser) {
 			if (row.size() >= 2) {
-				//String idString = row.get(0);
 				String nombre = row.get(1);
 				String duracionString = row.get(2);
 
@@ -108,7 +105,6 @@ public class DbHelper {
 					if (isValidNumber(dataNumber)) {
 						try {
 							int duracion = Integer.parseInt(duracionString);
-							//int id = Integer.parseInt(idString);
 							Carrera carrera = new Carrera(nombre, duracion);
 							carreraRepository.save(carrera);
 						} catch (Exception e) {
@@ -125,8 +121,7 @@ public class DbHelper {
 		
 		for (CSVRecord row : parser) {
 			if (row.size() >= 6) {
-			
-				//String idString = row.get(0);
+
 				String idEstudianteString = row.get(1);
 				String idCarreraString = row.get(2);
 				String inscripcionString = row.get(3);
@@ -135,15 +130,12 @@ public class DbHelper {
 
 				List<String> data = new ArrayList<>(Arrays.asList(idEstudianteString, idCarreraString,
 						inscripcionString, graduacionString, antiguedadString));
-				//se borro IdString
 				List<String> dataNumber = new ArrayList<>(Arrays.asList(idEstudianteString, idCarreraString,
 						inscripcionString, graduacionString, antiguedadString));
-				//se borro IdString
 				
 				if (noDataEmpty(data)) {
 					if (isValidNumber(dataNumber)) {
 						try {
-							//int id = Integer.parseInt(idString);
 							int idEstudiante = Integer.parseInt(idEstudianteString);
 							int idCarrera = Integer.parseInt(idCarreraString);
 							int inscripcion = Integer.parseInt(inscripcionString);
@@ -157,11 +149,7 @@ public class DbHelper {
 							if (estudiante.isPresent() && carrera.isPresent()) {
 								EstudianteCarrera estudianteCarrera = new EstudianteCarrera(estudiante.get(),
 										carrera.get(), inscripcion, graduacion, antiguedad);
-								//if(estudianteCarreraRepository.findById(id).isEmpty()){
-									estudianteCarreraRepository.save(estudianteCarrera);
-								/*}else {
-									System.out.println("La matricula ya existe");
-								}	*/
+								estudianteCarreraRepository.save(estudianteCarrera);
 							}
 						} catch (Exception e) {
 							System.err.println("Error al matricular estudiante: " + e.getMessage());
@@ -173,7 +161,6 @@ public class DbHelper {
 		System.out.println("Alumnos matriculados");
 	}
 
-	
 	//METODOS DE VALIDACION
 	private boolean isValidNumber(List<String> dataNumber) {
 		int contador = 0;

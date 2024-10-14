@@ -1,6 +1,5 @@
 package arquitectura.grupo19.repository;
 
-
 import arquitectura.grupo19.entity.Carrera;
 import arquitectura.grupo19.entity.Estudiante;
 import arquitectura.grupo19.entity.EstudianteCarrera;

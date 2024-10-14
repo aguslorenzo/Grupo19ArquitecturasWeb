@@ -18,13 +18,9 @@ public class Carrera {
     private String nombre;
     @Column(nullable = false)
     private int duracion;
-    
-    /*public Carrera() {
-    }*/
+
 	public Carrera(String nombre, int duracion) {
 		this.nombre = nombre;
 		this.duracion = duracion;
 	}
-    
-    
 }

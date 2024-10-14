@@ -33,8 +33,6 @@ public class CarreraController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error inseperado.");
         }
     }
-   
-    
     @GetMapping("/reporte")
     @JsonView(EstudianteCarreraDTO.VistaReporte.class) //TODO ESTO SE UTILIZA PARA SELECCIONAR LA VISTA DEL JSON
     public ResponseEntity<?> getReporteDeCarrerasPorAnio(){

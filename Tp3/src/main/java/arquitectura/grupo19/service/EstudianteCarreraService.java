@@ -68,7 +68,4 @@ public class EstudianteCarreraService {
 
         return estudianteCarreraRepository.save(nuevaMatricula);
     }
-
-
-
 }

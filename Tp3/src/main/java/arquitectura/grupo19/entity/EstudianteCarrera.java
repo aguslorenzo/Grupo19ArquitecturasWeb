@@ -52,7 +52,6 @@ public class EstudianteCarrera {
         this.graduacion = graduacion;
         this.antiguedad = antiguedad;
     }
-
     /**
      * TODO Tentativa a usar cuando actualizamos el estado del alumno en la carrera, puede irse
      */

@@ -1,9 +1,7 @@
 package arquitectura.grupo19.dto;
 
 import arquitectura.grupo19.entity.EstudianteCarrera;
-
 import java.util.List;
-
 
 public class EstudianteDTO {
     private int nroLibreta;

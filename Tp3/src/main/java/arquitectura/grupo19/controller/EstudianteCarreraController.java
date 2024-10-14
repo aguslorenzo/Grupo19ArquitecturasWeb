@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/matriculas")
 public class EstudianteCarreraController {
-
     @Autowired
     private EstudianteCarreraService estudianteCarreraService;
 
@@ -41,5 +40,4 @@ public class EstudianteCarreraController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
 }

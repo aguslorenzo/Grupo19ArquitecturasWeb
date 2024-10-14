@@ -12,7 +12,6 @@ import lombok.*;
 public class Estudiante {
     @Id
     private int dni;
-
     @Column(nullable = false)
     private String nombre;
     @Column(nullable = false)
@@ -23,7 +22,6 @@ public class Estudiante {
     private String genero;
     @Column(nullable = false)
     private int nroLibreta;
-
     @Column(nullable = false)
     private String ciudad;
     
@@ -40,6 +38,4 @@ public class Estudiante {
         this.ciudad = ciudad;
         this.nroLibreta = nroLibreta;
     }
-
-
 }

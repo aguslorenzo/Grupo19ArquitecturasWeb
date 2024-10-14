@@ -33,7 +33,6 @@ public class EstudianteController {
     public ResponseEntity<?> obtenerEstudiante(@PathVariable int nroLibreta) {
         if (nroLibreta <= 0)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El número de libreta debe ser un entero positivo.");
-
         try {
             Estudiante estudiante = estudianteService.buscarEstudiantePorNroLibreta(nroLibreta);
             return ResponseEntity.ok(estudiante);
