@@ -1,8 +1,9 @@
 package arquitectura.grupo19.controller;
 
 import arquitectura.grupo19.dto.EstudianteCarreraDTO;
-import arquitectura.grupo19.entity.EstudianteCarrera;
 import arquitectura.grupo19.exceptions.CarreraNotFoundException;
+import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
+import arquitectura.grupo19.exceptions.EstudianteYaMatriculadoException;
 import arquitectura.grupo19.service.EstudianteCarreraService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/matriculas")
 public class EstudianteCarreraController {
+
     @Autowired
     private EstudianteCarreraService estudianteCarreraService;
 
@@ -26,10 +28,17 @@ public class EstudianteCarreraController {
     }
 
     @PostMapping("/estudiante/{idEstudiante}/carrera/{idCarrera}")
+    @JsonView(EstudianteCarreraDTO.VistaEstudianteMatriculado.class)
     public ResponseEntity<?> matricularEstudiante(@PathVariable int idEstudiante, @PathVariable int idCarrera) {
         try {
             EstudianteCarreraDTO matricula = estudianteCarreraService.matricularEstudiante(idEstudiante, idCarrera);
             return new ResponseEntity<>(matricula, HttpStatus.CREATED);
+        } catch (EstudianteNotFoundException ex) {
+            return new ResponseEntity<>("Estudiante no encontrado", HttpStatus.NOT_FOUND);
+        } catch (CarreraNotFoundException ex) {
+            return new ResponseEntity<>("Carrera no encontrada", HttpStatus.NOT_FOUND);
+        } catch (EstudianteYaMatriculadoException ex) {
+            return new ResponseEntity<>("El estudiante ya está matriculado en esta carrera", HttpStatus.BAD_REQUEST);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }

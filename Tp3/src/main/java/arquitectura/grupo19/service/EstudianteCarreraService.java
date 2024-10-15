@@ -35,16 +35,6 @@ public class EstudianteCarreraService {
                 .collect(Collectors.toList());
     }
 
-    private EstudianteCarreraDTO convertToDTO(EstudianteCarrera estudianteCarrera) {
-        int id = estudianteCarrera.getId();
-        int idEstudiante = estudianteCarrera.getEstudiante().getDni();
-        int idCarrera = estudianteCarrera.getCarrera().getId();
-        int anioInscripcion = estudianteCarrera.getInscripcion();
-        int anioGraduacion = estudianteCarrera.getGraduacion();
-
-        return new EstudianteCarreraDTO(id, idEstudiante, idCarrera, anioInscripcion, anioGraduacion);
-    }
-
     // MATRICULAR ESTUDIANTE
     public EstudianteCarreraDTO matricularEstudiante(int estudianteId, int carreraId) {
         Estudiante estudiante = estudianteRepository.findById(estudianteId)
@@ -63,9 +53,10 @@ public class EstudianteCarreraService {
         EstudianteCarrera nuevaMatricula  = new EstudianteCarrera(estudiante, carrera, anioActual);
         EstudianteCarrera savedMatricula = estudianteCarreraRepository.save(nuevaMatricula);
 
-        return convertToDto(savedMatricula);
+        return convertToDTO(savedMatricula);
     }
 
+    // REPORTE DE CARRERAS (inscriptos y egresados por año) ORDENADAS ALFABETICAMENTE Y AÑOS ORDENADOS DE MANERA CRONOLOGICA
     public List<EstudianteCarreraDTO> getReporteDeCarrerasPorAnio(){
         List<EstudianteCarreraDTO> result = new ArrayList<>();
 
@@ -109,7 +100,15 @@ public class EstudianteCarreraService {
         return anios;
     }
 
-    private EstudianteCarreraDTO convertToDto(EstudianteCarrera matricula){
-        return new EstudianteCarreraDTO(matricula.getId(),matricula.getEstudiante().getDni(),matricula.getCarrera().getId(),matricula.getInscripcion(),matricula.getGraduacion());
+    private EstudianteCarreraDTO convertToDTO(EstudianteCarrera matricula) {
+        int id = matricula.getId();
+        int idEstudiante = matricula.getEstudiante().getDni();
+        int idCarrera = matricula.getCarrera().getId();
+        int anioInscripcion = matricula.getInscripcion();
+        int anioGraduacion = matricula.getGraduacion();
+        String carrera = matricula.getCarrera().getNombre();
+
+        return new EstudianteCarreraDTO(id, idEstudiante, idCarrera, anioInscripcion, anioGraduacion, carrera);
     }
+
 }
