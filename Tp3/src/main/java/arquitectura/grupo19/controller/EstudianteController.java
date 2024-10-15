@@ -60,11 +60,9 @@ public class EstudianteController {
         try {
             List<Estudiante> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
             return ResponseEntity.ok(estudiantes);
-        }
-        catch (EstudianteNotFoundException e) {
+        } catch (EstudianteNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-        catch (Exception e){
+        } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error inesperado.");
         }
     }
@@ -82,5 +80,4 @@ public class EstudianteController {
 		}
 		return ResponseEntity.ok(estudiantesFiltrados);
     }
-   
 }

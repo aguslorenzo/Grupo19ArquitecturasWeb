@@ -34,12 +34,12 @@ public class CarreraController {
         }
     }
     @GetMapping("/reporte")
-    @JsonView(EstudianteCarreraDTO.VistaReporte.class) //TODO ESTO SE UTILIZA PARA SELECCIONAR LA VISTA DEL JSON
+    @JsonView(EstudianteCarreraDTO.VistaReporte.class) //ESTO SE UTILIZA PARA SELECCIONAR LA VISTA DEL JSON
     public ResponseEntity<?> getReporteDeCarrerasPorAnio(){
     	try {
     		List<EstudianteCarreraDTO> carreras = carreraService.getReporteDeCarrerasPorAnio();
     		return ResponseEntity.ok(carreras);
-    	}catch(CarreraNotFoundException e) {
+    	} catch(CarreraNotFoundException e) {
     		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     	}
     }

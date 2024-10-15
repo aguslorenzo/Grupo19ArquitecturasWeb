@@ -11,7 +11,6 @@ import java.time.Year;
 @ToString
 
 public class EstudianteCarrera {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

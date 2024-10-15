@@ -57,7 +57,6 @@ public class CarreraService {
  					result.add(new EstudianteCarreraDTO(carrera.getNombre(), anio, inscriptos, egresados));
  			}
  		}
-
 		return result;
     }
 
@@ -74,16 +73,16 @@ public class CarreraService {
 		Collections.sort(anios);
 		return anios;
 	}
-		//Métodos aux para generar reporte
-		public Integer countInscriptosByCarreraAndAnio(int carrera, int anio) {
-			return estudianteCarreraRepository.countInscriptosByCarreraAndAnio(carrera, anio);
-		}
+	//Métodos aux para generar reporte
+	public Integer countInscriptosByCarreraAndAnio(int carrera, int anio) {
+		return estudianteCarreraRepository.countInscriptosByCarreraAndAnio(carrera, anio);
+	}
 
-		public Integer countEgresadosByCarreraAndAnio(int carrera, int anio) {
-			return estudianteCarreraRepository.countEgresadosByCarreraAndAnio(carrera, anio);
-		}
+	public Integer countEgresadosByCarreraAndAnio(int carrera, int anio) {
+		return estudianteCarreraRepository.countEgresadosByCarreraAndAnio(carrera, anio);
+	}
 
-		private CarreraDTO convertToDTO(Carrera c){
+	private CarreraDTO convertToDTO(Carrera c){
 			return new CarreraDTO(c.getId(),c.getNombre(),c.getDuracion());
 		}
 }
