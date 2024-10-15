@@ -1,7 +1,6 @@
 package arquitectura.grupo19.controller;
 
 import arquitectura.grupo19.dto.EstudianteDTO;
-import arquitectura.grupo19.entity.Estudiante;
 import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
 import arquitectura.grupo19.service.EstudianteService;
 import jakarta.validation.Valid;
@@ -12,13 +11,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/estudiantes")
 public class EstudianteController {
+
     @Autowired
     private EstudianteService estudianteService;
 
@@ -30,11 +29,32 @@ public class EstudianteController {
 
     @PostMapping
     public ResponseEntity<?> altaEstudiante(@RequestBody @Valid EstudianteDTO estudianteDTO) {
+        if(estudianteDTO == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El estudiante no puede ser nulo.");
+        }
         try{
             EstudianteDTO nuevoEstudiante = estudianteService.guardarEstudiante(estudianteDTO);
             return ResponseEntity.ok(nuevoEstudiante);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/ordenados")
+    public ResponseEntity<?> obtenerEstudiantesOrdenadosPorCriterio(
+            @RequestParam String criterio,
+            @RequestParam(defaultValue = "asc") String orden) {
+
+        if (criterio == null || criterio.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El criterio de ordenación no puede ser nulo o vacío.");
+        }
+
+        try {
+            List<EstudianteDTO> estudiantesOrdenados = estudianteService.obtenerEstudiantesOrdenadosPorCriterio(criterio, orden);
+            return ResponseEntity.ok(estudiantesOrdenados);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Ocurrió un error al ordenar los estudiantes: " + e.getMessage());
         }
     }
 
@@ -49,55 +69,42 @@ public class EstudianteController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
-    
-    @GetMapping("/ordenados")
-	public ResponseEntity<?> obtenerEstudiantesOrdenadosPorCriterio(@RequestParam  String criterio, @RequestParam  boolean asc) {
-		List<EstudianteDTO> estudiantesOrdenados;
-		try {
-			estudiantesOrdenados = new ArrayList<>(estudianteService.obtenerEstudiantesOrdenadosPorCriterio(criterio, asc));
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-		}
-		return ResponseEntity.ok(estudiantesOrdenados);
-	}
 
-    @GetMapping("/genero/{genero}")
-    public ResponseEntity<?> obtenerEstudiantesPorGenero(@PathVariable String genero) {
+    @GetMapping("/genero")
+    public ResponseEntity<?> obtenerEstudiantesPorGenero(@RequestParam String genero) {
+
         if (genero == null || genero.trim().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El género no puede estar vacío.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El género no puede ser nulo o vacío.");
         }
 
-        if (!esGeneroValido(genero)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El género proporcionado es inválido.");
+        try {
+            List<EstudianteDTO> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
+            return ResponseEntity.ok(estudiantes);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Ocurrió un error al recuperar los estudiantes: " + e.getMessage());
         }
-
-        List<EstudianteDTO> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
-
-        return ResponseEntity.ok(estudiantes);
     }
 
-    @GetMapping("/filtrados/{carrera}/{ciudad}")
-    public ResponseEntity<?> obtenerEstudiantesPorCarreraFiltrados(@PathVariable String carrera,@PathVariable String ciudad){
-    	 if(ciudad==null || ciudad.trim().isEmpty()){
-             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La ciudad no puede estar vacía.");
-         }
-    	List<EstudianteDTO> estudiantesFiltrados;
+    @GetMapping("/filtrados")
+    public ResponseEntity<?> obtenerEstudiantesPorCarreraFiltrados(@RequestParam String carrera, @RequestParam String ciudad){
+
+        if (carrera == null || carrera.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La carrera no puede ser nula o vacía.");
+        }
+
+        if (ciudad == null || ciudad.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La ciudad no puede ser nula o vacía.");
+        }
+
     	try {
-    		estudiantesFiltrados = new ArrayList<>(estudianteService.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad));
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		}
-		return ResponseEntity.ok(estudiantesFiltrados);
+            List<EstudianteDTO> estudiantesFiltrados = new ArrayList<>(estudianteService.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad));
+            return ResponseEntity.ok(estudiantesFiltrados);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
-    /**
-     *
-     * @param genero, si se agregasen nuevos al csv habría que incluirlos acá
-     * @return input valido o invalido
-     */
-    private boolean esGeneroValido(String genero) {
-        return Arrays.asList("Male", "Female", "Polygender","Non-binary","Masculino","Genderfluid","Femenino","Bigender","Agender").contains(genero);
-    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
