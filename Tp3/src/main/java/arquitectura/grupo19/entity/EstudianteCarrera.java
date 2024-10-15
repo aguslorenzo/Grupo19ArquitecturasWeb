@@ -51,15 +51,5 @@ public class EstudianteCarrera {
         this.graduacion = graduacion;
         this.antiguedad = antiguedad;
     }
-    /**
-     * TODO Tentativa a usar cuando actualizamos el estado del alumno en la carrera, puede irse
-     */
-    public void calcularAntiguedad() {
-        if (this.graduacion == 0) {
-            this.antiguedad = Year.now().getValue() - this.inscripcion;
-        } else {
-            this.antiguedad = this.graduacion - this.inscripcion;
-        }
-    }
 
 }

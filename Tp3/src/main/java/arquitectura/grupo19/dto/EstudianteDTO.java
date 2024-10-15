@@ -11,8 +11,6 @@ public class EstudianteDTO {
     private String genero;
     private int dni;
     private String ciudad;
-
-    //TODO considerar sacar esto del DTO
     private List<EstudianteCarrera> carreras;
     public EstudianteDTO(int nroLibreta, String nombre, String apellido, int edad, String genero, int dni, String ciudad, List<EstudianteCarrera> infoCarreras) {
         this.nroLibreta = nroLibreta;
@@ -25,14 +23,6 @@ public class EstudianteDTO {
         this.carreras = infoCarreras;
     }
 
-    public EstudianteDTO(String nombre, String apellido, int edad, String genero, int dni, String ciudad) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.edad = edad;
-        this.genero = genero;
-        this.dni = dni;
-        this.ciudad = ciudad;
-    }
     public int getNroLibreta() {
         return nroLibreta;
     }
@@ -95,5 +85,18 @@ public class EstudianteDTO {
 
     public void setCarreras(List<EstudianteCarrera> carreras) {
         this.carreras = carreras;
+    }
+
+    @Override
+    public String toString() {
+        return "EstudianteDTO{" +
+                "nroLibreta=" + nroLibreta +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", edad=" + edad +
+                ", genero='" + genero + '\'' +
+                ", dni=" + dni +
+                ", ciudad='" + ciudad + '\'' +
+                '}';
     }
 }

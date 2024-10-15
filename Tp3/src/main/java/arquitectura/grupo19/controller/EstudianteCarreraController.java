@@ -24,9 +24,6 @@ public class EstudianteCarreraController {
         return ResponseEntity.ok(matriculas);
     }
 
-    /*
-    TODO charlar si dejamos así y por defecto la fecha es la actual + antiguedad y graduacion en 0 o damos opcion a mas datos
-     */
     @PostMapping("/estudiante/{idEstudiante}/carrera/{idCarrera}")
     public ResponseEntity<?> matricularEstudiante(@PathVariable int idEstudiante, @PathVariable int idCarrera) {
         try {

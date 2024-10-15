@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -55,18 +56,19 @@ public class EstudianteController {
 
     //TODO hacer si pinta, validacion de genero y si es invalido ahi si dar 400
     @GetMapping("/genero/{genero}")
-    public ResponseEntity<?> obtenerEstudiantesPorGenero(@PathVariable String genero){
-        if(genero==null || genero.trim().isEmpty()){
+    public ResponseEntity<?> obtenerEstudiantesPorGenero(@PathVariable String genero) {
+        if (genero == null || genero.trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El género no puede estar vacío.");
         }
-        try {
-            List<EstudianteDTO> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
-            return ResponseEntity.ok(estudiantes);
-        } catch (EstudianteNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error inesperado.");
+
+        // Validación opcional de géneros específicos
+        if (!esGeneroValido(genero)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El género proporcionado es inválido.");
         }
+
+        List<EstudianteDTO> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
+
+        return ResponseEntity.ok(estudiantes);
     }
 
     @GetMapping("/filtrados/{carrera}/{ciudad}")
@@ -81,5 +83,14 @@ public class EstudianteController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 		return ResponseEntity.ok(estudiantesFiltrados);
+    }
+
+    /**
+     *
+     * @param genero, si se agregasen nuevos al csv habría que incluirlos acá
+     * @return input valido o invalido
+     */
+    private boolean esGeneroValido(String genero) {
+        return Arrays.asList("Male", "Female", "Polygender","Non-binary","Masculino","Genderfluid","Femenino","Bigender","Agender").contains(genero);
     }
 }
