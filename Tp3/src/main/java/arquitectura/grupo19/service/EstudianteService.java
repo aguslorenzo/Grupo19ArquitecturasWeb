@@ -24,8 +24,13 @@ public class EstudianteService {
                 .collect(Collectors.toList());
     }
 
-    public EstudianteDTO guardarEstudiante(Estudiante estudiante) {
-        Estudiante nuevoEstudiante = estudianteRepository.save(estudiante);
+    public EstudianteDTO guardarEstudiante(EstudianteDTO estudiante) {
+        // Verifica si el DNI ya existe
+        if (estudianteRepository.findById(estudiante.getDni()).isPresent()) {
+            throw new RuntimeException("Ya existe un estudiante con el DNI: " + estudiante.getDni());
+        }
+
+        Estudiante nuevoEstudiante = estudianteRepository.save(convertToEntity(estudiante));
         return convertToDTO(nuevoEstudiante);
     }
 
@@ -68,7 +73,11 @@ public class EstudianteService {
     }
 
     private EstudianteDTO convertToDTO(Estudiante estudiante) {
-        return new EstudianteDTO(estudiante.getNroLibreta(),estudiante.getNombre(),estudiante.getApellido(),estudiante.getEdad(),estudiante.getGenero(),estudiante.getDni(),estudiante.getCiudad(),null);
+        return new EstudianteDTO(estudiante.getNroLibreta(),estudiante.getNombre(),estudiante.getApellido(),estudiante.getEdad(),estudiante.getGenero(),estudiante.getDni(),estudiante.getCiudad());
+    }
+
+    private Estudiante convertToEntity(EstudianteDTO estudianteDto){
+        return new Estudiante(estudianteDto.getNombre(),estudianteDto.getApellido(),estudianteDto.getEdad(),estudianteDto.getGenero(), estudianteDto.getDni(), estudianteDto.getCiudad(), estudianteDto.getNroLibreta());
     }
 
 }

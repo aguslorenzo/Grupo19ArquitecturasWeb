@@ -29,9 +29,13 @@ public class EstudianteController {
     }
 
     @PostMapping
-    public ResponseEntity<EstudianteDTO> altaEstudiante(@RequestBody @Valid Estudiante estudiante) {
-        EstudianteDTO nuevoEstudiante = estudianteService.guardarEstudiante(estudiante);
-        return ResponseEntity.ok(nuevoEstudiante);
+    public ResponseEntity<?> altaEstudiante(@RequestBody @Valid EstudianteDTO estudianteDTO) {
+        try{
+            EstudianteDTO nuevoEstudiante = estudianteService.guardarEstudiante(estudianteDTO);
+            return ResponseEntity.ok(nuevoEstudiante);
+        } catch (RuntimeException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

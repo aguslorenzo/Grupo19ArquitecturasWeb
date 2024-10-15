@@ -1,18 +1,29 @@
 package arquitectura.grupo19.dto;
 
 import arquitectura.grupo19.entity.EstudianteCarrera;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
+
 import java.util.List;
 
 public class EstudianteDTO {
+    @NotNull(message = "El campo libreta es requerido")
     private int nroLibreta;
+    @NotBlank(message = "El campo nombre es requerido")
     private String nombre;
+    @NotBlank(message = "El campo apellido es requerido")
     private String apellido;
+    @NotNull(message = "El campo edad es requerido")
     private int edad;
+    @NotBlank(message = "El campo genero es requerido")
     private String genero;
+    @NotNull(message = "El campo DNI es requerido")
     private int dni;
+    @NotBlank(message = "El campo ciudad es requerido")
     private String ciudad;
-    private List<EstudianteCarrera> carreras;
-    public EstudianteDTO(int nroLibreta, String nombre, String apellido, int edad, String genero, int dni, String ciudad, List<EstudianteCarrera> infoCarreras) {
+
+    public EstudianteDTO(int nroLibreta, String nombre, String apellido, int edad, String genero, int dni, String ciudad) {
         this.nroLibreta = nroLibreta;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -20,7 +31,6 @@ public class EstudianteDTO {
         this.genero = genero;
         this.dni = dni;
         this.ciudad = ciudad;
-        this.carreras = infoCarreras;
     }
 
     public int getNroLibreta() {
@@ -77,14 +87,6 @@ public class EstudianteDTO {
 
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
-    }
-
-    public List<EstudianteCarrera> getCarreras() {
-        return carreras;
-    }
-
-    public void setCarreras(List<EstudianteCarrera> carreras) {
-        this.carreras = carreras;
     }
 
     @Override
