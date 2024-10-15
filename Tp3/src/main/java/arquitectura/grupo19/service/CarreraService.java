@@ -54,19 +54,6 @@ public class CarreraService {
 		return result;
     }
 
-	private List<Integer> getAnios() {
-		List<Integer> aniosInscripcion = estudianteCarreraRepository.getAniosInscripcion();
-		List<Integer> aniosGraduacion = estudianteCarreraRepository.getAniosGraduacion();
-		
-		// Combinar y eliminar duplicados
-		Set<Integer> aniosUnicos = new HashSet<>();
-		aniosUnicos.addAll(aniosInscripcion);
-		aniosUnicos.addAll(aniosGraduacion);
-		
-		List<Integer> anios = new ArrayList<>(aniosUnicos);
-		Collections.sort(anios);
-		return anios;
-	}
 	//Métodos aux para generar reporte
 	public Integer countInscriptosByCarreraAndAnio(int carrera, int anio) {
 		return estudianteCarreraRepository.countInscriptosByCarreraAndAnio(carrera, anio);
@@ -74,6 +61,20 @@ public class CarreraService {
 
 	public Integer countEgresadosByCarreraAndAnio(int carrera, int anio) {
 		return estudianteCarreraRepository.countEgresadosByCarreraAndAnio(carrera, anio);
+	}
+
+	private List<Integer> getAnios() {
+		List<Integer> aniosInscripcion = estudianteCarreraRepository.getAniosInscripcion();
+		List<Integer> aniosGraduacion = estudianteCarreraRepository.getAniosGraduacion();
+
+		// Combinar y eliminar duplicados
+		Set<Integer> aniosUnicos = new HashSet<>();
+		aniosUnicos.addAll(aniosInscripcion);
+		aniosUnicos.addAll(aniosGraduacion);
+
+		List<Integer> anios = new ArrayList<>(aniosUnicos);
+		Collections.sort(anios);
+		return anios;
 	}
 
 	private CarreraDTO convertToDTO(Carrera c){

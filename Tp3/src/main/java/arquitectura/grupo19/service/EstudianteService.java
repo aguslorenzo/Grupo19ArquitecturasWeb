@@ -17,12 +17,16 @@ public class EstudianteService {
     @Autowired
     private EstudianteRepository estudianteRepository;
 
-    public List<Estudiante> obtenerEstudiantes(){
-        return estudianteRepository.findAll();
+    public List<EstudianteDTO> obtenerEstudiantes() {
+        return estudianteRepository.findAll()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
-    public Estudiante guardarEstudiante(Estudiante estudiante) {
-        return estudianteRepository.save(estudiante);
+    public EstudianteDTO guardarEstudiante(Estudiante estudiante) {
+        Estudiante nuevoEstudiante = estudianteRepository.save(estudiante);
+        return convertToDTO(nuevoEstudiante);
     }
 
     // OBTENER ESTUDIANTES POR CRITERIO Y ORDEN
@@ -49,9 +53,10 @@ public class EstudianteService {
     }
 
     // RECUPERAR UN ESTUDIANTE EN BASE A SU NUMERO DE LIBRETA UNIVERSITARIA
-    public Estudiante buscarEstudiantePorNroLibreta(int nroLibreta) {
-        return estudianteRepository.findByNroLibreta(nroLibreta)
+    public EstudianteDTO buscarEstudiantePorNroLibreta(int nroLibreta) {
+        Estudiante estudiante = estudianteRepository.findByNroLibreta(nroLibreta)
                 .orElseThrow(() -> new EstudianteNotFoundException("No se encontró un estudiante con el número de libreta " + nroLibreta));
+        return convertToDTO(estudiante);
     }
 
     // RECUPERAR ESTUDIANTES POR GENERO

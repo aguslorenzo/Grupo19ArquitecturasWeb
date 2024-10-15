@@ -23,14 +23,14 @@ public class EstudianteController {
     private EstudianteService estudianteService;
 
     @GetMapping
-    public ResponseEntity<List<Estudiante>> obtenerEstudiantes() {
-        List<Estudiante> estudiantes = estudianteService.obtenerEstudiantes();
+    public ResponseEntity<List<EstudianteDTO>> obtenerEstudiantes() {
+        List<EstudianteDTO> estudiantes = estudianteService.obtenerEstudiantes();
         return ResponseEntity.ok(estudiantes);
     }
 
     @PostMapping
-    public ResponseEntity<Estudiante> altaEstudiante(@RequestBody @Valid Estudiante estudiante) {
-        Estudiante nuevoEstudiante = estudianteService.guardarEstudiante(estudiante);
+    public ResponseEntity<EstudianteDTO> altaEstudiante(@RequestBody @Valid Estudiante estudiante) {
+        EstudianteDTO nuevoEstudiante = estudianteService.guardarEstudiante(estudiante);
         return ResponseEntity.ok(nuevoEstudiante);
     }
 
@@ -49,7 +49,7 @@ public class EstudianteController {
         if (nroLibreta <= 0)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El número de libreta debe ser un entero positivo.");
         try {
-            Estudiante estudiante = estudianteService.buscarEstudiantePorNroLibreta(nroLibreta);
+            EstudianteDTO estudiante = estudianteService.buscarEstudiantePorNroLibreta(nroLibreta);
             return ResponseEntity.ok(estudiante);
         } catch (EstudianteNotFoundException ex) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
