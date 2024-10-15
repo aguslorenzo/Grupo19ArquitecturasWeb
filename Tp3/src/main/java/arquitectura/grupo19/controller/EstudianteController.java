@@ -38,16 +38,6 @@ public class EstudianteController {
         }
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        String errorMessage = ex.getBindingResult().getFieldErrors()
-                .stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(", "));
-
-        return ResponseEntity.badRequest().body("Errores de validación: " + errorMessage);
-    }
-
     @GetMapping("/nrolibreta/{nroLibreta}")
     public ResponseEntity<?> obtenerEstudiante(@PathVariable int nroLibreta) {
         if (nroLibreta <= 0)
@@ -107,5 +97,15 @@ public class EstudianteController {
      */
     private boolean esGeneroValido(String genero) {
         return Arrays.asList("Male", "Female", "Polygender","Non-binary","Masculino","Genderfluid","Femenino","Bigender","Agender").contains(genero);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    private ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult().getFieldErrors()
+                .stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+
+        return ResponseEntity.badRequest().body("Errores de validación: " + errorMessage);
     }
 }
