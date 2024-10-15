@@ -4,14 +4,17 @@ import arquitectura.grupo19.dto.EstudianteDTO;
 import arquitectura.grupo19.entity.Estudiante;
 import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
 import arquitectura.grupo19.service.EstudianteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/estudiantes")
@@ -26,9 +29,19 @@ public class EstudianteController {
     }
 
     @PostMapping
-    public ResponseEntity<Estudiante> altaEstudiante(@RequestBody Estudiante estudiante) {
+    public ResponseEntity<Estudiante> altaEstudiante(@RequestBody @Valid Estudiante estudiante) {
         Estudiante nuevoEstudiante = estudianteService.guardarEstudiante(estudiante);
         return ResponseEntity.ok(nuevoEstudiante);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        String errorMessage = ex.getBindingResult().getFieldErrors()
+                .stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+
+        return ResponseEntity.badRequest().body("Errores de validación: " + errorMessage);
     }
 
     @GetMapping("/nrolibreta/{nroLibreta}")
@@ -49,19 +62,17 @@ public class EstudianteController {
 		try {
 			estudiantesOrdenados = new ArrayList<>(estudianteService.obtenerEstudiantesOrdenadosPorCriterio(criterio, asc));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
 		return ResponseEntity.ok(estudiantesOrdenados);
 	}
 
-    //TODO hacer si pinta, validacion de genero y si es invalido ahi si dar 400
     @GetMapping("/genero/{genero}")
     public ResponseEntity<?> obtenerEstudiantesPorGenero(@PathVariable String genero) {
         if (genero == null || genero.trim().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El género no puede estar vacío.");
         }
 
-        // Validación opcional de géneros específicos
         if (!esGeneroValido(genero)) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El género proporcionado es inválido.");
         }
