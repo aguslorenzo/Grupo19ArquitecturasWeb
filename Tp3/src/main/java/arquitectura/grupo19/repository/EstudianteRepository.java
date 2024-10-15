@@ -12,10 +12,6 @@ import java.util.Optional;
 @Repository
 public interface EstudianteRepository extends JpaRepository<Estudiante, Integer> {
 
-	/**
-	 * Optional: obliga a manejar la posibilidad de que el valor esté presente o
-	 * ausente.
-	 */
 	Optional<Estudiante> findByNroLibreta(int nroLibreta);
 
 	List<Estudiante> findByGenero(String genero);

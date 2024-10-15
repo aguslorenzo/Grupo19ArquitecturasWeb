@@ -1,5 +1,6 @@
 package arquitectura.grupo19.controller;
 
+import arquitectura.grupo19.dto.CarreraDTO;
 import arquitectura.grupo19.dto.EstudianteCarreraDTO;
 import arquitectura.grupo19.entity.Carrera;
 import arquitectura.grupo19.exceptions.CarreraNotFoundException;
@@ -23,7 +24,7 @@ public class CarreraController {
     @GetMapping("/inscriptos")
     public ResponseEntity<?> getCarrerasConInscriptos() {
         try {
-            List<Carrera> carreras = carreraService.getCarrerasConInscriptos();
+            List<CarreraDTO> carreras = carreraService.getCarrerasConInscriptos();
             return ResponseEntity.ok(carreras);
         }
         catch (CarreraNotFoundException e){

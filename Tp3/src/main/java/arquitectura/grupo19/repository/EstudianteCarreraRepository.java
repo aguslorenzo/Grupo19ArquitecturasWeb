@@ -15,9 +15,6 @@ import java.util.List;
 public interface EstudianteCarreraRepository extends JpaRepository<EstudianteCarrera,Integer>{
 
     boolean existsByEstudianteAndCarrera(Estudiante estudiante, Carrera carrera);
-    
-    @Query("SELECT ec.carrera FROM EstudianteCarrera ec WHERE ec.estudiante.nroLibreta = ?1")
-    List<EstudianteCarrera> findCarrerasByEstudianteNroLibreta(int nroLibreta);
 
     @Query("SELECT ec.inscripcion FROM EstudianteCarrera ec WHERE ec.inscripcion IS NOT NULL")
 	List<Integer> getAniosInscripcion();

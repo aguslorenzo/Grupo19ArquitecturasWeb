@@ -27,18 +27,20 @@ public class CarreraService {
     @Autowired 
     private EstudianteCarreraRepository estudianteCarreraRepository;
 
-    public List<Carrera> getCarrerasConInscriptos(){
-		//TODO contemplar devolver lista vacia en lugar de excepcion
+	public List<CarreraDTO> getCarrerasConInscriptos() {
 		List<CarreraDTO> result = new ArrayList<>();
-        List<Carrera> carreras = carreraRepository.getCarrerasConInscriptos();
-        if(carreras.isEmpty()){
-            throw new CarreraNotFoundException("No se encontraron carreras con inscriptos.");
-        }
-		for (Carrera c: carreras){
+		List<Carrera> carreras = carreraRepository.getCarrerasConInscriptos();
+
+		if (carreras.isEmpty()) {
+			// Devuelve lista vacía en lugar de lanzar excepción
+			return result;
+		}
+
+		for (Carrera c : carreras) {
 			result.add(convertToDTO(c));
 		}
-        return carreras;
-    }
+		return result;
+	}
     
     public List<EstudianteCarreraDTO> getReporteDeCarrerasPorAnio(){
     	 List<EstudianteCarreraDTO> result = new ArrayList<>();
