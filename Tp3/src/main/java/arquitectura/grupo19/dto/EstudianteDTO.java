@@ -11,6 +11,8 @@ public class EstudianteDTO {
     private String genero;
     private int dni;
     private String ciudad;
+
+    //TODO considerar sacar esto del DTO
     private List<EstudianteCarrera> carreras;
     public EstudianteDTO(int nroLibreta, String nombre, String apellido, int edad, String genero, int dni, String ciudad, List<EstudianteCarrera> infoCarreras) {
         this.nroLibreta = nroLibreta;

@@ -27,11 +27,6 @@ public class EstudianteCarreraService {
     private EstudianteCarreraRepository estudianteCarreraRepository;
 
     // OBTENER TODAS LAS MATRICULAS
-    /**
-     * Convierte entidades en un DTO que tiene solo los atributos necesarios. Esto sirve para
-     * tener un control más claro sobre que datos se envían en las respuestas JSON
-     * y evitar problemas de serialización con Hibernate.
-     */
     public List<EstudianteCarreraDTO> obtenerMatriculas(){
         return estudianteCarreraRepository.findAll()
                 .stream()

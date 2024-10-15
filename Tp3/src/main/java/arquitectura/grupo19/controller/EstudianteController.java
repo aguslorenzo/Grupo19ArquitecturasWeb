@@ -1,5 +1,6 @@
 package arquitectura.grupo19.controller;
 
+import arquitectura.grupo19.dto.EstudianteDTO;
 import arquitectura.grupo19.entity.Estudiante;
 import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
 import arquitectura.grupo19.service.EstudianteService;
@@ -43,22 +44,23 @@ public class EstudianteController {
     
     @GetMapping("/ordenados")
 	public ResponseEntity<?> obtenerEstudiantesOrdenadosPorCriterio(@RequestParam  String criterio, @RequestParam  boolean asc) {
-		List<Estudiante> estudiantesOrdenados = new ArrayList<>();
+		List<EstudianteDTO> estudiantesOrdenados;
 		try {
-			estudiantesOrdenados.addAll(estudianteService.obtenerEstudiantesOrdenadosPorCriterio(criterio, asc));
+			estudiantesOrdenados = new ArrayList<>(estudianteService.obtenerEstudiantesOrdenadosPorCriterio(criterio, asc));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 		return ResponseEntity.ok(estudiantesOrdenados);
 	}
 
+    //TODO hacer si pinta, validacion de genero y si es invalido ahi si dar 400
     @GetMapping("/genero/{genero}")
     public ResponseEntity<?> obtenerEstudiantesPorGenero(@PathVariable String genero){
         if(genero==null || genero.trim().isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El género no puede estar vacío.");
         }
         try {
-            List<Estudiante> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
+            List<EstudianteDTO> estudiantes = estudianteService.obtenerEstudiantesPorGenero(genero);
             return ResponseEntity.ok(estudiantes);
         } catch (EstudianteNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -72,9 +74,9 @@ public class EstudianteController {
     	 if(ciudad==null || ciudad.trim().isEmpty()){
              return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("La ciudad no puede estar vacía.");
          }
-    	List<Estudiante> estudiantesFiltrados = new ArrayList<>();
+    	List<EstudianteDTO> estudiantesFiltrados;
     	try {
-    		estudiantesFiltrados.addAll(estudianteService.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad));
+    		estudiantesFiltrados = new ArrayList<>(estudianteService.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}

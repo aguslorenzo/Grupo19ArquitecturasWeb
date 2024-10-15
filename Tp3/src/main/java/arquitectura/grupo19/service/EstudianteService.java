@@ -1,5 +1,6 @@
 package arquitectura.grupo19.service;
 
+import arquitectura.grupo19.dto.EstudianteDTO;
 import arquitectura.grupo19.entity.Estudiante;
 
 import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EstudianteService {
@@ -24,20 +26,28 @@ public class EstudianteService {
     }
 
     // OBTENER ESTUDIANTES POR CRITERIO Y ORDEN
-    public List<Estudiante> obtenerEstudiantesOrdenadosPorCriterio(String criterio, Boolean asc){
-    	if(asc) {
-    		return estudianteRepository.findAll(Sort.by(criterio).ascending());
-    	}else {
-    		return estudianteRepository.findAll(Sort.by(criterio).descending());
-    	}	
+    public List<EstudianteDTO> obtenerEstudiantesOrdenadosPorCriterio(String criterio, Boolean asc) {
+        List<Estudiante> estudiantes;
+
+        if (asc) {
+            estudiantes = estudianteRepository.findAll(Sort.by(criterio).ascending());
+        } else {
+            estudiantes = estudianteRepository.findAll(Sort.by(criterio).descending());
+        }
+
+        return estudiantes.stream()
+                .map(this::convertToDTO)  // Asumiendo que tienes el método convertToDTO para convertir Estudiante a EstudianteDTO
+                .collect(Collectors.toList());
     }
     
     // OBTENER ESTUDIANTE SEGUN CARRERA FILTRANDO CIUDAD
-    public List<Estudiante> obtenerEstudiantesPorCarreraFiltrados(String carrera, String ciudad){
-    	List<Estudiante> estudiantes =  estudianteRepository.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad);
-         return estudiantes;
+    public List<EstudianteDTO> obtenerEstudiantesPorCarreraFiltrados(String carrera, String ciudad) {
+        return estudianteRepository.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
-    
+
     // RECUPERAR UN ESTUDIANTE EN BASE A SU NUMERO DE LIBRETA UNIVERSITARIA
     public Estudiante buscarEstudiantePorNroLibreta(int nroLibreta) {
         return estudianteRepository.findByNroLibreta(nroLibreta)
@@ -45,11 +55,15 @@ public class EstudianteService {
     }
 
     // RECUPERAR ESTUDIANTES POR GENERO
-    public List<Estudiante> obtenerEstudiantesPorGenero(String genero){
-        List<Estudiante> estudiantes = estudianteRepository.findByGenero(genero);
-        if(estudiantes.isEmpty()){
-            throw new EstudianteNotFoundException("No se encontraron estudiantes con el género: " + genero);
-        }
-        return estudiantes;
+    public List<EstudianteDTO> obtenerEstudiantesPorGenero(String genero) {
+        return estudianteRepository.findByGenero(genero)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
+
+    private EstudianteDTO convertToDTO(Estudiante estudiante) {
+        return new EstudianteDTO(estudiante.getNroLibreta(),estudiante.getNombre(),estudiante.getApellido(),estudiante.getEdad(),estudiante.getGenero(),estudiante.getDni(),estudiante.getCiudad(),null);
+    }
+
 }

@@ -28,18 +28,10 @@ public class CarreraService {
     private EstudianteCarreraRepository estudianteCarreraRepository;
 
 	public List<CarreraDTO> getCarrerasConInscriptos() {
-		List<CarreraDTO> result = new ArrayList<>();
-		List<Carrera> carreras = carreraRepository.getCarrerasConInscriptos();
-
-		if (carreras.isEmpty()) {
-			// Devuelve lista vacía en lugar de lanzar excepción
-			return result;
-		}
-
-		for (Carrera c : carreras) {
-			result.add(convertToDTO(c));
-		}
-		return result;
+		return carreraRepository.getCarrerasConInscriptos()
+				.stream()
+				.map(this::convertToDTO)
+				.collect(Collectors.toList());
 	}
     
     public List<EstudianteCarreraDTO> getReporteDeCarrerasPorAnio(){
