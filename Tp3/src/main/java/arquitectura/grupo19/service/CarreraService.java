@@ -33,49 +33,6 @@ public class CarreraService {
 				.map(this::convertToDTO)
 				.collect(Collectors.toList());
 	}
-    
-    public List<EstudianteCarreraDTO> getReporteDeCarrerasPorAnio(){
-    	 List<EstudianteCarreraDTO> result = new ArrayList<>();
-    	
-    	 List<Carrera> carreras = carreraRepository.findAll(Sort.by("nombre").ascending());
-    	 List<Integer> anios = this.getAnios();
-    	 
-    	 for (Carrera carrera : carreras) {
- 			for (Integer anio : anios) {
- 				Integer inscriptos = countInscriptosByCarreraAndAnio(carrera.getId(), anio);
- 				Integer egresados = countEgresadosByCarreraAndAnio(carrera.getId(), anio);
- 				if (inscriptos == null) inscriptos = 0;
- 				if (egresados == null) egresados = 0;
-
- 				if(inscriptos != 0 || egresados != 0)
- 					result.add(new EstudianteCarreraDTO(carrera.getNombre(), anio, inscriptos, egresados));
- 			}
- 		}
-		return result;
-    }
-
-	//Métodos aux para generar reporte
-	public Integer countInscriptosByCarreraAndAnio(int carrera, int anio) {
-		return estudianteCarreraRepository.countInscriptosByCarreraAndAnio(carrera, anio);
-	}
-
-	public Integer countEgresadosByCarreraAndAnio(int carrera, int anio) {
-		return estudianteCarreraRepository.countEgresadosByCarreraAndAnio(carrera, anio);
-	}
-
-	private List<Integer> getAnios() {
-		List<Integer> aniosInscripcion = estudianteCarreraRepository.getAniosInscripcion();
-		List<Integer> aniosGraduacion = estudianteCarreraRepository.getAniosGraduacion();
-
-		// Combinar y eliminar duplicados
-		Set<Integer> aniosUnicos = new HashSet<>();
-		aniosUnicos.addAll(aniosInscripcion);
-		aniosUnicos.addAll(aniosGraduacion);
-
-		List<Integer> anios = new ArrayList<>(aniosUnicos);
-		Collections.sort(anios);
-		return anios;
-	}
 
 	private CarreraDTO convertToDTO(Carrera c){
 			return new CarreraDTO(c.getId(),c.getNombre(),c.getDuracion());
