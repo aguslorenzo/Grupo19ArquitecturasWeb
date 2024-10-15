@@ -45,7 +45,7 @@ public class EstudianteCarreraService {
     }
 
     // MATRICULAR ESTUDIANTE
-    public EstudianteCarrera matricularEstudiante(int estudianteId, int carreraId) {
+    public EstudianteCarreraDTO matricularEstudiante(int estudianteId, int carreraId) {
         Estudiante estudiante = estudianteRepository.findById(estudianteId)
                 .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
         Carrera carrera = carreraRepository.findById(carreraId)
@@ -60,7 +60,12 @@ public class EstudianteCarreraService {
         int anioActual = LocalDate.now().getYear();
 
         EstudianteCarrera nuevaMatricula  = new EstudianteCarrera(estudiante, carrera, anioActual);
+        EstudianteCarrera savedMatricula = estudianteCarreraRepository.save(nuevaMatricula);
 
-        return estudianteCarreraRepository.save(nuevaMatricula);
+        return convertToDto(savedMatricula);
+    }
+
+    private EstudianteCarreraDTO convertToDto(EstudianteCarrera matricula){
+        return new EstudianteCarreraDTO(matricula.getId(),matricula.getEstudiante().getDni(),matricula.getCarrera().getId(),matricula.getInscripcion(),matricula.getGraduacion());
     }
 }

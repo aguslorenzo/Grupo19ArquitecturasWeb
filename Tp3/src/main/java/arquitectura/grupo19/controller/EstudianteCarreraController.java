@@ -27,7 +27,7 @@ public class EstudianteCarreraController {
     @PostMapping("/estudiante/{idEstudiante}/carrera/{idCarrera}")
     public ResponseEntity<?> matricularEstudiante(@PathVariable int idEstudiante, @PathVariable int idCarrera) {
         try {
-            EstudianteCarrera matricula = estudianteCarreraService.matricularEstudiante(idEstudiante, idCarrera);
+            EstudianteCarreraDTO matricula = estudianteCarreraService.matricularEstudiante(idEstudiante, idCarrera);
             return new ResponseEntity<>(matricula, HttpStatus.CREATED);
         } catch (RuntimeException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
