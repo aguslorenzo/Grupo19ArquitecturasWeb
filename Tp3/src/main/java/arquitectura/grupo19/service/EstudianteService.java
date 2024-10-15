@@ -87,10 +87,6 @@ public class EstudianteService {
      * @return input valido o invalido
      */
     private void validarGenero(String genero) {
-        if (genero == null || genero.trim().isEmpty()) {
-            throw new IllegalArgumentException("El género no puede estar vacío.");
-        }
-
         List<String> generosValidos = Arrays.asList("Male", "Female", "Polygender", "Non-binary", "Masculino",
                 "Genderfluid", "Femenino", "Bigender", "Agender");
 
