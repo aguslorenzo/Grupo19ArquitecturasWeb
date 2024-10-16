@@ -1,0 +1,623 @@
+{
+	"info": {
+		"_postman_id": "cf1dd3bc-2c45-4986-9840-f0374447ea6a",
+		"name": "ArquitecturasWebTp3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24291726",
+		"_collection_link": "https://galactic-station-193715.postman.co/workspace/Matias~1d81702f-6d99-44d7-9234-1f83998e0b34/collection/24291726-cf1dd3bc-2c45-4986-9840-f0374447ea6a?action=share&source=collection_link&creator=24291726"
+	},
+	"item": [
+		{
+			"name": "Carreras",
+			"item": [
+				{
+					"name": "inscriptos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/carreras/inscriptos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"carreras",
+								"inscriptos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Estudiantes",
+			"item": [
+				{
+					"name": "estudiantes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/estudiantes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"estudiantes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "estudiantes",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/estudiantes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"estudiantes"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "estudiante_nuevo",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nroLibreta\": 12345,\r\n  \"nombre\": \"Agustina\",\r\n  \"apellido\": \"Lorenzo\",\r\n  \"edad\": 26,\r\n  \"genero\": \"Femenino\",\r\n  \"dni\": 41104122,\r\n  \"ciudad\": \"Olavarría\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/estudiantes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"estudiantes"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "estudiante_existente",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nroLibreta\": 12345,\r\n  \"nombre\": \"Agustina\",\r\n  \"apellido\": \"Lorenzo\",\r\n  \"edad\": 26,\r\n  \"genero\": \"Femenino\",\r\n  \"dni\": 41104122,\r\n  \"ciudad\": \"Olavarría\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/estudiantes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"estudiantes"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "nrolibreta",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/estudiantes/nrolibreta/72976",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"estudiantes",
+								"nrolibreta",
+								"72976"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "libreta_existe",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/estudiantes/nrolibreta/72976",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"estudiantes",
+										"nrolibreta",
+										"72976"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "libreta_no_existe",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/estudiantes/nrolibreta/99999",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"estudiantes",
+										"nrolibreta",
+										"99999"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "ordenados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/estudiantes/ordenados?criterio=edad&asc=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"estudiantes",
+								"ordenados"
+							],
+							"query": [
+								{
+									"key": "criterio",
+									"value": "edad"
+								},
+								{
+									"key": "asc",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "criterio_valido",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/estudiantes/ordenados?criterio=ciudad&asc=true",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"estudiantes",
+										"ordenados"
+									],
+									"query": [
+										{
+											"key": "criterio",
+											"value": "ciudad"
+										},
+										{
+											"key": "asc",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "criterio_no_valido",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/estudiantes/ordenados?criterio=eda&asc=true",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"estudiantes",
+										"ordenados"
+									],
+									"query": [
+										{
+											"key": "criterio",
+											"value": "eda"
+										},
+										{
+											"key": "asc",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "genero",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/estudiantes/genero?genero=Female",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"estudiantes",
+								"genero"
+							],
+							"query": [
+								{
+									"key": "genero",
+									"value": "Female"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "genero_valido",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/estudiantes/genero?genero=Male",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"estudiantes",
+										"genero"
+									],
+									"query": [
+										{
+											"key": "genero",
+											"value": "Male"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "genero_no_valido",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/estudiantes/genero?genero=Fem",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"estudiantes",
+										"genero"
+									],
+									"query": [
+										{
+											"key": "genero",
+											"value": "Fem"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "filtrados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/estudiantes/filtrados?carrera=TUDAI&ciudad=Rauch",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"estudiantes",
+								"filtrados"
+							],
+							"query": [
+								{
+									"key": "carrera",
+									"value": "TUDAI"
+								},
+								{
+									"key": "ciudad",
+									"value": "Rauch"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "criterio_filtrado_valido",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/estudiantes/filtrados?carrera=TUDAI&ciudad=Rauch",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"estudiantes",
+										"filtrados"
+									],
+									"query": [
+										{
+											"key": "carrera",
+											"value": "TUDAI"
+										},
+										{
+											"key": "ciudad",
+											"value": "Rauch"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "criterio_filtrado_no_valido",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/estudiantes/filtrados?carrera=TUARI&ciudad=Rauch",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"estudiantes",
+										"filtrados"
+									],
+									"query": [
+										{
+											"key": "carrera",
+											"value": "TUARI"
+										},
+										{
+											"key": "ciudad",
+											"value": "Rauch"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "EstudiantesCarreras",
+			"item": [
+				{
+					"name": "matriculas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/matriculas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"matriculas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "matriculas",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/matriculas/estudiante/11962781/carrera/15",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"matriculas",
+								"estudiante",
+								"11962781",
+								"carrera",
+								"15"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "matriculacion_valida",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/matriculas/estudiante/41104122/carrera/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"matriculas",
+										"estudiante",
+										"41104122",
+										"carrera",
+										"1"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "matriculacion_invalida",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/matriculas/estudiante/41104122/carrera/50",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"matriculas",
+										"estudiante",
+										"41104122",
+										"carrera",
+										"50"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "reporte",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/matriculas/reporte",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"matriculas",
+								"reporte"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
