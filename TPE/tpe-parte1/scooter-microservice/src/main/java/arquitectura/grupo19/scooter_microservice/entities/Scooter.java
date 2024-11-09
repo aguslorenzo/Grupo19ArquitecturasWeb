@@ -7,21 +7,20 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor // Crea un constructor sin argumentos
+@NoArgsConstructor
 @AllArgsConstructor
 public class Scooter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(nullable = false)
-    private String location; //esto puede ser un array de double, un String, o una clase personalizada Location
+    private String location; //TODO could be > un array de double, un String, o una clase personalizada Location
     @Column(nullable = false)
-    private String status;
+    private String status;//TODO could be > enum AVAILABLE - IN_MAINTENANCE
     @Column(nullable=false)
     private int kilometers;
     @Column(nullable = false)
     private double activeTime;
     //@OneToMany(mappedBy = "scooter"
     //private List<Trip> trips;
-
 }
