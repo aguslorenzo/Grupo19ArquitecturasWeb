@@ -4,22 +4,37 @@ import arquitectura.grupo19.dto.EstudianteDTO;
 import arquitectura.grupo19.entity.Estudiante;
 
 import arquitectura.grupo19.exceptions.EstudianteNotFoundException;
+import arquitectura.grupo19.exceptions.InvalidGenderException;
 import arquitectura.grupo19.repository.EstudianteRepository;
+import arquitectura.grupo19.utils.constantes.Genero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class EstudianteService {
 
-    @Autowired
-    private EstudianteRepository estudianteRepository;
+    /**
+     * Antes:
+     * @Autowired
+     * private EstudianteRepository estudianteRepository;
+     */
+
+    /**
+     * Utilizando la inyección de dependencias automática de Spring
+     */
+    private final EstudianteRepository estudianteRepository;
+
+    public EstudianteService(EstudianteRepository estudianteRepository) {
+        this.estudianteRepository = estudianteRepository;
+    }
 
     // OBTENER TODOS LOS ESTUDIANTES
+    @Transactional(readOnly = true)
     public List<EstudianteDTO> obtenerEstudiantes() {
         return estudianteRepository.findAll()
                 .stream()
@@ -27,7 +42,14 @@ public class EstudianteService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * TRANSACTIONAL: Es recomendable marcar métodos de la capa de servicio con la anotación @Transactional,
+     * especialmente para aquellos que modifican la base de datos. Esto asegura que se manejen
+     * las transacciones correctamente, y en caso de error, se realice un rollback automático.
+     */
+
     // DAR DE ALTA UN ESTUDIANTE
+    @Transactional
     public EstudianteDTO guardarEstudiante(EstudianteDTO estudiante) {
         verificarDNIUnico(estudiante.getDni());
         Estudiante nuevoEstudiante = estudianteRepository.save(convertToEntity(estudiante));
@@ -35,6 +57,7 @@ public class EstudianteService {
     }
 
     // OBTENER ESTUDIANTES ORDENADOS POR CUALQUIER CRITERIO Y ORDEN
+    @Transactional(readOnly = true)
     public List<EstudianteDTO> obtenerEstudiantesOrdenadosPorCriterio(String criterio, String orden) {
         // No es necesario validar nulidad de criterio acá, ya fue validado en el controller
         verificarOrden(orden); //verificar que el orden sea "asc" o "desc"
@@ -46,6 +69,7 @@ public class EstudianteService {
     }
 
     // RECUPERAR UN ESTUDIANTE EN BASE A SU NUMERO DE LIBRETA UNIVERSITARIA
+    @Transactional(readOnly = true)
     public EstudianteDTO buscarEstudiantePorNroLibreta(int nroLibreta) {
         Estudiante estudiante = estudianteRepository.findByNroLibreta(nroLibreta)
                 .orElseThrow(() -> new EstudianteNotFoundException("No se encontró un estudiante con el número de libreta " + nroLibreta));
@@ -53,6 +77,7 @@ public class EstudianteService {
     }
 
     // RECUPERAR ESTUDIANTES POR GENERO
+    @Transactional(readOnly = true)
     public List<EstudianteDTO> obtenerEstudiantesPorGenero(String genero) {
         validarGenero(genero);
         return estudianteRepository.findByGenero(genero)
@@ -62,6 +87,7 @@ public class EstudianteService {
     }
     
     // OBTENER ESTUDIANTE SEGUN CARRERA FILTRANDO CIUDAD
+    @Transactional(readOnly = true)
     public List<EstudianteDTO> obtenerEstudiantesPorCarreraFiltrados(String carrera, String ciudad) {
         return estudianteRepository.obtenerEstudiantesPorCarreraFiltrados(carrera, ciudad)
                 .stream()
@@ -83,15 +109,12 @@ public class EstudianteService {
 
     /**
      *
-     * @param genero, si se agregasen nuevos al csv habría que incluirlos acá
+     * @param genero, si se agregasen nuevos al csv habría que incluirlos en el enum Genero
      * @return input valido o invalido
      */
     private void validarGenero(String genero) {
-        List<String> generosValidos = Arrays.asList("Male", "Female", "Polygender", "Non-binary", "Masculino",
-                "Genderfluid", "Femenino", "Bigender", "Agender");
-
-        if (!generosValidos.contains(genero)) {
-            throw new IllegalArgumentException("El género proporcionado es inválido.");
+        if (!Genero.esGeneroValido(genero)) {
+            throw new InvalidGenderException("El género proporcionado es inválido.");
         }
     }
 

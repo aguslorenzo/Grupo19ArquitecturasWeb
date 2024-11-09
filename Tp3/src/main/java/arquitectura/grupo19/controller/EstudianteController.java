@@ -18,8 +18,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/estudiantes")
 public class EstudianteController {
 
-    @Autowired
-    private EstudianteService estudianteService;
+    /*@Autowired
+    private EstudianteService estudianteService;*/
+
+    /**
+     * Utilizando inyección de dependencias de spring:
+     */
+    private final EstudianteService estudianteService;
+
+    public EstudianteController(EstudianteService estudianteService) {
+        this.estudianteService = estudianteService;
+    }
 
     @GetMapping
     public ResponseEntity<List<EstudianteDTO>> obtenerEstudiantes() {

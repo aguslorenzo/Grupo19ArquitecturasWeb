@@ -20,11 +20,11 @@ public class ClienteDAOImpl implements ClienteDAO{
     @Override
     public List<Cliente> getAll() {
         String query = "SELECT * FROM clientes";
-        PreparedStatement ps;
         List<Cliente> resultado = new ArrayList<>();
-        try {
-            ps = conn.prepareStatement(query);
+
+        try (PreparedStatement ps = conn.prepareStatement(query)){
             ResultSet rs = ps.executeQuery();
+
             while(rs.next()){
                 resultado.add(new Cliente(rs.getInt(1),rs.getString(2),rs.getString(3)));
             }
@@ -32,6 +32,7 @@ public class ClienteDAOImpl implements ClienteDAO{
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
         return resultado;
     }
 
