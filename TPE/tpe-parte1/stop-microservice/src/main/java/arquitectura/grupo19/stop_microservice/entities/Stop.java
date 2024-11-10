@@ -20,7 +20,7 @@ public class Stop {
     @Column(nullable = false)
     private Double yAxis;
     @Column(nullable = true)
-    private long scooterId;
+    private Long scooterId;
 
 
 

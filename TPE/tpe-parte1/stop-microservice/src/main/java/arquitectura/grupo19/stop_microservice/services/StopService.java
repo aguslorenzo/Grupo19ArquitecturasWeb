@@ -69,8 +69,15 @@ public class StopService {
         return convertEntityToDto(stop);
     }
     
+    
+    //SERVICIOS DE AGREGAR O QUITAR SCOOTER DE LA PARADA*******************************************************
     public void placeScooter(Long stopId, Long scooterId) {
         Stop stop = stopRepository.findById(stopId).orElseThrow(() -> new NotFoundException("Stop", stopId));
+        
+        // Verifica si la parada esta libre o no
+        if (stop.getScooterId() != null) {
+            throw new IllegalStateException("La parada ya tiene un scooter asignado.");
+        }
         
         // Llama al FeignClient para obtener el Scooter
         Scooter scooter = scooterFeignClient.getScooterById(scooterId);
@@ -81,7 +88,20 @@ public class StopService {
         // Guarda los cambios
         stopRepository.save(stop);
     }
+    
+    public void clearStop(Long stopId) {
+        Stop stop = stopRepository.findById(stopId).orElseThrow(() -> new NotFoundException("Stop", stopId));
+        
+        //Vacia la parada
+        stop.setScooterId(null);
 
+        // Guarda los cambios
+        stopRepository.save(stop);
+    }
+    //**************************************************************************************************************
+    
+    
+    
     private Stop convertDtoToEntity(StopDto stopDto) {
     	Stop stop = new Stop();
     	stop.setDirectionDescription(stopDto.getDirectionDescription());
