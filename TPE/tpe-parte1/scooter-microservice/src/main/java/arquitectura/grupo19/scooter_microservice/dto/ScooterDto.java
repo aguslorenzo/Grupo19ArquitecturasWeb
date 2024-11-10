@@ -1,6 +1,7 @@
 package arquitectura.grupo19.scooter_microservice.dto;
 
 import arquitectura.grupo19.scooter_microservice.entities.Scooter;
+import arquitectura.grupo19.scooter_microservice.entities.ScooterStatus;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ public class ScooterDto {
 
     @NotNull(message = "El estatus es requerido")
     @NotEmpty(message = "El estatus es un campo requerido")
-    private String status;
+    private ScooterStatus status;
 
     @NotNull(message = "El valor de kilometros es requerido")
     private int kilometers;

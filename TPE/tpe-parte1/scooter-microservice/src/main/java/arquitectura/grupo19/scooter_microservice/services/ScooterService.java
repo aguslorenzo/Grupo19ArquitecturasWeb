@@ -2,6 +2,7 @@ package arquitectura.grupo19.scooter_microservice.services;
 
 import arquitectura.grupo19.scooter_microservice.dto.ScooterDto;
 import arquitectura.grupo19.scooter_microservice.entities.Scooter;
+import arquitectura.grupo19.scooter_microservice.entities.ScooterStatus;
 import arquitectura.grupo19.scooter_microservice.repositories.ScooterRepository;
 import arquitectura.grupo19.scooter_microservice.services.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,25 @@ public class ScooterService {
     }
   
     
+    //SERVICIOS DE CONSULTAS DE MONOPATINES**********************************************************************
+
+	public void putScooterOnMaintenance(Long id) {
+		 // Buscar scooter por id
+        Scooter scooter = scooterRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("Scooter", id));
+        scooter.setStatus(ScooterStatus.IN_MAINTENANCE); //cambiar estado
+        scooterRepository.save(scooter); //guardar cambios
+	}
+	
+	public void putScooterAvailable(Long id) {
+		 // Buscar scooter por id
+        Scooter scooter = scooterRepository.findById(id)
+                .orElseThrow(()->new NotFoundException("Scooter", id));
+        scooter.setStatus(ScooterStatus.AVAILABLE); //cambiar estado
+        scooterRepository.save(scooter); //guardar cambios
+	}
+    //***********************************************************************************************************
+    
     private Scooter convertDtoToEntity(ScooterDto scooterDto) {
     	Scooter scooter = new Scooter();
     	scooter.setStatus(scooterDto.getStatus());
@@ -81,4 +101,7 @@ public class ScooterService {
     	scooterDto.setActiveTime(scooter.getActiveTime());
         return scooterDto;
     }
+
+	
+
 }
