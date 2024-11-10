@@ -33,6 +33,7 @@
 		<module>map-microservice</module>
 		<module>maintenance-microservice</module>
 		<module>admin-microservice</module>
+		<module>stop-microservice</module>
 	</modules>
 
 	<dependencies>
