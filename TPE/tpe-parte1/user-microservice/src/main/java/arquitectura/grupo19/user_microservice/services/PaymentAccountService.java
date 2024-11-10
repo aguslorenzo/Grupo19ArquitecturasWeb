@@ -3,7 +3,7 @@ package arquitectura.grupo19.user_microservice.services;
 import arquitectura.grupo19.user_microservice.dto.PaymentAccountDto;
 import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.repositories.PaymentAccountRepository;
-import arquitectura.grupo19.user_microservice.services.exceptions.NotFoundException;
+import arquitectura.grupo19.user_microservice.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +11,6 @@ import java.util.List;
 
 @Service
 public class PaymentAccountService {
-
 
     private final PaymentAccountRepository paymentAccountRepository;
 

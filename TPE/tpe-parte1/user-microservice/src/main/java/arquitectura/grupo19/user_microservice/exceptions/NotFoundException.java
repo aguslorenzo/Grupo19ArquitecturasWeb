@@ -1,4 +1,4 @@
-package arquitectura.grupo19.user_microservice.services.exceptions;
+package arquitectura.grupo19.user_microservice.exceptions;
 
 public class NotFoundException extends RuntimeException{
 

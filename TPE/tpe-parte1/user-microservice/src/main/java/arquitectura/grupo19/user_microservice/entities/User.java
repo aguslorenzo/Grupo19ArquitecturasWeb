@@ -3,7 +3,9 @@ package arquitectura.grupo19.user_microservice.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,17 +29,13 @@ public class User {
     @Column(nullable = false)
     private String cellphone;
 
-    private double saldo;
-    /*@OneToOne
-    private PaymentAccount paymentMethod;*/
-
     @ManyToMany
     @JoinTable(
             name = "user_payment_account",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "payment_account_id")
     )
-    private Set<PaymentAccount> paymentAccounts = new HashSet<>();
+    private List<PaymentAccount> paymentAccounts = new ArrayList<>();
 
     public void activarMonopatin(){
         /*if(paymentMethod.tieneSaldo()){
