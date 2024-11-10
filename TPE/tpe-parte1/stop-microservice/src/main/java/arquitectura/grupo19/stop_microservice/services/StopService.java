@@ -2,6 +2,8 @@ package arquitectura.grupo19.stop_microservice.services;
 
 import arquitectura.grupo19.stop_microservice.dto.StopDto;
 import arquitectura.grupo19.stop_microservice.entities.Stop;
+import arquitectura.grupo19.stop_microservice.feignClients.ScooterFeignClient;
+import arquitectura.grupo19.stop_microservice.model.Scooter;
 import arquitectura.grupo19.stop_microservice.repositories.StopRepository;
 import arquitectura.grupo19.stop_microservice.services.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,11 @@ import java.util.List;
 public class StopService {
 
     private final StopRepository stopRepository;
+    private final ScooterFeignClient scooterFeignClient;
 
-    public StopService(StopRepository stopRepository) {
+    public StopService(StopRepository stopRepository, ScooterFeignClient scooterFeignClient) {
         this.stopRepository = stopRepository;
+        this.scooterFeignClient = scooterFeignClient;
     }
 
     @Transactional
@@ -63,6 +67,19 @@ public class StopService {
                 .orElseThrow(()->new NotFoundException("User", id));
         stopRepository.delete(stop);
         return convertEntityToDto(stop);
+    }
+    
+    public void placeScooter(Long stopId, Long scooterId) {
+        Stop stop = stopRepository.findById(stopId).orElseThrow(() -> new NotFoundException("Stop", stopId));
+        
+        // Llama al FeignClient para obtener el Scooter
+        Scooter scooter = scooterFeignClient.getScooterById(scooterId);
+
+        // Asocia el scooterId a la parada
+        stop.setScooterId(scooter.getId());
+
+        // Guarda los cambios
+        stopRepository.save(stop);
     }
 
     private Stop convertDtoToEntity(StopDto stopDto) {

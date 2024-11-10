@@ -13,33 +13,38 @@ import java.util.List;
 public class StopController {
 
     @Autowired
-    private StopService stopservice;
+    private StopService stopService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<StopDto> getStops() {
-        return stopservice.getStops();
+        return stopService.getStops();
     }
 
     @GetMapping("/id/{id}")
     public StopDto getStopById(@PathVariable Long id) {
-        return stopservice.getStopById(id);
+        return stopService.getStopById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void saveStop(@RequestBody StopDto stopDto) {
-    	stopservice.saveStop(stopDto);
+    	stopService.saveStop(stopDto);
     }
 
     @PutMapping("/{id}")
     public void updateStop(@PathVariable Long id, @RequestBody StopDto stopDto) {
-    	stopservice.updateStop(id, stopDto);
+    	stopService.updateStop(id, stopDto);
     }
 
     @DeleteMapping("/{id}")
     public StopDto deleteStop(@PathVariable Long id) {
-        return stopservice.deleteStop(id);
+        return stopService.deleteStop(id);
+    }
+    
+    @PutMapping("/{stopId}/scooter/{scooterId}")
+    public void placeScooterInStop(@PathVariable Long stopId, @PathVariable Long scooterId) {
+        stopService.placeScooter(stopId, scooterId);
     }
 
 }
