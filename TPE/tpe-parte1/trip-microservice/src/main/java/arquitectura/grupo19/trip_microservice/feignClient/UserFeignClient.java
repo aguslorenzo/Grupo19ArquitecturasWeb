@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(name = "user-microservice")
 public interface UserFeignClient {
 
-    @GetMapping("api/users/id/{id}")
+    @GetMapping("/users/{id}")
     User getUserById(@PathVariable long id);
 
-    @GetMapping("api/users/id/{id}/minbalance/{cost}") //TODO repensar si esto es un path variable o query param
+    @GetMapping("/users/{id}/minbalance/{cost}") //TODO repensar si esto es un path variable o query param
     boolean hasSufficientBalance(@PathVariable long id,@PathVariable double cost);
 
-    @PostMapping("api/users/id/{id}/deduct/{cost}") //TODO repensar si esto es un path variable o query param
+    @PostMapping("/users/{id}/deduct/{cost}") //TODO repensar si esto es un path variable o query param
     void deductBalance(@PathVariable long id,@PathVariable double cost);
 
-    @PostMapping("api/users/id/{id}/notify/{message}")
+    @PostMapping("/users/{id}/notify/")
     void notifyUser(@PathVariable long id, @RequestBody String message);
 
 }
