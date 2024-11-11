@@ -32,9 +32,6 @@ public class UserDto {
     @NotNull(message = "El número de celular es requerido")
     @NotEmpty( message = "El número de celular es un campo requerido")
     private String cellphone;
-    @NotNull(message = "La cuenta de mercado pago es requerida")
-    @NotEmpty( message = "La cuenta de mercado pago es un campo requerido")
-    private List<PaymentAccount> paymentAccounts;
 
     public UserDto(User user) {
         this.username = user.getUsername();
@@ -42,7 +39,6 @@ public class UserDto {
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.cellphone = user.getCellphone();
-        this.paymentAccounts = user.getPaymentAccounts();
     }
 
 }

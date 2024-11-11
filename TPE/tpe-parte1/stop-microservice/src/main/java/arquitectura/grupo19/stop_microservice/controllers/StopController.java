@@ -41,10 +41,5 @@ public class StopController {
     public StopDto deleteStop(@PathVariable Long id) {
         return stopService.deleteStop(id);
     }
-    
-    @PutMapping("/{stopId}/clear")
-    public void clearStop(@PathVariable Long stopId) {
-        stopService.clearStop(stopId);
-    }
 
 }

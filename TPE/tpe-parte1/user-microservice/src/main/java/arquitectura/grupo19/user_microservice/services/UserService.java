@@ -72,6 +72,18 @@ public class UserService {
     /*****************************************************************/
 
     @Transactional
+    public User addPaymentAccountToUser(Long userId, PaymentAccount paymentAccount) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Guardar o asignar el PaymentAccount a la base de datos si aún no existe
+        paymentAccountRepository.save(paymentAccount);
+
+        user.getPaymentAccounts().add(paymentAccount);
+        return userRepository.save(user); // Guarda el usuario con la nueva cuenta de pago
+    }
+
+    @Transactional
     public boolean hasSufficientBalance(long id, double cost){
         List<PaymentAccount> paymentAccounts = userRepository.findAccountsWithSufficientBalance(id, cost);
         return !paymentAccounts.isEmpty();
@@ -107,7 +119,7 @@ public class UserService {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setCellphone(userDto.getCellphone());
-        user.setPaymentAccounts(userDto.getPaymentAccounts());
+        //user.setPaymentAccounts(userDto.getPaymentAccounts());
         return user;
     }
 
@@ -118,7 +130,7 @@ public class UserService {
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setCellphone(user.getCellphone());
-        userDto.setPaymentAccounts(user.getPaymentAccounts());
+        //userDto.setPaymentAccounts(user.getPaymentAccounts());
         return userDto;
     }
 }

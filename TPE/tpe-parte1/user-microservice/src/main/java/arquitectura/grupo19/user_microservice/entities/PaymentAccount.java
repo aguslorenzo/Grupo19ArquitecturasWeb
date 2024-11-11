@@ -19,15 +19,15 @@ public class PaymentAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private double balance;
-    private LocalDate fechaAlta;
+    private double balance; //saldo
+    private LocalDate dischargeDate; //fecha de alta
 
     @ManyToMany(mappedBy = "paymentAccounts")
     private List<User> users;
 
     public PaymentAccount() {
         balance = 0;
-        fechaAlta = LocalDate.now(); // fecha actual
+        dischargeDate = LocalDate.now();
         users = new ArrayList<>();
     }
 
