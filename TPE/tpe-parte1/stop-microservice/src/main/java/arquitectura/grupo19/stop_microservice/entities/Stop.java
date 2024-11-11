@@ -3,9 +3,6 @@ package arquitectura.grupo19.stop_microservice.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Getter
 @Setter
@@ -23,7 +20,7 @@ public class Stop {
     @Column(nullable = false)
     private Double yAxis;
     @Column(nullable = true)
-    private long scooterId;
+    private Long scooterId;
 
 
 

@@ -2,6 +2,8 @@ package arquitectura.grupo19.stop_microservice.services;
 
 import arquitectura.grupo19.stop_microservice.dto.StopDto;
 import arquitectura.grupo19.stop_microservice.entities.Stop;
+import arquitectura.grupo19.stop_microservice.feignClients.ScooterFeignClient;
+import arquitectura.grupo19.stop_microservice.model.Scooter;
 import arquitectura.grupo19.stop_microservice.repositories.StopRepository;
 import arquitectura.grupo19.stop_microservice.services.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,11 @@ import java.util.List;
 public class StopService {
 
     private final StopRepository stopRepository;
+    private final ScooterFeignClient scooterFeignClient;
 
-    public StopService(StopRepository stopRepository) {
+    public StopService(StopRepository stopRepository, ScooterFeignClient scooterFeignClient) {
         this.stopRepository = stopRepository;
+        this.scooterFeignClient = scooterFeignClient;
     }
 
     @Transactional
@@ -64,7 +68,40 @@ public class StopService {
         stopRepository.delete(stop);
         return convertEntityToDto(stop);
     }
+    
+    
+    //SERVICIOS DE AGREGAR O QUITAR SCOOTER DE LA PARADA*******************************************************
+    public void placeScooter(Long stopId, Long scooterId) {
+        Stop stop = stopRepository.findById(stopId).orElseThrow(() -> new NotFoundException("Stop", stopId));
+        
+        // Verifica si la parada esta libre o no
+        if (stop.getScooterId() != null) {
+            throw new IllegalStateException("La parada ya tiene un scooter asignado.");
+        }
+        
+        // Llama al FeignClient para obtener el Scooter
+        Scooter scooter = scooterFeignClient.getScooterById(scooterId);
 
+        // Asocia el scooterId a la parada
+        stop.setScooterId(scooter.getId());
+
+        // Guarda los cambios
+        stopRepository.save(stop);
+    }
+    
+    public void clearStop(Long stopId) {
+        Stop stop = stopRepository.findById(stopId).orElseThrow(() -> new NotFoundException("Stop", stopId));
+        
+        //Vacia la parada
+        stop.setScooterId(null);
+
+        // Guarda los cambios
+        stopRepository.save(stop);
+    }
+    //**************************************************************************************************************
+    
+    
+    
     private Stop convertDtoToEntity(StopDto stopDto) {
     	Stop stop = new Stop();
     	stop.setDirectionDescription(stopDto.getDirectionDescription());

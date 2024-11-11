@@ -13,14 +13,14 @@ public class Scooter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String location; //TODO could be > un array de double, un String, o una clase personalizada Location
-    @Column(nullable = false)
-    private String status;//TODO could be > enum AVAILABLE - IN_MAINTENANCE
+    private ScooterStatus status;//TODO could be > enum AVAILABLE - IN_MAINTENANCE
     @Column(nullable=false)
     private int kilometers;
     @Column(nullable = false)
     private double activeTime;
-    //@OneToMany(mappedBy = "scooter"
-    //private List<Trip> trips;
+    
+ 
 }
