@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Locale;
 
 @Entity
 @Getter
@@ -17,12 +16,12 @@ public class Scooter {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable=false)
+    @Column(nullable = false)
+    private String gpsLocation;
     private int kilometers;
-    @Column(nullable = false)
+    private double usageTime;
     private double activeTime;
-    @Column(nullable = false)
-    private Locale gpsLocation;
+    private double inactiveTime;
     private boolean isActive;
     private boolean isPaused;
     private LocalDateTime pauseStartTime;

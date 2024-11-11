@@ -9,7 +9,6 @@ import arquitectura.grupo19.scooter_microservice.repositories.ScooterRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -56,7 +55,7 @@ public class ScooterService {
         // Actualizar los campos de scooter con los datos nuevos
         scooter.setState(scooterDto.getState());
         scooter.setKilometers(scooterDto.getKilometers());
-        scooter.setActiveTime(scooterDto.getActiveTime());
+        //scooter.setActiveTime(scooterDto.getActiveTime());
 
         // Guardar los cambios
         scooterRepository.save(scooter);
@@ -147,13 +146,36 @@ public class ScooterService {
         return scooter.getState() == ScooterState.AVAILABLE;
     }
 
+    // Agregar tiempo de uso
+    public void addTimeOfUse(long id, double time){
+        Scooter scooter = scooterRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+        double actualTime = scooter.getUsageTime() + time;
+        scooter.setUsageTime(actualTime);
+        scooterRepository.save(scooter);
+    }
+
+    // Obtener tiempo acumulado de uso
+    public double getUsageTime(long id){
+        Scooter scooter = scooterRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+        return scooter.getUsageTime();
+    }
+
+    // Obtener kilometros recorridos
+    public double getKilometers(long id){
+        Scooter scooter = scooterRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+        return scooter.getKilometers();
+    }
+
     //***********************************************************************************************************
     
     private Scooter convertDtoToEntity(ScooterDto scooterDto) {
     	Scooter scooter = new Scooter();
     	scooter.setState(scooterDto.getState());
     	scooter.setKilometers(scooterDto.getKilometers());
-    	scooter.setActiveTime(scooterDto.getActiveTime());
+    	//scooter.setActiveTime(scooterDto.getActiveTime());
         return scooter;
     }
 
@@ -161,7 +183,7 @@ public class ScooterService {
     	ScooterDto scooterDto = new ScooterDto();
     	scooterDto.setState(scooter.getState());
     	scooterDto.setKilometers(scooter.getKilometers());
-    	scooterDto.setActiveTime(scooter.getActiveTime());
+    	//scooterDto.setActiveTime(scooter.getActiveTime());
         return scooterDto;
     }
 }

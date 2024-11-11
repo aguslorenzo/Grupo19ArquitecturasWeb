@@ -54,6 +54,11 @@ public class ScooterController {
         }
     }
 
+    @PostMapping("/{id}/triptime/{time}")
+    public void addTimeOfUse(@PathVariable Long id, @PathVariable Long time) {
+        scooterService.addTimeOfUse(id, time);
+    }
+
     /******************************************************************************/
 
     @GetMapping
