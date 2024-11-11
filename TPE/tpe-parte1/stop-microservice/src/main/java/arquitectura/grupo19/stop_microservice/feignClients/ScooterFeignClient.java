@@ -9,5 +9,5 @@ import arquitectura.grupo19.stop_microservice.model.Scooter;
 @FeignClient(name = "scooter-microservice")
 public interface ScooterFeignClient {
 	@GetMapping("/api/scooters/{id}")
-	Scooter getScooterById(@PathVariable("id") long id);
+	Scooter getScooterById(@PathVariable long id);
 }

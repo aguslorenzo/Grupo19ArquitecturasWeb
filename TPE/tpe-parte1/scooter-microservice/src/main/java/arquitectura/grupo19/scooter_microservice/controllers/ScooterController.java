@@ -42,13 +42,14 @@ public class ScooterController {
         return scooterService.deleteScooter(id);
     }
     
-    @PutMapping("/{id}")
+    @PutMapping("/maintenance/{id}")
     public void putScooterOnMaintenance(@PathVariable Long id) {
-    	scooterService.putScooterOnMaintenance(id);
+        scooterService.putScooterOnMaintenance(id);
     }
-    @PutMapping("/{id}")
+
+    @PutMapping("/available/{id}")
     public void putScooterAvailable(@PathVariable Long id) {
-    	scooterService.putScooterAvailable(id);
+        scooterService.putScooterAvailable(id);
     }
     
 }

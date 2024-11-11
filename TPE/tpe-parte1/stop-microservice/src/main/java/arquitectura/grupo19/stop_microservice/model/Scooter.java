@@ -10,9 +10,5 @@ import lombok.NoArgsConstructor;
 public class Scooter {
 
 	private long id;
-	private String location;
-	private String status;
-	private int kilometers;
-	private double activeTime;
 	
 }

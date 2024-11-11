@@ -15,7 +15,7 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(nullable = false)
-    private String fistName;
+    private String firstName;
     @Column(nullable = false)
     private String lastName;
     @Column(nullable = false)

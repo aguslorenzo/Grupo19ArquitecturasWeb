@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 import arquitectura.grupo19.stop_microservice.entities.Stop;
 
 @Repository
-public interface StopRepository extends JpaRepository<Stop, Long> {
+public interface AdminRepository extends JpaRepository<Stop, Long> {
 }

@@ -3,8 +3,9 @@ package arquitectura.grupo19.scooter_microservice.services;
 import arquitectura.grupo19.scooter_microservice.dto.ScooterDto;
 import arquitectura.grupo19.scooter_microservice.entities.Scooter;
 import arquitectura.grupo19.scooter_microservice.entities.ScooterStatus;
+import arquitectura.grupo19.scooter_microservice.exceptions.NotFoundException;
 import arquitectura.grupo19.scooter_microservice.repositories.ScooterRepository;
-import arquitectura.grupo19.scooter_microservice.services.exceptions.NotFoundException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

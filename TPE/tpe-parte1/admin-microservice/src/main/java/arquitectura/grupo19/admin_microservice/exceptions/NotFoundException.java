@@ -1,4 +1,4 @@
-package arquitectura.grupo19.scooter_microservice.services.exceptions;
+package arquitectura.grupo19.admin_microservice.exceptions;
 
 public class NotFoundException extends RuntimeException{
 

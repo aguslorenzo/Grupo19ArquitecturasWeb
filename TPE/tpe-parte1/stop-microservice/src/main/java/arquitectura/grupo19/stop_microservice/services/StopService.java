@@ -2,10 +2,11 @@ package arquitectura.grupo19.stop_microservice.services;
 
 import arquitectura.grupo19.stop_microservice.dto.StopDto;
 import arquitectura.grupo19.stop_microservice.entities.Stop;
+import arquitectura.grupo19.stop_microservice.exceptions.NotFoundException;
 import arquitectura.grupo19.stop_microservice.feignClients.ScooterFeignClient;
 import arquitectura.grupo19.stop_microservice.model.Scooter;
-import arquitectura.grupo19.stop_microservice.repositories.StopRepository;
-import arquitectura.grupo19.stop_microservice.services.exceptions.NotFoundException;
+import arquitectura.grupo19.stop_microservice.repositories.AdminRepository;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,10 +15,10 @@ import java.util.List;
 @Service
 public class StopService {
 
-    private final StopRepository stopRepository;
+    private final AdminRepository stopRepository;
     private final ScooterFeignClient scooterFeignClient;
 
-    public StopService(StopRepository stopRepository, ScooterFeignClient scooterFeignClient) {
+    public StopService(AdminRepository stopRepository, ScooterFeignClient scooterFeignClient) {
         this.stopRepository = stopRepository;
         this.scooterFeignClient = scooterFeignClient;
     }

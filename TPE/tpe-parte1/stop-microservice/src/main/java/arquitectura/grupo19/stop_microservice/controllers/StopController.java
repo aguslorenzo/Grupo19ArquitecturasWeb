@@ -46,7 +46,8 @@ public class StopController {
     public void placeScooterInStop(@PathVariable Long stopId, @PathVariable Long scooterId) {
         stopService.placeScooter(stopId, scooterId);
     }
-    @PutMapping("/{stopId}")
+    
+    @PutMapping("/{stopId}/clear")
     public void clearStop(@PathVariable Long stopId) {
         stopService.clearStop(stopId);
     }
