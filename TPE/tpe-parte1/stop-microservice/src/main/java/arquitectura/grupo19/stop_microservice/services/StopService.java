@@ -57,18 +57,11 @@ public class StopService {
 
     public StopDto deleteStop(Long id){
         Stop stop = stopRepository.findById(id)
-                .orElseThrow(()->new NotFoundException("User", id));
+                .orElseThrow(()->new NotFoundException("Stop", id));
         stopRepository.delete(stop);
         return convertEntityToDto(stop);
     }
-    
-    
-    /*****************************************************************/
-    //TODO cual es la diferencia entre clear y delete? se justifica tener ambos?
-    public void clearStop(Long stopId) {
-        Stop stop = stopRepository.findById(stopId).orElseThrow(() -> new NotFoundException("Stop", stopId));
-        stopRepository.delete(stop);
-    }
+
 
     /*****************************************************************/
 

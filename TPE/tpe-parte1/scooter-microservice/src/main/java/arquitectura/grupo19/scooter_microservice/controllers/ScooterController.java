@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/scooters")
+@RequestMapping("scooters")
 public class ScooterController {
 
     @Autowired
@@ -19,32 +19,32 @@ public class ScooterController {
 
     /******************************************************************************/
 
-    @PostMapping("/id/{id}/start/trip/{tripId}")
+    @PostMapping("/{id}/start/trip/{tripId}")
     public ScooterDto startScooter(@PathVariable("id") Long id, @PathVariable("tripId") Long tripId) {
         return scooterService.activateScooter(id, tripId);
     }
 
-    @PostMapping("/id/{id}/stop")
+    @PostMapping("/{id}/stop")
     public ScooterDto stopScooter(@PathVariable Long id) {
         return scooterService.deactivateScooter(id);
     }
 
-    @PostMapping("/id/{id}/pause")
+    @PostMapping("/{id}/pause")
     public ScooterDto pauseScooter(@PathVariable Long id) {
         return scooterService.pauseScooter(id);
     }
 
-    @PostMapping("/id/{id}/restart")
+    @PostMapping("/{id}/restart")
     public ScooterDto restartScooter(@PathVariable Long id) {
         return scooterService.restartScooter(id);
     }
 
-    @GetMapping("/id/{id}/check-location")
+    @GetMapping("/{id}/check-location")
     public boolean checkLocation(@PathVariable Long id, @RequestParam String location) {
         return scooterService.checkIfScooterIsInAllowedLocation(id, location);
     }
 
-    @GetMapping("/id/{id}/available")
+    @GetMapping("/{id}/available")
     public ResponseEntity<Boolean> isAvailable(@PathVariable long id) {
         try {
             boolean available = scooterService.isAvailable(id);
@@ -62,7 +62,7 @@ public class ScooterController {
         return scooterService.getScooters();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ScooterDto getScooterById(@PathVariable Long id) {
         return scooterService.getScooterById(id);
     }
