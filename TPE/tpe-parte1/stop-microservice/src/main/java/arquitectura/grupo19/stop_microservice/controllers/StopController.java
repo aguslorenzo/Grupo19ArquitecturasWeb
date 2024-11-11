@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/stops")
+@RequestMapping("stops")
 public class StopController {
 
     @Autowired
@@ -21,7 +21,7 @@ public class StopController {
         return stopService.getStops();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public StopDto getStopById(@PathVariable Long id) {
         return stopService.getStopById(id);
     }

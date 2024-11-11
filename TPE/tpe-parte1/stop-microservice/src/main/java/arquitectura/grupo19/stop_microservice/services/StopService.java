@@ -64,7 +64,7 @@ public class StopService {
     
     
     /*****************************************************************/
-    
+    //TODO cual es la diferencia entre clear y delete? se justifica tener ambos?
     public void clearStop(Long stopId) {
         Stop stop = stopRepository.findById(stopId).orElseThrow(() -> new NotFoundException("Stop", stopId));
         stopRepository.delete(stop);

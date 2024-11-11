@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Locale;
 
 @Data
@@ -18,7 +19,7 @@ public class StopDto {
     @NotEmpty(message = "La dirección es un campo requerido")
     private String directionDescription;
 
-    private Locale location;
+    private String location;
 
     public StopDto(Stop stop) {
         this.directionDescription = stop.getDirectionDescription();

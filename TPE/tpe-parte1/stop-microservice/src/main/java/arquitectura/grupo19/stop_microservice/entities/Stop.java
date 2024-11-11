@@ -19,5 +19,5 @@ public class Stop {
     @Column(nullable = false)
     private String directionDescription;
     @Column(nullable = false)
-    private Locale location;
+    private String location; //TODO cambiado a string por simplicidad
 }
