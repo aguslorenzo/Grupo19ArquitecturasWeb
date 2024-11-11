@@ -2,10 +2,8 @@ package arquitectura.grupo19.trip_microservice.controllers;
 
 import arquitectura.grupo19.trip_microservice.dto.TripRequestDto;
 import arquitectura.grupo19.trip_microservice.dto.TripResponseDto;
-import arquitectura.grupo19.trip_microservice.entities.Trip;
 import arquitectura.grupo19.trip_microservice.services.TripService;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Path;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +26,13 @@ public class TripController {
 
     @PatchMapping("/endtrip/{tripId}")
     public ResponseEntity<?> endTrip(@PathVariable long tripId){
-        TripResponseDto result = this.tripService.endTrip(tripId);
+        TripResponseDto result = tripService.endTrip(tripId);
+        return buildResponse(result);
+    }
+
+    @PutMapping("/id/{tripId}/updateamount")
+    public ResponseEntity<?> updateTripWithAdditionalCharge(@PathVariable long tripId){
+        TripResponseDto result = tripService.updateTripWithAdditionalCharge(tripId);
         return buildResponse(result);
     }
 

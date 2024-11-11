@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "scooter-microservice")
 public interface ScooterFeignClient {
 
-    @GetMapping("/api/scooters/scooter/{id}")
+    @GetMapping("/api/scooters/id/{id}")
     Scooter getScooterById(@PathVariable long id);
 
-    @PatchMapping("/api/scooters/scooter/{id}/deactivate")
+    @PatchMapping("/api/scooters/id/{id}/stop")
     void deactivateScooter(@PathVariable long id);
+
+    @GetMapping("/api/scooters/id/{id}/available")
+    boolean isAvailable(@PathVariable long id);
 }

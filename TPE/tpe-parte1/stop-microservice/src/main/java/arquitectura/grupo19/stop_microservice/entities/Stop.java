@@ -3,11 +3,14 @@ package arquitectura.grupo19.stop_microservice.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import javax.xml.stream.Location;
+import java.util.Locale;
+
 @Entity
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor // Crea un constructor sin argumentos
+@NoArgsConstructor
 @AllArgsConstructor
 public class Stop {
     @Id
@@ -16,12 +19,5 @@ public class Stop {
     @Column(nullable = false)
     private String directionDescription;
     @Column(nullable = false)
-    private Double xAxis;
-    @Column(nullable = false)
-    private Double yAxis;
-    @Column(nullable = true)
-    private Long scooterId;
-
-
-
+    private Locale location;
 }

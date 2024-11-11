@@ -1,9 +1,11 @@
 package arquitectura.grupo19.scooter_microservice.controllers;
 
 import arquitectura.grupo19.scooter_microservice.dto.ScooterDto;
+import arquitectura.grupo19.scooter_microservice.exceptions.NotFoundException;
 import arquitectura.grupo19.scooter_microservice.services.ScooterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +16,45 @@ public class ScooterController {
 
     @Autowired
     private ScooterService scooterService;
+
+    /******************************************************************************/
+
+    @PostMapping("/id/{id}/start/trip/{tripId}")
+    public ScooterDto startScooter(@PathVariable("id") Long id, @PathVariable("tripId") Long tripId) {
+        return scooterService.activateScooter(id, tripId);
+    }
+
+    @PostMapping("/id/{id}/stop")
+    public ScooterDto stopScooter(@PathVariable Long id) {
+        return scooterService.deactivateScooter(id);
+    }
+
+    @PostMapping("/id/{id}/pause")
+    public ScooterDto pauseScooter(@PathVariable Long id) {
+        return scooterService.pauseScooter(id);
+    }
+
+    @PostMapping("/id/{id}/restart")
+    public ScooterDto restartScooter(@PathVariable Long id) {
+        return scooterService.restartScooter(id);
+    }
+
+    @GetMapping("/id/{id}/check-location")
+    public boolean checkLocation(@PathVariable Long id, @RequestParam String location) {
+        return scooterService.checkIfScooterIsInAllowedLocation(id, location);
+    }
+
+    @GetMapping("/id/{id}/available")
+    public ResponseEntity<Boolean> isAvailable(@PathVariable long id) {
+        try {
+            boolean available = scooterService.isAvailable(id);
+            return ResponseEntity.ok(available);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false);
+        }
+    }
+
+    /******************************************************************************/
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

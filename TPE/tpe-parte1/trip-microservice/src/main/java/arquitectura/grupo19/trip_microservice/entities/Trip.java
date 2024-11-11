@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 @Entity
 @Data
@@ -23,7 +24,9 @@ public class Trip {
     private LocalDateTime startDateTime; //fechaHoraInicio
     private LocalDateTime endDateTime; //fechaHoraFin
     private double kmTraveled; //kmRecorridos
-    // TODO origen parada
-    // TODO destino parada
+    private Locale initialStop;
+    private Locale endLocation;
     private LocalDateTime lastBilledTime;
+    private boolean additionalChargeApplied; // Indica si el recargo se ha aplicado
+    private LocalDateTime additionalChargeStartTime; // El momento en que comenzó el recargo
 }

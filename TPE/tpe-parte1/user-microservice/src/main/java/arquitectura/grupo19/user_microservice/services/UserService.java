@@ -3,11 +3,13 @@ package arquitectura.grupo19.user_microservice.services;
 import arquitectura.grupo19.user_microservice.dto.UserDto;
 import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.entities.User;
+import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
+import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
+import arquitectura.grupo19.user_microservice.repositories.PaymentAccountRepository;
 import arquitectura.grupo19.user_microservice.repositories.UserRepository;
 import arquitectura.grupo19.user_microservice.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,37 +18,17 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PaymentAccountRepository paymentAccountRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PaymentAccountRepository paymentAccountRepository) {
         this.userRepository = userRepository;
-    }
-
-    public boolean hasSufficientBalance(long id, double cost){
-        Optional<User> user = userRepository.findById(id);
-        List<PaymentAccount> paymentAccounts =  user.get().getPaymentAccounts();
-        for(PaymentAccount mp: paymentAccounts){
-            if(mp.hasSufficientBalance(cost)) return true;
-        }
-        return false;
-    }
-
-    public void deductBalance(long id, double cost){
-
-    }
-
-    public void notify(long id, String message){
-        System.out.println(message);
+        this.paymentAccountRepository = paymentAccountRepository;
     }
 
     @Transactional
     public UserDto saveUser(UserDto userDto){
-        // Convertir el DTO a entidad User
         User user = convertDtoToEntity(userDto);
-
-        // Si pasa las validaciones, guardar el estudiante en base de datos
         User save = userRepository.save(user);
-
-        // Retornar DTO
         return convertEntityToDto(save);
     }
 
@@ -87,6 +69,37 @@ public class UserService {
         return convertEntityToDto(user);
     }
 
+    /*****************************************************************/
+
+    @Transactional
+    public boolean hasSufficientBalance(long id, double cost){
+        List<PaymentAccount> paymentAccounts = userRepository.findAccountsWithSufficientBalance(id, cost);
+        return !paymentAccounts.isEmpty();
+    }
+
+    @Transactional
+    public void deductBalance(long id, double cost) {
+        // Recuperar todas las cuentas con saldo suficiente
+        List<PaymentAccount> paymentAccounts = userRepository.findAccountsWithSufficientBalance(id, cost);
+
+        // Verificar y deducir saldo en la primera cuenta encontrada, si existe
+        PaymentAccount account = paymentAccounts.stream().findFirst()
+                .orElseThrow(() -> new InsufficientFundsException("Fondos insuficientes en las cuentas de pago del usuario"));
+
+        // Descuenta el saldo
+        account.deductBalance(cost);
+        paymentAccountRepository.save(account);
+    }
+
+    @Transactional
+    public void sendNotification(long id, String message){
+        Optional<User> user = userRepository.findById(id);
+        // TODO Lógica para enviar un correo electrónico
+        System.out.println("Enviando correo a " + user.get().getEmail() + ": " + message);
+    }
+
+    /*******************************************************************************/
+
     private User convertDtoToEntity(UserDto userDto) {
         User user = new User();
         user.setUsername(userDto.getUsername());
@@ -94,18 +107,18 @@ public class UserService {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setCellphone(userDto.getCellphone());
-        //user.setPaymentMethod(userDto.getPaymentMethod());
+        user.setPaymentAccounts(userDto.getPaymentAccounts());
         return user;
     }
 
-    private UserDto convertEntityToDto(User usuario) {
+    private UserDto convertEntityToDto(User user) {
         UserDto userDto = new UserDto();
-        userDto.setUsername(usuario.getUsername());
-        userDto.setFirstName(usuario.getFistName());
-        userDto.setLastName(usuario.getLastName());
-        userDto.setEmail(usuario.getEmail());
-        userDto.setCellphone(usuario.getCellphone());
-        //userDto.setPaymentMethod(usuario.getPaymentMethod());
+        userDto.setUsername(user.getUsername());
+        userDto.setFirstName(user.getFistName());
+        userDto.setLastName(user.getLastName());
+        userDto.setEmail(user.getEmail());
+        userDto.setCellphone(user.getCellphone());
+        userDto.setPaymentAccounts(user.getPaymentAccounts());
         return userDto;
     }
 }

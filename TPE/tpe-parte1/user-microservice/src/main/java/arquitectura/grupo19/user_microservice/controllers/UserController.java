@@ -1,6 +1,8 @@
 package arquitectura.grupo19.user_microservice.controllers;
 
 import arquitectura.grupo19.user_microservice.dto.UserDto;
+import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
+import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
 import arquitectura.grupo19.user_microservice.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,21 +31,6 @@ public class UserController {
         return userService.getUserById(id);
     }
 
-    @GetMapping("/id/{id}/minbalance/{cost}")
-    @ResponseStatus(HttpStatus.OK)
-    public boolean hasSufficientBalance(@PathVariable long id, @PathVariable double cost) {
-        return userService.hasSufficientBalance(id, cost); // calcula si tiene saldo > tarifaMinima (1 minuto)
-    }
-    @PatchMapping("/id/{id}/deduct/{cost}")
-    public void deductBalance(@PathVariable long id, @PathVariable double cost){
-        userService.deductBalance(id, cost);
-    }
-
-    @PatchMapping("/id/{id}/notify/{message}")
-    public void notify(long id, String message){
-        userService.notify(id, message);
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void saveUser(@RequestBody UserDto userDto) {
@@ -60,4 +47,27 @@ public class UserController {
         return userService.deleteUser(id);
     }
 
+    /*****************************************************************/
+    @GetMapping("/id/{id}/minbalance/{cost}")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean hasSufficientBalance(@PathVariable long id, @PathVariable double cost) {
+        return userService.hasSufficientBalance(id, cost); // calcula si tiene saldo > tarifaMinima (1 minuto)
+    }
+
+    @PostMapping("/id/{id}/deduct/{cost}")
+    public ResponseEntity<?> deductBalance(@PathVariable long id, @PathVariable double cost) {
+        try {
+            userService.deductBalance(id, cost);
+            return ResponseEntity.ok("Balance deducido con éxito");
+        } catch (InsufficientFundsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/id/{id}/notify/{message}")
+    public void sendNotification(long id, String message){
+        userService.sendNotification(id, message);
+    }
 }

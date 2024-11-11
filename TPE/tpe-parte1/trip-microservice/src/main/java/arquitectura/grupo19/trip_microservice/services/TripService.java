@@ -4,8 +4,10 @@ import arquitectura.grupo19.trip_microservice.dto.TripRequestDto;
 import arquitectura.grupo19.trip_microservice.dto.TripResponseDto;
 import arquitectura.grupo19.trip_microservice.entities.Trip;
 import arquitectura.grupo19.trip_microservice.feignClient.ScooterFeignClient;
+import arquitectura.grupo19.trip_microservice.feignClient.StopFeignClient;
 import arquitectura.grupo19.trip_microservice.feignClient.UserFeignClient;
 import arquitectura.grupo19.trip_microservice.model.Scooter;
+import arquitectura.grupo19.trip_microservice.model.Stop;
 import arquitectura.grupo19.trip_microservice.model.User;
 import arquitectura.grupo19.trip_microservice.repositories.TripRepository;
 import jakarta.validation.Valid;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -23,13 +27,15 @@ public class TripService {
     private final UserFeignClient userFeignClient;
     private final ScooterFeignClient scooterFeignClient;
     private final TripBillingService tripBillingService;
+    private final StopFeignClient stopFeignClient;
 
     @Autowired
-    public TripService(TripRepository tripRepository, UserFeignClient userFeignClient, ScooterFeignClient scooterFeignClient, TripBillingService tripBillingService) {
+    public TripService(TripRepository tripRepository, UserFeignClient userFeignClient, ScooterFeignClient scooterFeignClient, TripBillingService tripBillingService, StopFeignClient stopFeignClient) {
         this.tripRepository = tripRepository;
         this.userFeignClient = userFeignClient;
         this.scooterFeignClient = scooterFeignClient;
         this.tripBillingService = tripBillingService;
+        this.stopFeignClient = stopFeignClient;
     }
 
     @Transactional
@@ -61,13 +67,55 @@ public class TripService {
     @Transactional
     public TripResponseDto endTrip(long tripId) {
         TripResponseDto responseDto = new TripResponseDto();
-        Optional<Trip> trip = tripRepository.findById(tripId);
-        /*if(llegoADestino){
-            trip.get().setEndDateTime(LocalDateTime.now());
+        Optional<Trip> tripOptional = tripRepository.findById(tripId);
 
-        }*/
-        // Preparar respuesta exitosa
-        return mapToTripResponseDto(trip.orElse(null), "Finalizó el viaje");
+        if(tripOptional.isEmpty()){
+            responseDto.setMessage("El viaje no existe");
+            responseDto.setSuccess(false);
+            return responseDto;
+        }
+
+        Trip trip = tripOptional.get();
+
+        // 1. Validar si el monopatín está en una parada permitida
+        List<Stop> stops = stopFeignClient.getAllStops();
+        boolean atPermittedStop = stops.stream()
+                .anyMatch(stop -> stop.getLocation().equals(trip.getEndLocation()));
+
+        if (!atPermittedStop) {
+            responseDto.setMessage("El monopatín debe estar en una parada permitida para finalizar el viaje.");
+            responseDto.setSuccess(false);
+            return responseDto;
+        }
+
+        // 2. Registrar la fecha y hora de finalización y calcular los kilómetros recorridos
+        trip.setEndDateTime(LocalDateTime.now());
+        trip.setKmTraveled(calculateKilometers(trip.getInitialStop(), trip.getEndLocation()));
+
+        // 3. Si se aplicó un recargo, revertirlo
+        if (trip.isAdditionalChargeApplied()) {
+            trip.setAdditionalChargeApplied(false);
+        }
+        // Guardar el viaje actualizado
+        tripRepository.save(trip);
+
+        return mapToTripResponseDto(trip, "Finalizó el viaje");
+    }
+
+    @Transactional
+    public TripResponseDto updateTripWithAdditionalCharge(long tripId){
+        TripResponseDto responseDto = new TripResponseDto();
+
+        Optional<Trip> trip = tripRepository.findById(tripId);
+        if(trip.isEmpty()){
+            responseDto.setMessage("El viaje no existe.");
+            responseDto.setSuccess(false);
+            return responseDto;
+        }
+        // Incrementar precio del viaje
+        trip.get().setAdditionalChargeApplied(true);
+
+        return mapToTripResponseDto(trip.orElse(null), "Viaje actualizado exitosamente");
     }
 
     private boolean validateUser(long userId, TripResponseDto responseDto) {
@@ -82,7 +130,7 @@ public class TripService {
 
     private boolean validateScooter(long scooterId, TripResponseDto responseDto) {
         Scooter scooter = scooterFeignClient.getScooterById(scooterId);
-        if (scooter == null || !scooter.isAvailable()) {
+        if (scooter == null || !scooterFeignClient.isAvailable(scooterId)) {
             responseDto.setMessage("El monopatín no está disponible.");
             responseDto.setSuccess(false);
             return false;
@@ -110,12 +158,17 @@ public class TripService {
         return true;
     }
 
+    private double calculateKilometers(Locale initialLocale, Locale endLocale){
+        // TODO calcular distancia en base a datos de ubicación
+        return 0;
+    }
+
     private TripResponseDto mapToTripResponseDto(Trip trip, String message) {
         TripResponseDto responseDto = new TripResponseDto();
         responseDto.setScooterId(trip.getScooterId());
         responseDto.setUserId(trip.getUserId());
-        responseDto.setFechaHoraInicio(trip.getStartDateTime());
-        responseDto.setFechaHoraFin(trip.getEndDateTime());
+        responseDto.setStartDateTime(trip.getStartDateTime());
+        responseDto.setEndDateTime(trip.getEndDateTime());
         responseDto.setMessage(message);
         responseDto.setSuccess(true);
         return responseDto;

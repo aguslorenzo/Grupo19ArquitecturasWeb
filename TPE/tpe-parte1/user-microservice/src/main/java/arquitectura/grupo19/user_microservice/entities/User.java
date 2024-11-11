@@ -37,16 +37,4 @@ public class User {
     )
     private List<PaymentAccount> paymentAccounts = new ArrayList<>();
 
-    public void activarMonopatin(){
-        /*if(paymentMethod.tieneSaldo()){
-
-        }*/
-        // TODO implementar
-    }
-
-    public boolean cortarServicio(){
-        // S
-        return false;
-    }
-
 }

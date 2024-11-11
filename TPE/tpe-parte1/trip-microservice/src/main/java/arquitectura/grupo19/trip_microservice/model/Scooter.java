@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Scooter {
     private long id;
-    private boolean isAvailable; // TODO poner en true or false dependiendo de si está o no en mantenimiento o fuera de servicio.
+    //private boolean isAvailable; // TODO poner en true or false dependiendo de si está o no en mantenimiento o fuera de servicio.
 }

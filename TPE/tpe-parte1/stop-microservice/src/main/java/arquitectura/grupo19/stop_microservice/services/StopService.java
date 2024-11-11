@@ -3,10 +3,7 @@ package arquitectura.grupo19.stop_microservice.services;
 import arquitectura.grupo19.stop_microservice.dto.StopDto;
 import arquitectura.grupo19.stop_microservice.entities.Stop;
 import arquitectura.grupo19.stop_microservice.exceptions.NotFoundException;
-import arquitectura.grupo19.stop_microservice.feignClients.ScooterFeignClient;
-import arquitectura.grupo19.stop_microservice.model.Scooter;
-import arquitectura.grupo19.stop_microservice.repositories.AdminRepository;
-
+import arquitectura.grupo19.stop_microservice.repositories.StopRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +12,10 @@ import java.util.List;
 @Service
 public class StopService {
 
-    private final AdminRepository stopRepository;
-    private final ScooterFeignClient scooterFeignClient;
+    private final StopRepository stopRepository;
 
-    public StopService(AdminRepository stopRepository, ScooterFeignClient scooterFeignClient) {
+    public StopService(StopRepository stopRepository) {
         this.stopRepository = stopRepository;
-        this.scooterFeignClient = scooterFeignClient;
     }
 
     @Transactional
@@ -55,10 +50,7 @@ public class StopService {
 
         // Actualizar los campos de parada con los datos nuevos
         stop.setDirectionDescription(stopDto.getDirectionDescription());
-        stop.setXAxis(stopDto.getXAxis());
-        stop.setYAxis(stopDto.getYAxis());
-        stop.setScooterId(stopDto.getScooterId());
-
+        stop.setLocation(stopDto.getLocation());
         // Guardar los cambios
         stopRepository.save(stop);
     }
@@ -71,44 +63,19 @@ public class StopService {
     }
     
     
-    //SERVICIOS DE AGREGAR O QUITAR SCOOTER DE LA PARADA*******************************************************
-    public void placeScooter(Long stopId, Long scooterId) {
-        Stop stop = stopRepository.findById(stopId).orElseThrow(() -> new NotFoundException("Stop", stopId));
-        
-        // Verifica si la parada esta libre o no
-        if (stop.getScooterId() != null) {
-            throw new IllegalStateException("La parada ya tiene un scooter asignado.");
-        }
-        
-        // Llama al FeignClient para obtener el Scooter
-        Scooter scooter = scooterFeignClient.getScooterById(scooterId);
-
-        // Asocia el scooterId a la parada
-        stop.setScooterId(scooter.getId());
-
-        // Guarda los cambios
-        stopRepository.save(stop);
-    }
+    /*****************************************************************/
     
     public void clearStop(Long stopId) {
         Stop stop = stopRepository.findById(stopId).orElseThrow(() -> new NotFoundException("Stop", stopId));
-        
-        //Vacia la parada
-        stop.setScooterId(null);
-
-        // Guarda los cambios
-        stopRepository.save(stop);
+        stopRepository.delete(stop);
     }
-    //**************************************************************************************************************
-    
-    
-    
+
+    /*****************************************************************/
+
     private Stop convertDtoToEntity(StopDto stopDto) {
     	Stop stop = new Stop();
     	stop.setDirectionDescription(stopDto.getDirectionDescription());
-    	stop.setXAxis(stopDto.getXAxis());
-    	stop.setYAxis(stopDto.getYAxis());
-    	stop.setScooterId(stopDto.getScooterId());
+    	stop.setLocation(stopDto.getLocation());
 
         return stop;
     }
@@ -116,9 +83,7 @@ public class StopService {
     private StopDto convertEntityToDto(Stop stop) {
     	StopDto stopDto = new StopDto();
     	stopDto.setDirectionDescription(stop.getDirectionDescription());
-    	stopDto.setXAxis(stop.getXAxis());
-    	stopDto.setYAxis(stop.getYAxis());
-    	stopDto.setScooterId(stop.getScooterId());
+    	stopDto.setLocation(stop.getLocation());
         return stopDto;
     }
 }

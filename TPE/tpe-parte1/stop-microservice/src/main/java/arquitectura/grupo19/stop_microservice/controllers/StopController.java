@@ -42,11 +42,6 @@ public class StopController {
         return stopService.deleteStop(id);
     }
     
-    @PutMapping("/{stopId}/scooter/{scooterId}")
-    public void placeScooterInStop(@PathVariable Long stopId, @PathVariable Long scooterId) {
-        stopService.placeScooter(stopId, scooterId);
-    }
-    
     @PutMapping("/{stopId}/clear")
     public void clearStop(@PathVariable Long stopId) {
         stopService.clearStop(stopId);

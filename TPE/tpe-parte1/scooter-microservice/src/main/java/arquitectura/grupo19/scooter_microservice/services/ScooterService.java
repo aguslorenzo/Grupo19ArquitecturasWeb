@@ -2,13 +2,15 @@ package arquitectura.grupo19.scooter_microservice.services;
 
 import arquitectura.grupo19.scooter_microservice.dto.ScooterDto;
 import arquitectura.grupo19.scooter_microservice.entities.Scooter;
-import arquitectura.grupo19.scooter_microservice.entities.ScooterStatus;
+import arquitectura.grupo19.scooter_microservice.entities.ScooterState;
 import arquitectura.grupo19.scooter_microservice.exceptions.NotFoundException;
 import arquitectura.grupo19.scooter_microservice.repositories.ScooterRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -52,7 +54,7 @@ public class ScooterService {
                 .orElseThrow(()->new NotFoundException("Scooter", id));
 
         // Actualizar los campos de scooter con los datos nuevos
-        scooter.setStatus(scooterDto.getStatus());
+        scooter.setState(scooterDto.getState());
         scooter.setKilometers(scooterDto.getKilometers());
         scooter.setActiveTime(scooterDto.getActiveTime());
 
@@ -66,7 +68,6 @@ public class ScooterService {
         scooterRepository.delete(scooter);
         return convertEntityToDto(scooter);
     }
-  
     
     //SERVICIOS DE CONSULTAS DE MONOPATINES**********************************************************************
 
@@ -74,7 +75,7 @@ public class ScooterService {
 		 // Buscar scooter por id
         Scooter scooter = scooterRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Scooter", id));
-        scooter.setStatus(ScooterStatus.IN_MAINTENANCE); //cambiar estado
+        scooter.setState(ScooterState.IN_MAINTENANCE); //cambiar estado
         scooterRepository.save(scooter); //guardar cambios
 	}
 	
@@ -82,14 +83,75 @@ public class ScooterService {
 		 // Buscar scooter por id
         Scooter scooter = scooterRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Scooter", id));
-        scooter.setStatus(ScooterStatus.AVAILABLE); //cambiar estado
+        scooter.setState(ScooterState.AVAILABLE); //cambiar estado
         scooterRepository.save(scooter); //guardar cambios
 	}
+
+    // Encender el monopatín
+    public ScooterDto activateScooter(Long scooterId, Long tripId) {
+        Scooter scooter = scooterRepository.findById(scooterId).orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+        if (!scooter.isActive()) {
+            scooter.setActive(true);
+            scooter.setState(ScooterState.IN_USE);
+            scooter.setCurrentTripId(tripId);
+            scooterRepository.save(scooter);
+        }
+        return convertEntityToDto(scooter);
+    }
+
+    // Apagar el monopatín
+    public ScooterDto deactivateScooter(Long scooterId) {
+        Scooter scooter = scooterRepository.findById(scooterId).orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+        if (scooter.isActive()) {
+            scooter.setActive(false);
+            scooter.setState(ScooterState.INACTIVE);
+            scooterRepository.save(scooter);
+        }
+        return convertEntityToDto(scooter);
+    }
+
+    // Pausar el monopatín
+    public ScooterDto pauseScooter(Long scooterId) {
+        Scooter scooter = scooterRepository.findById(scooterId).orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+        if (scooter.isActive() && !scooter.isPaused()) {
+            scooter.setPaused(true);
+            scooter.setPauseStartTime(LocalDateTime.now());
+            scooter.setState(ScooterState.PAUSED);
+            scooterRepository.save(scooter);
+        }
+        return convertEntityToDto(scooter);
+    }
+
+    // Reanudar el monopatín después de pausa
+    public ScooterDto restartScooter(Long scooterId) {
+        Scooter scooter = scooterRepository.findById(scooterId).orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+        if (scooter.isPaused()) {
+            scooter.setPaused(false);
+            scooter.setState(ScooterState.IN_USE);
+            scooterRepository.save(scooter);
+        }
+        return convertEntityToDto(scooter);
+    }
+
+    // Comprobar si el monopatín está en una ubicación permitida
+    public boolean checkIfScooterIsInAllowedLocation(Long scooterId, String location) {
+        Scooter scooter = scooterRepository.findById(scooterId).orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+        // TODO implementar la lógica para verificar si la ubicación es permitida.
+        return scooter.getGpsLocation().equals(location);
+    }
+
+    // Comprobar si el monopatín está disponible
+    public boolean isAvailable(Long scooterId) {
+        Scooter scooter = scooterRepository.findById(scooterId)
+                .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+        return scooter.getState() == ScooterState.AVAILABLE;
+    }
+
     //***********************************************************************************************************
     
     private Scooter convertDtoToEntity(ScooterDto scooterDto) {
     	Scooter scooter = new Scooter();
-    	scooter.setStatus(scooterDto.getStatus());
+    	scooter.setState(scooterDto.getState());
     	scooter.setKilometers(scooterDto.getKilometers());
     	scooter.setActiveTime(scooterDto.getActiveTime());
         return scooter;
@@ -97,12 +159,9 @@ public class ScooterService {
 
     private ScooterDto convertEntityToDto(Scooter scooter) {
     	ScooterDto scooterDto = new ScooterDto();
-    	scooterDto.setStatus(scooter.getStatus());
+    	scooterDto.setState(scooter.getState());
     	scooterDto.setKilometers(scooter.getKilometers());
     	scooterDto.setActiveTime(scooter.getActiveTime());
         return scooterDto;
     }
-
-	
-
 }

@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 public class TripResponseDto {
     private Long userId;
     private Long scooterId;
-    private LocalDateTime fechaHoraInicio;
-    private LocalDateTime fechaHoraFin;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
     private double kmRecorridos;
     private String message;  // mensaje a enviar
     private boolean success;   // éxito o fracaso del viaje

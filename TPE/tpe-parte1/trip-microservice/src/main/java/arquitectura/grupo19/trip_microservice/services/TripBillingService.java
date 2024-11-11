@@ -6,6 +6,7 @@ import arquitectura.grupo19.trip_microservice.feignClient.UserFeignClient;
 import arquitectura.grupo19.trip_microservice.repositories.TripRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.List;
 public class TripBillingService {
 
     private final double FARE_PER_MINUTE = 40;
+    private final double FARE_INCREASE_PERCENTAGE = 0.20; // 20% de recargo
+
     private final TripRepository tripRepository;
     private final UserFeignClient userFeignClient;
     private final ScooterFeignClient scooterFeignClient;
@@ -22,14 +25,6 @@ public class TripBillingService {
         this.tripRepository = tripRepository;
         this.userFeignClient = userFeignClient;
         this.scooterFeignClient = scooterFeignClient;
-    }
-
-    public void startBilling(Trip trip) {
-        handleTripBilling(trip);
-    }
-
-    public boolean hasSufficientBalance(long userId) {
-        return userFeignClient.hasSufficientBalance(userId, FARE_PER_MINUTE);
     }
 
     @Scheduled(fixedRate = 60000) // Ejecuta cada minuto
@@ -45,12 +40,19 @@ public class TripBillingService {
         long minutesElapsed = Duration.between(trip.getLastBilledTime(), now).toMinutes();
 
         if (minutesElapsed > 0) {
-            double cost = minutesElapsed * FARE_PER_MINUTE;
-            boolean hasSufficientBalance = userFeignClient.hasSufficientBalance(trip.getUserId(), cost);
+            double costPerMinute = FARE_PER_MINUTE;
+
+            // Verificar si el recargo ha sido aplicado y si debe aplicarse a partir de ahora
+            if (trip.isAdditionalChargeApplied()) {
+                // Si el recargo ya ha sido aplicado, aumentamos el costo por minuto
+                costPerMinute = FARE_PER_MINUTE * (1 + FARE_INCREASE_PERCENTAGE);
+            }
+
+            boolean hasSufficientBalance = userFeignClient.hasSufficientBalance(trip.getUserId(), costPerMinute);
 
             if (hasSufficientBalance) {
                 // Descuenta el saldo
-                userFeignClient.deductBalance(trip.getUserId(), cost);
+                userFeignClient.deductBalance(trip.getUserId(), costPerMinute);
                 trip.setLastBilledTime(now); // Actualiza el último momento facturado
                 tripRepository.save(trip);
             } else {
@@ -68,6 +70,14 @@ public class TripBillingService {
         scooterFeignClient.deactivateScooter(trip.getScooterId());
         trip.setEndDateTime(LocalDateTime.now());
         tripRepository.save(trip);
+    }
+
+    public void startBilling(Trip trip) {
+        handleTripBilling(trip);
+    }
+
+    public boolean hasSufficientBalance(long userId) {
+        return userFeignClient.hasSufficientBalance(userId, FARE_PER_MINUTE);
     }
 }
 

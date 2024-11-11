@@ -2,11 +2,14 @@ package arquitectura.grupo19.user_microservice.dto;
 
 import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.entities.User;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,13 +27,14 @@ public class UserDto {
     private String lastName;
     @NotNull(message = "El email es requerido")
     @NotEmpty( message = "El email es un campo requerido")
+    @Email
     private String email;
     @NotNull(message = "El número de celular es requerido")
     @NotEmpty( message = "El número de celular es un campo requerido")
     private String cellphone;
     @NotNull(message = "La cuenta de mercado pago es requerida")
     @NotEmpty( message = "La cuenta de mercado pago es un campo requerido")
-    private PaymentAccount paymentMethod;
+    private List<PaymentAccount> paymentAccounts;
 
     public UserDto(User user) {
         this.username = user.getUsername();
@@ -38,7 +42,7 @@ public class UserDto {
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.cellphone = user.getCellphone();
-        this.paymentMethod = user.getPaymentMethod();
+        this.paymentAccounts = user.getPaymentAccounts();
     }
 
 }
