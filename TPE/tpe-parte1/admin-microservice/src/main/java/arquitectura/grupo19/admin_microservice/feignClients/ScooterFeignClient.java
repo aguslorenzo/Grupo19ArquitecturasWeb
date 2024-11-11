@@ -14,7 +14,7 @@ public interface ScooterFeignClient {
 	@GetMapping("/api/scooters/id/{id}")
     Scooter getScooterById(@PathVariable long id);
 
-    @PostMapping("/api/scooters")
-    void addScooter(@RequestBody Scooter scooter);
+    @PostMapping("/scooters")
+    Scooter addScooter(@RequestBody Scooter scooter);
 	
 }

@@ -1,6 +1,7 @@
 package arquitectura.grupo19.admin_microservice.controllers;
 
 import arquitectura.grupo19.admin_microservice.dto.AdminDto;
+import arquitectura.grupo19.admin_microservice.model.Scooter;
 import arquitectura.grupo19.admin_microservice.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,9 @@ public class AdminController {
         return adminService.deleteAdmin(id);
     }
     
-
-
+    @PostMapping("/scooters")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Scooter addScooter(@RequestBody Scooter scooter) {
+        return adminService.addScooter(scooter);
+    }
 }
