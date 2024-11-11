@@ -18,22 +18,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PatchMapping("/user/{userId}/activarMonopatin/{scooterId}")
-    public void activateScooter(@PathVariable long userId, @PathVariable long scooterId) {
-        this.userService.activateScooter(userId, scooterId);
-    }
-
-    @GetMapping("/id/{id}/minbalance/{cost}")
-    @ResponseStatus(HttpStatus.OK)
-    public boolean hasSufficientBalance(@PathVariable long id, @PathVariable double cost) {
-        return userService.hasSufficientBalance(id, cost); // calcula si tiene saldo > tarifaMinima (1 minuto)
-    }
-
-    @PatchMapping("/id/{id}/notify/{message}")
-    public void notify(long id, String message){
-        userService.notify(id, message);
-    }
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<UserDto> getUsers() {
@@ -43,6 +27,21 @@ public class UserController {
     @GetMapping("/id/{id}")
     public UserDto getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
+    }
+
+    @GetMapping("/id/{id}/minbalance/{cost}")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean hasSufficientBalance(@PathVariable long id, @PathVariable double cost) {
+        return userService.hasSufficientBalance(id, cost); // calcula si tiene saldo > tarifaMinima (1 minuto)
+    }
+    @PatchMapping("/id/{id}/deduct/{cost}")
+    public void deductBalance(@PathVariable long id, @PathVariable double cost){
+        userService.deductBalance(id, cost);
+    }
+
+    @PatchMapping("/id/{id}/notify/{message}")
+    public void notify(long id, String message){
+        userService.notify(id, message);
     }
 
     @PostMapping

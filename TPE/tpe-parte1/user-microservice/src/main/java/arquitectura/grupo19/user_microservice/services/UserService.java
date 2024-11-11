@@ -16,7 +16,6 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    //private final String tripServiceUrl = "http://api-gateway/trip-microservice/api/trips";
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -31,33 +30,12 @@ public class UserService {
         return false;
     }
 
-    public void notify(long id, String message){
-        System.out.println(message);
+    public void deductBalance(long id, double cost){
+
     }
 
-    /*public boolean hasBalance(long id){
-        Optional<User> user = userRepository.findById(id);
-        List<PaymentAccount> paymentAccounts =  user.get().getPaymentAccounts();
-        for(PaymentAccount mp: paymentAccounts){
-            if(mp.hasBalance()) return true;
-        }
-        return false;
-    }*/
-
-    public void activateScooter(long userId, long scooterId){
-       /* Optional<User> user = userRepository.findById(userId);
-        List<PaymentAccount> paymentAccounts =  user.get().getPaymentAccounts();
-        for(PaymentAccount mp: paymentAccounts){
-            if(mp.tieneSaldo()){
-                if(!trip.viajando()){
-                    this.userRepository.activateScooter(userId, scooterId);
-                    //trip.generarViaje()
-                    //mp.descontar()
-                } else {
-                    //continuar servicio con otra cuenta de mercado pago
-                }
-            }
-        }*/
+    public void notify(long id, String message){
+        System.out.println(message);
     }
 
     @Transactional

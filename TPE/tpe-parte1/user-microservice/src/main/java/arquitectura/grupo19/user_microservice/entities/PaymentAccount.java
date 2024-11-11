@@ -42,7 +42,5 @@ public class PaymentAccount {
     public boolean hasSufficientBalance(double cost) {
         return balance >= cost;
     }
-    /*public boolean hasBalance() {
-        return balance > 0;
-    }*/
+
 }
