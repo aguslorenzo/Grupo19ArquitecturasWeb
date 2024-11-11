@@ -19,3 +19,5 @@ services:
 
 volumes:
   user-db:
+
+#TODO ver si se queda o se sigue con base inmemory
