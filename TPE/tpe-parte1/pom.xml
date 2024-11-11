@@ -31,7 +31,7 @@
 		<module>trip-microservice</module>
 		<module>scooter-microservice</module>
 		<module>map-microservice</module>
-		<module>maintenance-microservice</module>
+		<module>report-microservice</module>
 		<module>admin-microservice</module>
 		<module>stop-microservice</module>
 	</modules>

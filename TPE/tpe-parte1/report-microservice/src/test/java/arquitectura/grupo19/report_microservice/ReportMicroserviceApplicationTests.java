@@ -1,10 +1,10 @@
-package arquitectura.grupo19.maintenance_microservice;
+package arquitectura.grupo19.report_microservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MaintenanceMicroserviceApplicationTests {
+class ReportMicroserviceApplicationTests {
 
 	@Test
 	void contextLoads() {

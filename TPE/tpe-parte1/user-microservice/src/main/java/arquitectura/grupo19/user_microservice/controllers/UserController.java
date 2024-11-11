@@ -1,6 +1,8 @@
 package arquitectura.grupo19.user_microservice.controllers;
 
 import arquitectura.grupo19.user_microservice.dto.UserDto;
+import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
+import arquitectura.grupo19.user_microservice.entities.User;
 import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
 import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
 import arquitectura.grupo19.user_microservice.services.UserService;
@@ -48,6 +50,12 @@ public class UserController {
     }
 
     /*****************************************************************/
+    @PostMapping("/{userId}/payment-account")
+    public ResponseEntity<?> addPaymentAccountToUser(@PathVariable Long userId, @RequestBody PaymentAccount paymentAccount) {
+        User updatedUser = userService.addPaymentAccountToUser(userId, paymentAccount);
+        return ResponseEntity.ok(updatedUser);
+    }
+
     @GetMapping("/id/{id}/minbalance/{cost}")
     @ResponseStatus(HttpStatus.OK)
     public boolean hasSufficientBalance(@PathVariable long id, @PathVariable double cost) {
