@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/admins")
+@RequestMapping("admins")
 public class AdminController {
 
     @Autowired
@@ -22,7 +22,7 @@ public class AdminController {
         return adminService.getAdmins();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public AdminDto getAdminById(@PathVariable Long id) {
         return adminService.getAdminById(id);
     }
