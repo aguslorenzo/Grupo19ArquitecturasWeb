@@ -56,7 +56,6 @@ public class UserService {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setCellphone(userDto.getCellphone());
-        //user.setPaymentMethod(userDto.getPaymentMethod());
 
         // Guardar los cambios
         userRepository.save(user);

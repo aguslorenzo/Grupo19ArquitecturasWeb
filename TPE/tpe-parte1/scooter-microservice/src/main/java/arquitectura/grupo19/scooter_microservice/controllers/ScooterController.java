@@ -56,8 +56,28 @@ public class ScooterController {
     }
 
     @PostMapping("/{id}/triptime/{time}")
-    public void addTimeOfUse(@PathVariable Long id, @PathVariable Duration time) {
+    public void addTimeOfUse(@PathVariable Long id, @PathVariable int time) {
         scooterService.addTimeOfUse(id, time);
+    }
+
+    @GetMapping("/{id}/kilometers")
+    public ResponseEntity<Double> getKilometers(@PathVariable long id) {
+        try {
+            Double kms = scooterService.getKilometers(id);
+            return ResponseEntity.ok(kms);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(0.0);
+        }
+    }
+
+    @GetMapping("/{id}/usageTime")
+    public int getUsageTime(@PathVariable long id){
+        return scooterService.getUsageTime(id);
+    }
+
+    @GetMapping("/{id}/activeTime")
+    public int getActiveTime(@PathVariable long id){
+        return scooterService.getActiveTime(id);
     }
 
     /******************************************************************************/

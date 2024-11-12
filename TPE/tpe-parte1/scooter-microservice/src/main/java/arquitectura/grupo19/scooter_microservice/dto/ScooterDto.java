@@ -22,7 +22,7 @@ public class ScooterDto {
     private int kilometers;
 
     @NotNull(message = "El valor de tiempo activo es requerido")
-    private Duration activeTime;
+    private int activeTime;
 
     @NotNull
     private String gpsLocation;

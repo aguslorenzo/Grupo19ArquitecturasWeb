@@ -3,7 +3,6 @@ package arquitectura.grupo19.scooter_microservice.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,9 +19,9 @@ public class Scooter {
     @Column(nullable = false)
     private String gpsLocation;
     private int kilometers;
-    private Duration usageTime;
-    private Duration activeTime;
-    private Duration inactiveTime;
+    private int usageTime;
+    private int activeTime;
+    private int inactiveTime;
     private boolean isActive;
     private boolean isPaused;
     private LocalDateTime pauseStartTime;
