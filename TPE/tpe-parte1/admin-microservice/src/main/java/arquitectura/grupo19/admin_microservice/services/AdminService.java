@@ -1,12 +1,13 @@
 package arquitectura.grupo19.admin_microservice.services;
 
 import arquitectura.grupo19.admin_microservice.dto.AdminDto;
+import arquitectura.grupo19.admin_microservice.dto.ScooterDto;
 import arquitectura.grupo19.admin_microservice.entities.Admin;
 import arquitectura.grupo19.admin_microservice.exceptions.NotFoundException;
 import arquitectura.grupo19.admin_microservice.feignClients.ScooterFeignClient;
-import arquitectura.grupo19.admin_microservice.model.Scooter;
 import arquitectura.grupo19.admin_microservice.repositories.AdminRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +16,16 @@ import java.util.List;
 @Service
 public class AdminService {
 
-    private final AdminRepository adminRepository;
-    private final ScooterFeignClient scooterFeignClient;
+    @Autowired
+    AdminRepository adminRepository;
 
-    public AdminService(AdminRepository adminRepository, ScooterFeignClient scooterFeignClient) {
+    @Autowired
+    ScooterFeignClient scooterFeignClient;
+
+    /*public AdminService(AdminRepository adminRepository, ScooterFeignClient scooterFeignClient) {
         this.adminRepository = adminRepository;
         this.scooterFeignClient = scooterFeignClient;
-    }
+    }*/
 
     @Transactional
     public AdminDto saveAdmin(AdminDto adminDto){
@@ -74,8 +78,8 @@ public class AdminService {
     //********************************************************************************************************************
 	// SERVICIOS DE GESTION DE SCOOTERS
 
-	public Scooter addScooter(Scooter scooter) {
-		return scooterFeignClient.addScooter(scooter);
+	public void addScooter(ScooterDto scooter) { //TODO revisar de poner el tipo de retorno en el micro de scooter si no queremos que sea void
+        scooterFeignClient.saveScooter(scooter);
 	}
 
 
