@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "api/trips")
+@RequestMapping(value = "trips")
 public class TripController {
 
     private final TripService tripService;
@@ -18,7 +18,7 @@ public class TripController {
     }
 
     // Método para generar un viaje
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<?> createTrip(@RequestBody @Valid TripRequestDto tripRequestDTO){
         TripResponseDto result = tripService.createTrip(tripRequestDTO);
         return buildResponse(result);
@@ -30,7 +30,7 @@ public class TripController {
         return buildResponse(result);
     }
 
-    @PutMapping("/id/{tripId}/updateamount")
+    @PutMapping("/{tripId}/updateamount")
     public ResponseEntity<?> updateTripWithAdditionalCharge(@PathVariable long tripId){
         TripResponseDto result = tripService.updateTripWithAdditionalCharge(tripId);
         return buildResponse(result);

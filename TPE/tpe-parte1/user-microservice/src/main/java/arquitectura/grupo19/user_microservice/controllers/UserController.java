@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("users")
 public class UserController {
 
     private final UserService userService;
@@ -28,7 +28,7 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
@@ -56,13 +56,13 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    @GetMapping("/id/{id}/minbalance/{cost}")
+    @GetMapping("/{id}/minbalance/{cost}")
     @ResponseStatus(HttpStatus.OK)
     public boolean hasSufficientBalance(@PathVariable long id, @PathVariable double cost) {
         return userService.hasSufficientBalance(id, cost); // calcula si tiene saldo > tarifaMinima (1 minuto)
     }
 
-    @PostMapping("/id/{id}/deduct/{cost}")
+    @PostMapping("/{id}/deduct/{cost}")
     public ResponseEntity<?> deductBalance(@PathVariable long id, @PathVariable double cost) {
         try {
             userService.deductBalance(id, cost);
@@ -74,7 +74,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/id/{id}/notify/{message}")
+    @PostMapping("/{id}/notify/{message}")
     public void sendNotification(long id, String message){
         userService.sendNotification(id, message);
     }

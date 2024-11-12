@@ -4,10 +4,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
-@FeignClient(name = "trip-microservice")
+@FeignClient(name = "trip-microservice", url="http://localhost:8082/trips")
 public interface TripFeignClient {
 
-    @PutMapping("/trips/id/{tripId}/updateamount")
+    @PutMapping("/{tripId}/updateamount")
     void updateTripWithAdditionalCharge(@PathVariable("tripId") Long tripId);
 
 }
