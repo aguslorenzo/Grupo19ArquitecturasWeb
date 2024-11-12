@@ -167,7 +167,7 @@ public class ScooterService {
     }
 
     // Obtener tiempo acumulado de uso
-    public double getUsageTime(long id){
+    public Duration getUsageTime(long id){
         Scooter scooter = scooterRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
         return scooter.getUsageTime();
@@ -195,7 +195,7 @@ public class ScooterService {
     	ScooterDto scooterDto = new ScooterDto();
     	scooterDto.setState(scooter.getState());
     	scooterDto.setKilometers(scooter.getKilometers());
-    	//scooterDto.setActiveTime(scooter.getActiveTime());
+    	scooterDto.setActiveTime(scooter.getActiveTime());
         return scooterDto;
     }
 }

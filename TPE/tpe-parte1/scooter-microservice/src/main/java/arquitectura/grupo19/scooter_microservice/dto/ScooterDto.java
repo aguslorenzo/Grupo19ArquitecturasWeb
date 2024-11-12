@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Duration;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,7 +22,7 @@ public class ScooterDto {
     private int kilometers;
 
     @NotNull(message = "El valor de tiempo activo es requerido")
-    private double activeTime;
+    private Duration activeTime;
 
     @NotNull
     private String gpsLocation;
