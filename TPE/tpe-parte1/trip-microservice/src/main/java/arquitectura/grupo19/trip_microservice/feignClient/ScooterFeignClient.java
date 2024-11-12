@@ -12,15 +12,15 @@ import java.time.Duration;
 @FeignClient(name = "scooter-microservice")
 public interface ScooterFeignClient {
 
-    @GetMapping("/scooters/id/{id}")
+    @GetMapping("/scooters/{id}")
     Scooter getScooterById(@PathVariable long id);
 
-    @PatchMapping("/scooters/id/{id}/stop")
+    @PatchMapping("/scooters/{id}/stop")
     void deactivateScooter(@PathVariable long id);
 
-    @GetMapping("/scooters/id/{id}/available")
+    @GetMapping("/scooters/{id}/available")
     boolean isAvailable(@PathVariable long id);
 
     @PostMapping("/scooters/{id}/triptime/{time}")
-    void addTimeOfUse(@PathVariable long id, @PathVariable Duration time);
+    void addTimeOfUse(@PathVariable long id, @PathVariable int time);
 }

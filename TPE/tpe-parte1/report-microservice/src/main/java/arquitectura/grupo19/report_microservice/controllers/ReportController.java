@@ -27,4 +27,19 @@ public class ReportController {
     public ReportDto getReportByScooter(@PathVariable Long scooterId) {
         return reportService.getReportByScooter(scooterId);
     }
+
+    @GetMapping("/scooter/{id}/kilometers")
+    public Double getReportKilometersByScooter(@PathVariable Long id) {
+        return reportService.getReportKilometersByScooter(id);
+    }
+
+    @GetMapping("/scooter/{id}/timewithpauses")
+    public int getReportTimeWithPausesByScooter(@PathVariable Long id) {
+        return reportService.getReportTimeWithPausesByScooter(id);
+    }
+
+    @GetMapping("/scooter/{id}/timewithoutpauses")
+    public int getReportTimeWithoutPausesByScooter(@PathVariable Long id) {
+        return reportService.getReportTimeWithoutPausesByScooter(id);
+    }
 }

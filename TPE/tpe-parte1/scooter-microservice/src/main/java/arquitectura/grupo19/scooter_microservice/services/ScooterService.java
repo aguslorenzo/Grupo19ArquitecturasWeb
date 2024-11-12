@@ -17,7 +17,7 @@ import java.util.List;
 public class ScooterService {
 
     private final ScooterRepository scooterRepository;
-    private static final Duration MAX_USAGE_TIME_MINUTES = Duration.ofMinutes(43200); // 30 días
+    private static final int MAX_USAGE_TIME_MINUTES = 43200; // 30 días
     private static final double MAX_KM_TRAVELED = 1000.0;
 
     public ScooterService(ScooterRepository scooterRepository) {
@@ -155,11 +155,11 @@ public class ScooterService {
     }
 
     // Agregar tiempo de uso y si llegó al tiempo y kms max, poner en MANTENIMIENTO
-    public void addTimeOfUse(long id, Duration time){
+    public void addTimeOfUse(long id, int time){
         Scooter scooter = scooterRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
-        Duration actualTime = scooter.getUsageTime().plus(time);
-        if(actualTime.compareTo(MAX_USAGE_TIME_MINUTES) >= 0 && scooter.getKilometers() == MAX_KM_TRAVELED){
+        int actualTime = scooter.getUsageTime() + time;
+        if(actualTime >= MAX_USAGE_TIME_MINUTES && scooter.getKilometers() == MAX_KM_TRAVELED){
             scooter.setState(ScooterState.IN_MAINTENANCE);
         }
         scooter.setUsageTime(actualTime);
@@ -167,7 +167,7 @@ public class ScooterService {
     }
 
     // Obtener tiempo acumulado de uso
-    public Duration getUsageTime(long id){
+    public int getUsageTime(long id){
         Scooter scooter = scooterRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
         return scooter.getUsageTime();
@@ -178,6 +178,12 @@ public class ScooterService {
         Scooter scooter = scooterRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
         return scooter.getKilometers();
+    }
+
+    public int getActiveTime(long id){
+        Scooter scooter = scooterRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+        return scooter.getActiveTime();
     }
 
     //***********************************************************************************************************

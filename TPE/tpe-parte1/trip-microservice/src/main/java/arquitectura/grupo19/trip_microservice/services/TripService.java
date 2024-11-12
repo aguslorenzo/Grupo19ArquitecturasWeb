@@ -95,7 +95,8 @@ public class TripService {
 
         // 3. Obtener el monopatín y actualizar los datos acumulativos
         long scooterId = trip.getScooterId();
-        Duration tripDuration = Duration.between(trip.getStartDateTime(), trip.getEndDateTime());
+        Duration duration = Duration.between(trip.getStartDateTime(), trip.getEndDateTime());
+        int tripDuration = (int) duration.toMinutes();
         scooterFeignClient.addTimeOfUse(scooterId, tripDuration);
 
         // 3. Si se aplicó un recargo, revertirlo
