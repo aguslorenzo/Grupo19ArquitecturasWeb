@@ -1,6 +1,7 @@
 package arquitectura.grupo19.trip_microservice.services;
 
 import arquitectura.grupo19.trip_microservice.entities.Trip;
+import arquitectura.grupo19.trip_microservice.feignClient.AdminFeignClient;
 import arquitectura.grupo19.trip_microservice.feignClient.ScooterFeignClient;
 import arquitectura.grupo19.trip_microservice.feignClient.UserFeignClient;
 import arquitectura.grupo19.trip_microservice.repositories.TripRepository;
@@ -14,17 +15,16 @@ import java.util.List;
 @Service
 public class TripBillingService {
 
-    private final double FARE_PER_MINUTE = 40;
-    private final double FARE_INCREASE_PERCENTAGE = 0.20; // 20% de recargo
-
     private final TripRepository tripRepository;
     private final UserFeignClient userFeignClient;
     private final ScooterFeignClient scooterFeignClient;
+    private final AdminFeignClient adminFeignClient;
 
-    public TripBillingService(TripRepository tripRepository, UserFeignClient userFeignClient, ScooterFeignClient scooterFeignClient) {
+    public TripBillingService(TripRepository tripRepository, UserFeignClient userFeignClient, ScooterFeignClient scooterFeignClient, AdminFeignClient adminFeignClient) {
         this.tripRepository = tripRepository;
         this.userFeignClient = userFeignClient;
         this.scooterFeignClient = scooterFeignClient;
+        this.adminFeignClient = adminFeignClient;
     }
 
     @Scheduled(fixedRate = 60000) // Ejecuta cada minuto
@@ -40,12 +40,12 @@ public class TripBillingService {
         long minutesElapsed = Duration.between(trip.getLastBilledTime(), now).toMinutes();
 
         if (minutesElapsed > 0) {
-            double costPerMinute = FARE_PER_MINUTE;
+            double costPerMinute = adminFeignClient.getCostTrip();
 
             // Verificar si el recargo ha sido aplicado y si debe aplicarse a partir de ahora
             if (trip.isAdditionalChargeApplied()) {
                 // Si el recargo ya ha sido aplicado, aumentamos el costo por minuto
-                costPerMinute = FARE_PER_MINUTE * (1 + FARE_INCREASE_PERCENTAGE);
+                costPerMinute = adminFeignClient.getCostTripWithSurcharge();
             }
 
             boolean hasSufficientBalance = userFeignClient.hasSufficientBalance(trip.getUserId(), costPerMinute);
@@ -77,7 +77,7 @@ public class TripBillingService {
     }
 
     public boolean hasSufficientBalance(long userId) {
-        return userFeignClient.hasSufficientBalance(userId, FARE_PER_MINUTE);
+        return userFeignClient.hasSufficientBalance(userId, adminFeignClient.getCostTrip());
     }
 }
 

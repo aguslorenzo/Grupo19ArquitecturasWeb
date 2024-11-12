@@ -22,10 +22,8 @@ public class AdminService {
     @Autowired
     ScooterFeignClient scooterFeignClient;
 
-    /*public AdminService(AdminRepository adminRepository, ScooterFeignClient scooterFeignClient) {
-        this.adminRepository = adminRepository;
-        this.scooterFeignClient = scooterFeignClient;
-    }*/
+    private final double FARE_PER_MINUTE = 40;
+    private final double FARE_INCREASE_PERCENTAGE = 0.20; // 20% de recargo
 
     @Transactional
     public AdminDto saveAdmin(AdminDto adminDto){
@@ -86,6 +84,13 @@ public class AdminService {
         return scooterFeignClient.deleteScooter(scooterId);
     }
 
+    public double getCostTrip(){
+        return FARE_PER_MINUTE;
+    }
+
+    public double getCostTripWithSurcharge(){
+        return FARE_PER_MINUTE * (1 + FARE_INCREASE_PERCENTAGE);
+    }
 
 	// ********************************************************************************************************************
     

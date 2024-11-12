@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.time.Duration;
 
 @FeignClient(name = "scooter-microservice")
 public interface ScooterFeignClient {

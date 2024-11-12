@@ -53,4 +53,14 @@ public class AdminController {
     public ScooterDto deleteScooter(@PathVariable long scooterId) { //TODO corregir tipo de retorno
         return adminService.deleteScooter(scooterId);
     }
+
+    @GetMapping("/cost")
+    public double getCostTrip() {
+        return adminService.getCostTrip();
+    }
+
+    @GetMapping("/costwithsurcharge")
+    public double getCostTripWithSurcharge() {
+        return adminService.getCostTripWithSurcharge();
+    }
 }
