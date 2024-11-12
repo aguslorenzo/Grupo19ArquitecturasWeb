@@ -9,6 +9,7 @@ import arquitectura.grupo19.scooter_microservice.repositories.ScooterRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,7 +17,8 @@ import java.util.List;
 public class ScooterService {
 
     private final ScooterRepository scooterRepository;
-
+    private static final Duration MAX_USAGE_TIME_MINUTES = Duration.ofMinutes(43200); // 30 días
+    private static final double MAX_KM_TRAVELED = 1000.0;
 
     public ScooterService(ScooterRepository scooterRepository) {
         this.scooterRepository = scooterRepository;
@@ -89,6 +91,12 @@ public class ScooterService {
     // Encender el monopatín
     public ScooterDto activateScooter(Long scooterId, Long tripId) {
         Scooter scooter = scooterRepository.findById(scooterId).orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+
+        // Verificar si el monopatín está en mantenimiento
+        if (scooter.getState() == ScooterState.IN_MAINTENANCE) {
+            throw new IllegalStateException("Scooter is in maintenance and cannot be activated");
+        }
+
         if (!scooter.isActive()) {
             scooter.setActive(true);
             scooter.setState(ScooterState.IN_USE);
@@ -146,11 +154,14 @@ public class ScooterService {
         return scooter.getState() == ScooterState.AVAILABLE;
     }
 
-    // Agregar tiempo de uso
-    public void addTimeOfUse(long id, double time){
+    // Agregar tiempo de uso y si llegó al tiempo y kms max, poner en MANTENIMIENTO
+    public void addTimeOfUse(long id, Duration time){
         Scooter scooter = scooterRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
-        double actualTime = scooter.getUsageTime() + time;
+        Duration actualTime = scooter.getUsageTime().plus(time);
+        if(actualTime.compareTo(MAX_USAGE_TIME_MINUTES) >= 0 && scooter.getKilometers() == MAX_KM_TRAVELED){
+            scooter.setState(ScooterState.IN_MAINTENANCE);
+        }
         scooter.setUsageTime(actualTime);
         scooterRepository.save(scooter);
     }

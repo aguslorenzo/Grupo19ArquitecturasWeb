@@ -3,6 +3,7 @@ package arquitectura.grupo19.scooter_microservice.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,9 +20,9 @@ public class Scooter {
     @Column(nullable = false)
     private String gpsLocation;
     private int kilometers;
-    private double usageTime;
-    private double activeTime;
-    private double inactiveTime;
+    private Duration usageTime;
+    private Duration activeTime;
+    private Duration inactiveTime;
     private boolean isActive;
     private boolean isPaused;
     private LocalDateTime pauseStartTime;
@@ -29,6 +30,6 @@ public class Scooter {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ScooterState state;//TODO could be > enum AVAILABLE - IN_MAINTENANCE
+    private ScooterState state;
  
 }

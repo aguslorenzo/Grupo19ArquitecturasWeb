@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
@@ -91,6 +92,11 @@ public class TripService {
         // 2. Registrar la fecha y hora de finalización y calcular los kilómetros recorridos
         trip.setEndDateTime(LocalDateTime.now());
         trip.setKmTraveled(calculateKilometers(trip.getInitialStop(), trip.getEndLocation()));
+
+        // 3. Obtener el monopatín y actualizar los datos acumulativos
+        long scooterId = trip.getScooterId();
+        Duration tripDuration = Duration.between(trip.getStartDateTime(), trip.getEndDateTime());
+        scooterFeignClient.addTimeOfUse(scooterId, tripDuration);
 
         // 3. Si se aplicó un recargo, revertirlo
         if (trip.isAdditionalChargeApplied()) {

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.util.List;
 
 @RestController
@@ -55,7 +56,7 @@ public class ScooterController {
     }
 
     @PostMapping("/{id}/triptime/{time}")
-    public void addTimeOfUse(@PathVariable Long id, @PathVariable Long time) {
+    public void addTimeOfUse(@PathVariable Long id, @PathVariable Duration time) {
         scooterService.addTimeOfUse(id, time);
     }
 
