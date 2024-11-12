@@ -11,12 +11,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TripRequestDto {
-    @NotEmpty(message = "El campo id del usuario no puede estar vacío")
     @NotNull( message = "El userId es un campo obligatorio.")
-    private long userId;
+    private Long userId;
 
     @NotNull( message = "El scooterId es un campo obligatorio.")
-    private long scooterId;
+    private Long scooterId;
 
     @NotNull( message = "La fecha de inicio es un campo obligatorio.")
     private LocalDateTime startDateTime;
