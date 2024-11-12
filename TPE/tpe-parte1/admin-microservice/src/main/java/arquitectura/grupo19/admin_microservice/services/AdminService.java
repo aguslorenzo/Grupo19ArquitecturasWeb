@@ -82,6 +82,10 @@ public class AdminService {
         scooterFeignClient.saveScooter(scooter);
 	}
 
+    public ScooterDto deleteScooter(long scooterId){
+        return scooterFeignClient.deleteScooter(scooterId);
+    }
+
 
 	// ********************************************************************************************************************
     

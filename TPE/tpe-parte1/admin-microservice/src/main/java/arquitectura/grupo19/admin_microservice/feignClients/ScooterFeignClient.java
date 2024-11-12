@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.*;
 public interface ScooterFeignClient {
 
     @GetMapping("/{id}")
-    public ScooterDto getScooterById(@PathVariable Long id);
+    ScooterDto getScooterById(@PathVariable Long id);
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveScooter(@RequestBody ScooterDto scooterDto);
-	
+    void saveScooter(@RequestBody ScooterDto scooterDto);
+
+    @DeleteMapping("/{id}")
+    ScooterDto deleteScooter(@PathVariable long id);
 }

@@ -48,4 +48,9 @@ public class AdminController {
     public void addScooter(@RequestBody ScooterDto scooter) { //TODO corregir tipo de retorno
         adminService.addScooter(scooter);
     }
+
+    @DeleteMapping("/scooters/{scooterId}")
+    public ScooterDto deleteScooter(@PathVariable long scooterId) { //TODO corregir tipo de retorno
+        return adminService.deleteScooter(scooterId);
+    }
 }
