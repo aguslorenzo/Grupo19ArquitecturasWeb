@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class ScooterDto {
 
     @NotNull(message = "El estado es requerido")
+    @NotEmpty(message = "El estado es un campo requerido")
     private ScooterState state;
 
     @NotNull(message = "El valor de kilometros es requerido")
@@ -22,13 +23,9 @@ public class ScooterDto {
     @NotNull(message = "El valor de tiempo activo es requerido")
     private double activeTime;
 
-    @NotNull
-    private String gpsLocation;
-
     public ScooterDto(Scooter scooter) {
         this.state = scooter.getState();
         this.kilometers = scooter.getKilometers();
         this.activeTime = scooter.getActiveTime();
-        this.gpsLocation = scooter.getGpsLocation();
     }
 }

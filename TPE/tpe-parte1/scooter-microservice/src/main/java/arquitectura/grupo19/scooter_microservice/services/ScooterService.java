@@ -175,7 +175,8 @@ public class ScooterService {
     	Scooter scooter = new Scooter();
     	scooter.setState(scooterDto.getState());
     	scooter.setKilometers(scooterDto.getKilometers());
-    	//scooter.setActiveTime(scooterDto.getActiveTime());
+    	scooter.setActiveTime(scooterDto.getActiveTime());
+        scooter.setGpsLocation(scooterDto.getGpsLocation());
         return scooter;
     }
 
