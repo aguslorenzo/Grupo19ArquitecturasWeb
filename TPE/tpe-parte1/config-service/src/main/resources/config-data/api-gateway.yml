@@ -18,11 +18,11 @@ spring:
           - id: admin-microservice
             uri: lb://admin-microservice
             predicates:
-              - Path=/api/administrations/**
-          - id: maintenance-microservice
-            uri: lb://maintenance-microservice
+              - Path=/api/admins/**
+          - id: report-microservice
+            uri: lb://report-microservice
             predicates:
-              - Path=/api/maintenances/**
+              - Path=/api/reports/**
           - id: map-microservice
             uri: lb://map-microservice
             predicates:

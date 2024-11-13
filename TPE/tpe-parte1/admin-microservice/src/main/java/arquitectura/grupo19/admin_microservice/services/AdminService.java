@@ -2,14 +2,20 @@ package arquitectura.grupo19.admin_microservice.services;
 
 import arquitectura.grupo19.admin_microservice.dto.AdminDto;
 import arquitectura.grupo19.admin_microservice.dto.ScooterDto;
+import arquitectura.grupo19.admin_microservice.dto.StopDto;
 import arquitectura.grupo19.admin_microservice.entities.Admin;
 import arquitectura.grupo19.admin_microservice.exceptions.NotFoundException;
 import arquitectura.grupo19.admin_microservice.feignClients.ScooterFeignClient;
+import arquitectura.grupo19.admin_microservice.feignClients.StopFeignClient;
+import arquitectura.grupo19.admin_microservice.feignClients.UserFeignClient;
 import arquitectura.grupo19.admin_microservice.repositories.AdminRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -24,6 +30,10 @@ public class AdminService {
 
     private final double FARE_PER_MINUTE = 40;
     private final double FARE_INCREASE_PERCENTAGE = 0.20; // 20% de recargo
+    @Autowired
+    private StopFeignClient stopFeignClient;
+    @Autowired
+    private UserFeignClient userFeignClient;
 
     @Transactional
     public AdminDto saveAdmin(AdminDto adminDto){
@@ -84,12 +94,24 @@ public class AdminService {
         return scooterFeignClient.deleteScooter(scooterId);
     }
 
+    public void addStop(StopDto stop) {
+        stopFeignClient.saveStop(stop);
+    }
+
+    public StopDto deleteStop(long stopId) {
+        return stopFeignClient.deleteStop(stopId);
+    }
+
     public double getCostTrip(){
         return FARE_PER_MINUTE;
     }
 
     public double getCostTripWithSurcharge(){
         return FARE_PER_MINUTE * (1 + FARE_INCREASE_PERCENTAGE);
+    }
+
+    public void cancelUserAccount(long userId){
+        userFeignClient.deleteUser(userId);
     }
 
 	// ********************************************************************************************************************

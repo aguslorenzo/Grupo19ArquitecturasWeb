@@ -2,6 +2,7 @@ package arquitectura.grupo19.admin_microservice.controllers;
 
 import arquitectura.grupo19.admin_microservice.dto.AdminDto;
 import arquitectura.grupo19.admin_microservice.dto.ScooterDto;
+import arquitectura.grupo19.admin_microservice.dto.StopDto;
 import arquitectura.grupo19.admin_microservice.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,15 +44,26 @@ public class AdminController {
         return adminService.deleteAdmin(id);
     }
     
-    @PostMapping("/scooters")
+    @PostMapping("/scooter")
     @ResponseStatus(HttpStatus.CREATED)
     public void addScooter(@RequestBody ScooterDto scooter) { //TODO corregir tipo de retorno
         adminService.addScooter(scooter);
     }
 
-    @DeleteMapping("/scooters/{scooterId}")
+    @DeleteMapping("/scooter/{scooterId}")
     public ScooterDto deleteScooter(@PathVariable long scooterId) { //TODO corregir tipo de retorno
         return adminService.deleteScooter(scooterId);
+    }
+
+    @PostMapping("/stop")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addStop(@RequestBody StopDto stop) { //TODO corregir tipo de retorno
+        adminService.addStop(stop);
+    }
+
+    @DeleteMapping("/stop/{stopId}")
+    public StopDto deleteStop(@PathVariable long stopId) {
+        return adminService.deleteStop(stopId);
     }
 
     @GetMapping("/cost")
@@ -63,4 +75,10 @@ public class AdminController {
     public double getCostTripWithSurcharge() {
         return adminService.getCostTripWithSurcharge();
     }
+
+    @DeleteMapping("/user/{userId}")
+    public void cancelUserAccount(@PathVariable long userId) {
+        adminService.cancelUserAccount(userId);
+    }
+
 }
