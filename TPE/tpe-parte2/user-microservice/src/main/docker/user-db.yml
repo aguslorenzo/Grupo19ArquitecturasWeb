@@ -1,0 +1,23 @@
+version: '3.3'
+services:
+  db:
+    container_name: user-db
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_DATABASE=user-db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - user-db:/var/lib/mysql
+    command: mysqld --lower_case_table_names=1 --character_set_server=utf8mb4 --explicit_defaults_for_timestamp
+
+volumes:
+  user-db:
+
+#TODO ver si se queda o se sigue con base inmemory
