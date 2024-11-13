@@ -1,5 +1,6 @@
 package arquitectura.grupo19.user_microservice.services;
 
+import arquitectura.grupo19.user_microservice.dto.PaymentAccountDto;
 import arquitectura.grupo19.user_microservice.dto.UserDto;
 import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.entities.User;
@@ -71,14 +72,17 @@ public class UserService {
     /*****************************************************************/
 
     @Transactional
-    public User addPaymentAccountToUser(Long userId, PaymentAccount paymentAccount) {
+    public User addPaymentAccountToUser(Long userId, Long paymentAccountId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Guardar o asignar el PaymentAccount a la base de datos si aún no existe
-        paymentAccountRepository.save(paymentAccount);
+        PaymentAccount pA = paymentAccountRepository.findById(paymentAccountId)
+                .orElseThrow(() -> new RuntimeException("Payment account not found"));
 
-        user.getPaymentAccounts().add(paymentAccount);
+        // Guardar o asignar el PaymentAccount a la base de datos si aún no existe
+        paymentAccountRepository.save(pA);
+
+        user.getPaymentAccounts().add(pA);
         return userRepository.save(user); // Guarda el usuario con la nueva cuenta de pago
     }
 

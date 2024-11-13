@@ -1,5 +1,6 @@
 package arquitectura.grupo19.user_microservice.controllers;
 
+import arquitectura.grupo19.user_microservice.dto.PaymentAccountDto;
 import arquitectura.grupo19.user_microservice.dto.UserDto;
 import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.entities.User;
@@ -50,9 +51,9 @@ public class UserController {
     }
 
     /*****************************************************************/
-    @PostMapping("/{userId}/payment-account")
-    public ResponseEntity<?> addPaymentAccountToUser(@PathVariable Long userId, @RequestBody PaymentAccount paymentAccount) {
-        User updatedUser = userService.addPaymentAccountToUser(userId, paymentAccount);
+    @PostMapping("/{userId}/{paymentAccountId}")
+    public ResponseEntity<?> addPaymentAccountToUser(@PathVariable Long userId, @PathVariable Long paymentAccountId) {
+        User updatedUser = userService.addPaymentAccountToUser(userId, paymentAccountId);
         return ResponseEntity.ok(updatedUser);
     }
 
