@@ -11,6 +11,6 @@ import java.util.Locale;
 @AllArgsConstructor
 public class Stop {
     private long id;
-    private String directionDescription;
-    private String location;
+    private double latitude;
+    private double longitude;
 }

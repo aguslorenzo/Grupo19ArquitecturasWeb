@@ -12,5 +12,6 @@ import java.util.Locale;
 public class Stop {
     private long id;
     private String directionDescription;
-    private Locale location;
+    private double latitude;
+    private double longitude;
 }

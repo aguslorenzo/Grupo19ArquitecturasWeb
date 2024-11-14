@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -81,7 +80,7 @@ public class TripService {
         // 1. Validar si el monopatín está en una parada permitida
         List<Stop> stops = stopFeignClient.getAllStops();
         boolean atPermittedStop = stops.stream()
-                .anyMatch(stop -> stop.getLocation().equals(trip.getEndLocation()));
+                .anyMatch(stop -> stop.getLatitude() == trip.getEndLatitude() && stop.getLongitude() == trip.getEndLongitude());
 
         if (!atPermittedStop) {
             responseDto.setMessage("El monopatín debe estar en una parada permitida para finalizar el viaje.");
@@ -91,7 +90,7 @@ public class TripService {
 
         // 2. Registrar la fecha y hora de finalización y calcular los kilómetros recorridos
         trip.setEndDateTime(LocalDateTime.now());
-        trip.setKmTraveled(calculateKilometers(trip.getInitialStop(), trip.getEndLocation()));
+        trip.setKmTraveled(calculateKilometers(trip.getStartLatitude(), trip.getStartLongitude(), trip.getEndLatitude(), trip.getEndLongitude()));
 
         // 3. Obtener el monopatín y actualizar los datos acumulativos
         long scooterId = trip.getScooterId();
@@ -137,10 +136,9 @@ public class TripService {
     public double getTotalBilledInPeriod(int year, int startMonth, int endMonth) {
         List<Trip> trips = tripRepository.findTripsInPeriod(year, startMonth, endMonth);
 
-        double total = trips.stream()
+        return trips.stream()
                 .mapToDouble(Trip::getCost) // suponiendo que cada viaje tiene un campo de costo
                 .sum();
-        return total;
     }
 
 
@@ -185,10 +183,29 @@ public class TripService {
         return true;
     }
 
-    private double calculateKilometers(Locale initialLocale, Locale endLocale){
-        // TODO calcular distancia en base a datos de ubicación
-        return 0;
+    private double calculateKilometers(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {
+        final int EARTH_RADIUS_KM = 6371; // Radio de la Tierra en kilómetros
+
+        // Convertir las coordenadas de grados a radianes
+        double startLatRad = Math.toRadians(startLatitude);
+        double startLonRad = Math.toRadians(startLongitude);
+        double endLatRad = Math.toRadians(endLatitude);
+        double endLonRad = Math.toRadians(endLongitude);
+
+        // Aplicar la fórmula de Haversine
+        double deltaLat = endLatRad - startLatRad;
+        double deltaLon = endLonRad - startLonRad;
+
+        double a = Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+                Math.cos(startLatRad) * Math.cos(endLatRad) *
+                        Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // Calcular la distancia
+        return EARTH_RADIUS_KM * c;
     }
+
 
     private TripResponseDto mapToTripResponseDto(Trip trip, String message) {
         TripResponseDto responseDto = new TripResponseDto();

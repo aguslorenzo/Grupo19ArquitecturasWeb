@@ -20,6 +20,4 @@ public class Report {
     private double kilometers;
     private double usageTime;
     private boolean includePauseTimes;
-    /*private double activeTime;
-    private double inactiveTime;*/
 }

@@ -1,6 +1,5 @@
 package arquitectura.grupo19.user_microservice.dto;
 
-import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.entities.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,8 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor

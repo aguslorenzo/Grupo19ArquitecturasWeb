@@ -38,10 +38,10 @@ public class ScooterController {
     public ScooterDto restartScooter(@PathVariable Long id) {
         return scooterService.restartScooter(id);
     }
-
+    
     @GetMapping("/{id}/check-location")
-    public boolean checkLocation(@PathVariable Long id, @RequestParam String location) {
-        return scooterService.checkIfScooterIsInAllowedLocation(id, location);
+    public boolean isScooterInAllowedLocation(@PathVariable Long id) {
+        return scooterService.checkIfScooterIsInAllowedLocation(id);
     }
 
     @PutMapping("/maintenance/{id}")

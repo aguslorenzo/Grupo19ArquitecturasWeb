@@ -24,8 +24,10 @@ public class Trip {
     private LocalDateTime startDateTime; //fechaHoraInicio
     private LocalDateTime endDateTime; //fechaHoraFin
     private double kmTraveled; //kmRecorridos
-    private Locale initialStop;
-    private Locale endLocation;
+    private double startLatitude;
+    private double startLongitude;
+    private double endLatitude;
+    private double endLongitude;
     private LocalDateTime lastBilledTime;
     private boolean additionalChargeApplied = false; // Indica si el recargo se ha aplicado
     private LocalDateTime additionalChargeStartTime; // El momento en que comenzó el recargo

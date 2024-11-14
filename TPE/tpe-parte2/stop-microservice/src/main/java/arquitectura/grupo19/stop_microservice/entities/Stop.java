@@ -19,5 +19,7 @@ public class Stop {
     @Column(nullable = false)
     private String directionDescription;
     @Column(nullable = false)
-    private String location; //TODO cambiado a string por simplicidad
+    private double latitude;
+    @Column(nullable = false)
+    private double longitude;
 }

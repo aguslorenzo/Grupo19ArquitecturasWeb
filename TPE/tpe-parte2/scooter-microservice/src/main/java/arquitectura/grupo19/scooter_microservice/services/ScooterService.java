@@ -2,10 +2,12 @@ package arquitectura.grupo19.scooter_microservice.services;
 
 import arquitectura.grupo19.scooter_microservice.dto.ScooterDto;
 import arquitectura.grupo19.scooter_microservice.dto.ScooterStatusCountDto;
+import arquitectura.grupo19.scooter_microservice.dto.StopDto;
 import arquitectura.grupo19.scooter_microservice.entities.Scooter;
 import arquitectura.grupo19.scooter_microservice.entities.ScooterState;
 import arquitectura.grupo19.scooter_microservice.exceptions.NotFoundException;
 import arquitectura.grupo19.scooter_microservice.feignClient.ReportFeignClient;
+import arquitectura.grupo19.scooter_microservice.feignClient.StopFeignClient;
 import arquitectura.grupo19.scooter_microservice.feignClient.TripFeignClient;
 import arquitectura.grupo19.scooter_microservice.repositories.ScooterRepository;
 
@@ -27,11 +29,13 @@ public class ScooterService {
     private final ScooterRepository scooterRepository;
     private final ReportFeignClient reportFeignClient;
     private final TripFeignClient tripFeignClient;
+    private final StopFeignClient stopFeignClient;
 
-    public ScooterService(ScooterRepository scooterRepository, ReportFeignClient reportFeignClient, TripFeignClient tripFeignClient) {
+    public ScooterService(ScooterRepository scooterRepository, ReportFeignClient reportFeignClient, TripFeignClient tripFeignClient, StopFeignClient stopFeignClient) {
         this.scooterRepository = scooterRepository;
         this.reportFeignClient = reportFeignClient;
         this.tripFeignClient = tripFeignClient;
+        this.stopFeignClient = stopFeignClient;
     }
 
     @Transactional
@@ -152,10 +156,16 @@ public class ScooterService {
     }
 
     // Comprobar si el monopatín está en una ubicación permitida
-    public boolean checkIfScooterIsInAllowedLocation(Long scooterId, String location) {
-        Scooter scooter = scooterRepository.findById(scooterId).orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
-        // TODO implementar la lógica para verificar si la ubicación es permitida.
-        return scooter.getGpsLocation().equals(location);
+    public boolean checkIfScooterIsInAllowedLocation(Long scooterId) {
+        Scooter scooter = scooterRepository.findById(scooterId)
+                .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+
+        // Obtener todas las ubicaciones permitidas de stops
+        List<StopDto> allowedStops = stopFeignClient.getAllStops();
+
+        // Verificar si la ubicación del monopatín coincide con alguna de las ubicaciones de stops permitidos
+        return allowedStops.stream()
+                .anyMatch(stop -> stop.getLatitude() == scooter.getLatitude() && stop.getLongitude() == scooter.getLongitude());
     }
 
     // Comprobar si el monopatín está disponible
@@ -246,7 +256,8 @@ public class ScooterService {
     	scooter.setState(scooterDto.getState());
     	scooter.setKilometers(scooterDto.getKilometers());
     	scooter.setActiveTime(scooterDto.getActiveTime());
-        scooter.setGpsLocation(scooterDto.getGpsLocation());
+        scooter.setLatitude(scooterDto.getLatitude());
+        scooter.setLongitude(scooterDto.getLongitude());
         return scooter;
     }
 
@@ -255,6 +266,8 @@ public class ScooterService {
     	scooterDto.setState(scooter.getState());
     	scooterDto.setKilometers(scooter.getKilometers());
     	scooterDto.setActiveTime(scooter.getActiveTime());
+        scooterDto.setLatitude(scooter.getLatitude());
+        scooterDto.setLongitude(scooter.getLongitude());
         return scooterDto;
     }
 }

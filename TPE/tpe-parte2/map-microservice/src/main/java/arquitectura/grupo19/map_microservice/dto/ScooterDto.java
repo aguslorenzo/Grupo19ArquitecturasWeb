@@ -20,6 +20,8 @@ public class ScooterDto {
     private double activeTime;
 
     @NotNull
-    private String gpsLocation;
+    private double latitude;
+    @NotNull
+    private double longitude;
 
 }

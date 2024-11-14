@@ -14,15 +14,11 @@ public class ReportDto {
     private double kilometers;
     private double usageTime;
     private boolean includePauseTimes;
-    /*private double activeTime;
-    private double inactiveTime;*/
 
     public ReportDto(Report report){
         this.scooterId = report.getScooterId();
         this.kilometers = report.getKilometers();
         this.usageTime = report.getUsageTime();
         this.includePauseTimes = report.isIncludePauseTimes();
-        /*this.activeTime = report.getActiveTime();
-        this.inactiveTime = report.getInactiveTime();*/
     }
 }

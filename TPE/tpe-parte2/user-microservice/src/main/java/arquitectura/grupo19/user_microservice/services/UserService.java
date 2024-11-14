@@ -1,11 +1,12 @@
 package arquitectura.grupo19.user_microservice.services;
 
-import arquitectura.grupo19.user_microservice.dto.PaymentAccountDto;
 import arquitectura.grupo19.user_microservice.dto.UserDto;
 import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.entities.User;
 import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
 import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
+import arquitectura.grupo19.user_microservice.feignClients.MapFeignClient;
+import arquitectura.grupo19.user_microservice.models.ScooterLocation;
 import arquitectura.grupo19.user_microservice.repositories.PaymentAccountRepository;
 import arquitectura.grupo19.user_microservice.repositories.UserRepository;
 import arquitectura.grupo19.user_microservice.exceptions.NotFoundException;
@@ -20,10 +21,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PaymentAccountRepository paymentAccountRepository;
+    private final MapFeignClient mapFeignClient;
 
-    public UserService(UserRepository userRepository, PaymentAccountRepository paymentAccountRepository) {
+    public UserService(UserRepository userRepository, PaymentAccountRepository paymentAccountRepository, MapFeignClient mapFeignClient) {
         this.userRepository = userRepository;
         this.paymentAccountRepository = paymentAccountRepository;
+        this.mapFeignClient = mapFeignClient;
     }
 
     @Transactional
@@ -120,6 +123,10 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public List<ScooterLocation> findNearbyScooters(double latitude, double longitude, double radius) {
+        return mapFeignClient.findScootersNearby(latitude, longitude, radius);
+    }
+
     /*******************************************************************************/
 
     private User convertDtoToEntity(UserDto userDto) {
@@ -129,7 +136,6 @@ public class UserService {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setCellphone(userDto.getCellphone());
-        //user.setPaymentAccounts(userDto.getPaymentAccounts());
         return user;
     }
 
@@ -140,7 +146,6 @@ public class UserService {
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setCellphone(user.getCellphone());
-        //userDto.setPaymentAccounts(user.getPaymentAccounts());
         return userDto;
     }
 }

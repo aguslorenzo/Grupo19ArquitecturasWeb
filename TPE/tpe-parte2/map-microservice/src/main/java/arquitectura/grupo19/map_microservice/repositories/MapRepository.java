@@ -8,6 +8,14 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MapRepository extends JpaRepository<ScooterLocation, Long> {
-    @Query("SELECT s FROM ScooterLocation s WHERE FUNCTION('distance', s.gpsLocation, :location) < :radius")
-    List<ScooterLocation> findScootersNearby(@Param("location") String location, @Param("radius") double radius);
+
+    @Query(value = "SELECT s FROM ScooterLocation s WHERE " +
+            "(6371 * acos(cos(radians(:latitude)) * cos(radians(SUBSTRING_INDEX(gps_location, ',', 1))) " +
+            "* cos(radians(SUBSTRING_INDEX(gps_location, ',', -1)) - radians(:longitude)) " +
+            "+ sin(radians(:latitude)) * sin(radians(SUBSTRING_INDEX(gps_location, ',', 1))))) < :radius",
+            nativeQuery = true)
+    List<ScooterLocation> findScootersNearby(@Param("latitude") double latitude,
+                                             @Param("longitude") double longitude,
+                                             @Param("radius") double radius);
 }
+

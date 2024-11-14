@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @RequestMapping("maps")
 public class MapController {
@@ -20,8 +19,10 @@ public class MapController {
      * de un mapa interactivo en la app que muestra los monopatines en la zona.
      */
     @GetMapping("/scooters/nearby")
-    public List<ScooterLocation> getNearbyScooters(@RequestParam String location, @RequestParam double radius) {
-        return mapService.findScootersNearby(location, radius);
+    public List<ScooterLocation> getNearbyScooters(@RequestParam double latitude,
+                                                   @RequestParam double longitude,
+                                                   @RequestParam double radius) {
+        return mapService.findScootersNearby(latitude, longitude, radius);
     }
 
 

@@ -1,13 +1,14 @@
-package arquitectura.grupo19.map_microservice.entities;
+package arquitectura.grupo19.user_microservice.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
+@NoArgsConstructor // Crea un constructor sin argumentos
 @AllArgsConstructor
 public class ScooterLocation {
     @Id

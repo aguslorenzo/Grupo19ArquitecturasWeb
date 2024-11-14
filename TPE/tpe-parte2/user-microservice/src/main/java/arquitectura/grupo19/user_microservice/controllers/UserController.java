@@ -1,11 +1,10 @@
 package arquitectura.grupo19.user_microservice.controllers;
 
-import arquitectura.grupo19.user_microservice.dto.PaymentAccountDto;
 import arquitectura.grupo19.user_microservice.dto.UserDto;
-import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.entities.User;
 import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
 import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
+import arquitectura.grupo19.user_microservice.models.ScooterLocation;
 import arquitectura.grupo19.user_microservice.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -88,5 +87,16 @@ public class UserController {
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         }
+    }
+
+    /**
+     * g) Como usuario quiero un listado de los monopatines cercanos a mi zona, para poder encontrar
+     * un monopatín cerca de mi ubicación
+     */
+    @GetMapping("/nearby-scooters")
+    public List<ScooterLocation> getNearbyScooters(@RequestParam double latitude,
+                                                   @RequestParam double longitude,
+                                                   @RequestParam double radius) {
+        return userService.findNearbyScooters(latitude, longitude, radius);
     }
 }

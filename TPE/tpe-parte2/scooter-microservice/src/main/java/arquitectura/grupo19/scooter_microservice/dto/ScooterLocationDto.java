@@ -14,10 +14,12 @@ public class ScooterLocationDto {
     @Id
     private Long scooterId;
 
-    private String gpsLocation;  // Formato "latitud,longitud"
+    private double latitude;
+    private double longitude;
 
     public ScooterLocationDto(Scooter scooter) {
         this.scooterId = scooter.getId();
-        this.gpsLocation = scooter.getGpsLocation();
+        this.latitude = scooter.getLatitude();
+        this.longitude = scooter.getLongitude();
     }
 }
