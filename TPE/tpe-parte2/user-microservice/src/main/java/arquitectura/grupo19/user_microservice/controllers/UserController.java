@@ -79,4 +79,14 @@ public class UserController {
     public void sendNotification(long id, String message){
         userService.sendNotification(id, message);
     }
+
+    @PutMapping("/{id}/toggle-status")
+    public ResponseEntity<?> toggleAccountStatus(@PathVariable Long id) {
+        try {
+            userService.toggleAccountStatus(id);
+            return ResponseEntity.ok("Estado de cuenta cambiado con éxito");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
+    }
 }

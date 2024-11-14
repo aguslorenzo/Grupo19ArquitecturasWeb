@@ -17,8 +17,9 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long scooterId;
-    private int kilometers;
+    private double kilometers;
     private double usageTime;
-    private double activeTime;
-    private double inactiveTime;
+    private boolean includePauseTimes;
+    /*private double activeTime;
+    private double inactiveTime;*/
 }

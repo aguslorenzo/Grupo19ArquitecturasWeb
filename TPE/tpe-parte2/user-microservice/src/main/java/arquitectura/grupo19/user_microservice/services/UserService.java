@@ -113,6 +113,13 @@ public class UserService {
         System.out.println("Enviando correo a " + user.get().getEmail() + ": " + message);
     }
 
+    @Transactional
+    public void toggleAccountStatus(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
+        user.setActive(!user.isActive());
+        userRepository.save(user);
+    }
+
     /*******************************************************************************/
 
     private User convertDtoToEntity(UserDto userDto) {

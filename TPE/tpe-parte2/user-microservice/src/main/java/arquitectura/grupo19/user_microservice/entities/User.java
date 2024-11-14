@@ -28,6 +28,8 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String cellphone;
+    @Column(nullable = false)
+    private boolean isActive = true; // indica si la cuenta está activa o anulada
 
     @ManyToMany
     @JoinTable(

@@ -11,16 +11,18 @@ import lombok.NoArgsConstructor;
 public class ReportDto {
 
     private long scooterId;
-    private int kilometers;
+    private double kilometers;
     private double usageTime;
-    private double activeTime;
-    private double inactiveTime;
+    private boolean includePauseTimes;
+    /*private double activeTime;
+    private double inactiveTime;*/
 
     public ReportDto(Report report){
         this.scooterId = report.getScooterId();
         this.kilometers = report.getKilometers();
         this.usageTime = report.getUsageTime();
-        this.activeTime = report.getActiveTime();
-        this.inactiveTime = report.getInactiveTime();
+        this.includePauseTimes = report.isIncludePauseTimes();
+        /*this.activeTime = report.getActiveTime();
+        this.inactiveTime = report.getInactiveTime();*/
     }
 }

@@ -32,8 +32,20 @@ public class ReportService {
                 .orElseThrow(()->new NotFoundException("Report", scooterId));
     }
 
-    public Double getReportKilometersByScooter(long id) {
-        return scooterFeignClient.getKilometers(id);
+    public ReportDto generateUsageReportByScooter(Long scooterId, boolean includePauseTimes) {
+        Double kilometers = scooterFeignClient.getKilometers(scooterId);
+        int usageTime = includePauseTimes
+                ? getReportTimeWithPausesByScooter(scooterId)
+                : getReportTimeWithoutPausesByScooter(scooterId);
+
+        // Crear el objeto ReportDto con la información obtenida
+        ReportDto report = new ReportDto();
+        report.setScooterId(scooterId);
+        report.setKilometers(kilometers);
+        report.setUsageTime(usageTime);
+        report.setIncludePauseTimes(includePauseTimes);
+
+        return report;
     }
 
     public int getReportTimeWithPausesByScooter(long id){
@@ -47,18 +59,20 @@ public class ReportService {
     private Report convertDtoToEntity(ReportDto reportDto) {
         Report report = new Report();
         report.setKilometers(reportDto.getKilometers());
-        report.setActiveTime(reportDto.getActiveTime());
-        report.setInactiveTime(reportDto.getInactiveTime());
         report.setUsageTime(reportDto.getUsageTime());
+        report.setIncludePauseTimes(reportDto.isIncludePauseTimes());
+        /*report.setActiveTime(reportDto.getActiveTime());
+        report.setInactiveTime(reportDto.getInactiveTime());*/
         return report;
     }
 
     private ReportDto convertEntityToDto(Report report) {
         ReportDto reportDto = new ReportDto();
         reportDto.setKilometers(report.getKilometers());
-        reportDto.setActiveTime(report.getActiveTime());
-        reportDto.setInactiveTime(report.getInactiveTime());
         reportDto.setUsageTime(report.getUsageTime());
+        reportDto.setIncludePauseTimes(report.isIncludePauseTimes());
+        /*reportDto.setActiveTime(report.getActiveTime());
+        reportDto.setInactiveTime(report.getInactiveTime());*/
         return reportDto;
     }
 }

@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "trips")
 public class TripController {
@@ -34,6 +36,18 @@ public class TripController {
     public ResponseEntity<?> updateTripWithAdditionalCharge(@PathVariable long tripId){
         TripResponseDto result = tripService.updateTripWithAdditionalCharge(tripId);
         return buildResponse(result);
+    }
+
+    @GetMapping("/scooters-by-trips")
+    public List<Long> findScootersWithMinTrips(@RequestParam int year, @RequestParam int minTrips) {
+        return tripService.findScootersWithMinTrips(year, minTrips);
+    }
+
+    @GetMapping("/total-billed")
+    public double getTotalBilledInPeriod(@RequestParam int year,
+                                         @RequestParam int startMonth,
+                                         @RequestParam int endMonth) {
+        return tripService.getTotalBilledInPeriod(year, startMonth, endMonth);
     }
 
     private ResponseEntity<TripResponseDto> buildResponse(TripResponseDto responseDto) {

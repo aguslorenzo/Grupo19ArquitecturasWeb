@@ -21,4 +21,7 @@ public interface ScooterRepository extends JpaRepository<Scooter, Long> {
     @Query()
     List<Scooter> findAllByState(ScooterState state);
 
+    /** No necesita query, lo resuelve JPA a partir del nombre*/
+    int countByState(ScooterState state);
+
 }

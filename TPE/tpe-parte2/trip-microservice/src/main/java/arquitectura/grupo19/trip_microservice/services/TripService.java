@@ -125,6 +125,26 @@ public class TripService {
         return mapToTripResponseDto(trip.orElse(null), "Viaje actualizado exitosamente");
     }
 
+    @Transactional
+    public List<Long> findScootersWithMinTrips(int year, int minTrips) {
+        return tripRepository.findScootersWithMinTrips(year, minTrips);
+    }
+
+    /**
+     * Método para obtener el total facturado en un rango de meses de un año
+     */
+    @Transactional
+    public double getTotalBilledInPeriod(int year, int startMonth, int endMonth) {
+        List<Trip> trips = tripRepository.findTripsInPeriod(year, startMonth, endMonth);
+
+        double total = trips.stream()
+                .mapToDouble(Trip::getCost) // suponiendo que cada viaje tiene un campo de costo
+                .sum();
+        return total;
+    }
+
+
+    /***************************** VALIDACIONES *****************************/
     private boolean validateUser(long userId, TripResponseDto responseDto) {
         User user = userFeignClient.getUserById(userId);
         if (user == null) {

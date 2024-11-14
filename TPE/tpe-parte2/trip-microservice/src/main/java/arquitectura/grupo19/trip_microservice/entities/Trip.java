@@ -27,6 +27,7 @@ public class Trip {
     private Locale initialStop;
     private Locale endLocation;
     private LocalDateTime lastBilledTime;
-    private boolean additionalChargeApplied; // Indica si el recargo se ha aplicado
+    private boolean additionalChargeApplied = false; // Indica si el recargo se ha aplicado
     private LocalDateTime additionalChargeStartTime; // El momento en que comenzó el recargo
+    private double cost = 0.0;
 }
