@@ -6,6 +6,7 @@ import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsExcept
 import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
 import arquitectura.grupo19.user_microservice.models.ScooterLocation;
 import arquitectura.grupo19.user_microservice.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("users")
 public class UserController {
 
+    @Autowired
     private final UserService userService;
 
     public UserController(UserService userService) {
