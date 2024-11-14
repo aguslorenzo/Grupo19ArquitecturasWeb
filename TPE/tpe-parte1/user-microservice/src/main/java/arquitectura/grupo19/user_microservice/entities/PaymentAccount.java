@@ -1,14 +1,12 @@
 package arquitectura.grupo19.user_microservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -22,6 +20,7 @@ public class PaymentAccount {
     private double balance; //saldo
     private LocalDate dischargeDate; //fecha de alta
 
+    @JsonBackReference // Evita la serialización infinita
     @ManyToMany(mappedBy = "paymentAccounts")
     private List<User> users;
 

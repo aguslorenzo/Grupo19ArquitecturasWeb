@@ -1,5 +1,6 @@
 package arquitectura.grupo19.user_microservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,6 +28,8 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String cellphone;
+    @Column(nullable = false)
+    private boolean isActive = true; // indica si la cuenta está activa o anulada
 
     @ManyToMany
     @JoinTable(
@@ -34,6 +37,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "payment_account_id")
     )
+    @JsonManagedReference
     private List<PaymentAccount> paymentAccounts = new ArrayList<>();
 
 }

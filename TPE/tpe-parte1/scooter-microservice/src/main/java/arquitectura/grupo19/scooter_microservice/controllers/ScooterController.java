@@ -1,6 +1,7 @@
 package arquitectura.grupo19.scooter_microservice.controllers;
 
 import arquitectura.grupo19.scooter_microservice.dto.ScooterDto;
+import arquitectura.grupo19.scooter_microservice.dto.ScooterStatusCountDto;
 import arquitectura.grupo19.scooter_microservice.exceptions.NotFoundException;
 import arquitectura.grupo19.scooter_microservice.services.ScooterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ public class ScooterController {
     @Autowired
     private ScooterService scooterService;
 
-    /******************************************************************************/
 
     @PostMapping("/{id}/start/trip/{tripId}")
     public ScooterDto startScooter(@PathVariable("id") Long id, @PathVariable("tripId") Long tripId) {
@@ -38,11 +38,22 @@ public class ScooterController {
     public ScooterDto restartScooter(@PathVariable Long id) {
         return scooterService.restartScooter(id);
     }
-
+    
     @GetMapping("/{id}/check-location")
-    public boolean checkLocation(@PathVariable Long id, @RequestParam String location) {
-        return scooterService.checkIfScooterIsInAllowedLocation(id, location);
+    public boolean isScooterInAllowedLocation(@PathVariable Long id) {
+        return scooterService.checkIfScooterIsInAllowedLocation(id);
     }
+
+    @PutMapping("/maintenance/{id}")
+    public void putScooterOnMaintenance(@PathVariable Long id) {
+        scooterService.putScooterOnMaintenance(id);
+    }
+
+    @PutMapping("/available/{id}")
+    public void putScooterAvailable(@PathVariable Long id) {
+        scooterService.putScooterAvailable(id);
+    }
+
 
     @GetMapping("/{id}/available")
     public ResponseEntity<Boolean> isAvailable(@PathVariable long id) {
@@ -79,6 +90,22 @@ public class ScooterController {
         return scooterService.getActiveTime(id);
     }
 
+    @GetMapping("/{id}/maintenance-status")
+    public ResponseEntity<Boolean> checkMaintenanceStatus(@PathVariable Long id) {
+        boolean needsMaintenance = scooterService.checkMaintenanceStatus(id);
+        return ResponseEntity.ok(needsMaintenance);
+    }
+
+    @GetMapping("/trips")
+    public List<ScooterDto> getScootersWithTrips(@RequestParam int year, @RequestParam int minTrips) {
+        return scooterService.findScootersWithTrips(year, minTrips);
+    }
+
+    @GetMapping("/status-count")
+    public ScooterStatusCountDto getScooterStatusCounts() {
+        return scooterService.getScooterStatusCounts();
+    }
+
     /******************************************************************************/
 
     @GetMapping
@@ -107,15 +134,5 @@ public class ScooterController {
     public ScooterDto deleteScooter(@PathVariable Long id) {
         return scooterService.deleteScooter(id);
     }
-    
-    @PutMapping("/maintenance/{id}")
-    public void putScooterOnMaintenance(@PathVariable Long id) {
-        scooterService.putScooterOnMaintenance(id);
-    }
 
-    @PutMapping("/available/{id}")
-    public void putScooterAvailable(@PathVariable Long id) {
-        scooterService.putScooterAvailable(id);
-    }
-    
 }

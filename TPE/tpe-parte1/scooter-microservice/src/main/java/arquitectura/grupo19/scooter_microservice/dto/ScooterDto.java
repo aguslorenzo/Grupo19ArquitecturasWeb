@@ -24,13 +24,14 @@ public class ScooterDto {
     @NotNull(message = "El valor de tiempo activo es requerido")
     private int activeTime;
 
-    @NotNull
-    private String gpsLocation;
+    private double latitude;
+    private double longitude;
 
     public ScooterDto(Scooter scooter) {
         this.state = scooter.getState();
         this.kilometers = scooter.getKilometers();
         this.activeTime = scooter.getActiveTime();
-        this.gpsLocation = scooter.getGpsLocation();
+        this.latitude = scooter.getLatitude();
+        this.longitude = scooter.getLongitude();
     }
 }

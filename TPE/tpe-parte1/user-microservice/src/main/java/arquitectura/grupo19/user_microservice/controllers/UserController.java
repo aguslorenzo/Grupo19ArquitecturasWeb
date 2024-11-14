@@ -1,11 +1,12 @@
 package arquitectura.grupo19.user_microservice.controllers;
 
 import arquitectura.grupo19.user_microservice.dto.UserDto;
-import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.entities.User;
 import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
 import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
+import arquitectura.grupo19.user_microservice.models.ScooterLocation;
 import arquitectura.grupo19.user_microservice.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequestMapping("users")
 public class UserController {
 
+    @Autowired
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -50,9 +52,9 @@ public class UserController {
     }
 
     /*****************************************************************/
-    @PostMapping("/{userId}/payment-account")
-    public ResponseEntity<?> addPaymentAccountToUser(@PathVariable Long userId, @RequestBody PaymentAccount paymentAccount) {
-        User updatedUser = userService.addPaymentAccountToUser(userId, paymentAccount);
+    @PostMapping("/{userId}/{paymentAccountId}")
+    public ResponseEntity<?> addPaymentAccountToUser(@PathVariable Long userId, @PathVariable Long paymentAccountId) {
+        User updatedUser = userService.addPaymentAccountToUser(userId, paymentAccountId);
         return ResponseEntity.ok(updatedUser);
     }
 
@@ -77,5 +79,26 @@ public class UserController {
     @PostMapping("/{id}/notify/{message}")
     public void sendNotification(long id, String message){
         userService.sendNotification(id, message);
+    }
+
+    @PutMapping("/{id}/toggle-status")
+    public ResponseEntity<?> toggleAccountStatus(@PathVariable Long id) {
+        try {
+            userService.toggleAccountStatus(id);
+            return ResponseEntity.ok("Estado de cuenta cambiado con éxito");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+        }
+    }
+
+    /**
+     * g) Como usuario quiero un listado de los monopatines cercanos a mi zona, para poder encontrar
+     * un monopatín cerca de mi ubicación
+     */
+    @GetMapping("/nearby-scooters")
+    public List<ScooterLocation> getNearbyScooters(@RequestParam double latitude,
+                                                   @RequestParam double longitude,
+                                                   @RequestParam double radius) {
+        return userService.findNearbyScooters(latitude, longitude, radius);
     }
 }

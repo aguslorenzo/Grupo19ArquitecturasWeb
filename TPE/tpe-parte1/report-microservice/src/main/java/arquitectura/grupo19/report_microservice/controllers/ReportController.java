@@ -28,10 +28,16 @@ public class ReportController {
         return reportService.getReportByScooter(scooterId);
     }
 
-    @GetMapping("/scooter/{id}/kilometers")
-    public Double getReportKilometersByScooter(@PathVariable Long id) {
-        return reportService.getReportKilometersByScooter(id);
+    /**
+     * a) Como encargado de mantenimiento quiero poder generar un reporte de uso de monopatines por
+     * kilómetros para establecer si un monopatín requiere de mantenimiento. Este reporte debe poder
+     * configurarse para incluir (o no) los tiempos de pausa.
+     */
+    @GetMapping("/scooter/{id}/usage-report")
+    public ReportDto getUsageReportByScooter(@PathVariable Long id, @RequestParam boolean includePauseTimes) {
+        return reportService.generateUsageReportByScooter(id, includePauseTimes);
     }
+
 
     @GetMapping("/scooter/{id}/timewithpauses")
     public int getReportTimeWithPausesByScooter(@PathVariable Long id) {

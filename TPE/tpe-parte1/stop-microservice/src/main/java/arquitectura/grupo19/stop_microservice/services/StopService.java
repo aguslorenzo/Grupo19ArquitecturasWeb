@@ -50,7 +50,8 @@ public class StopService {
 
         // Actualizar los campos de parada con los datos nuevos
         stop.setDirectionDescription(stopDto.getDirectionDescription());
-        stop.setLocation(stopDto.getLocation());
+        stop.setLatitude(stopDto.getLatitude());
+        stop.setLongitude(stopDto.getLongitude());
         // Guardar los cambios
         stopRepository.save(stop);
     }
@@ -68,7 +69,8 @@ public class StopService {
     private Stop convertDtoToEntity(StopDto stopDto) {
     	Stop stop = new Stop();
     	stop.setDirectionDescription(stopDto.getDirectionDescription());
-    	stop.setLocation(stopDto.getLocation());
+    	stop.setLatitude(stopDto.getLatitude());
+        stop.setLongitude(stopDto.getLongitude());
 
         return stop;
     }
@@ -76,7 +78,8 @@ public class StopService {
     private StopDto convertEntityToDto(Stop stop) {
     	StopDto stopDto = new StopDto();
     	stopDto.setDirectionDescription(stop.getDirectionDescription());
-    	stopDto.setLocation(stop.getLocation());
+    	stopDto.setLatitude(stop.getLatitude());
+        stopDto.setLongitude(stop.getLongitude());
         return stopDto;
     }
 }

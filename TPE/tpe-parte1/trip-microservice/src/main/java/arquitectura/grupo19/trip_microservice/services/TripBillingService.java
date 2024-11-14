@@ -42,9 +42,8 @@ public class TripBillingService {
         if (minutesElapsed > 0) {
             double costPerMinute = adminFeignClient.getCostTrip();
 
-            // Verificar si el recargo ha sido aplicado y si debe aplicarse a partir de ahora
+            // Verificar si el recargo debe aplicarse
             if (trip.isAdditionalChargeApplied()) {
-                // Si el recargo ya ha sido aplicado, aumentamos el costo por minuto
                 costPerMinute = adminFeignClient.getCostTripWithSurcharge();
             }
 
@@ -53,7 +52,10 @@ public class TripBillingService {
             if (hasSufficientBalance) {
                 // Descuenta el saldo
                 userFeignClient.deductBalance(trip.getUserId(), costPerMinute);
-                trip.setLastBilledTime(now); // Actualiza el último momento facturado
+                // Acumula el costo del viaje
+                trip.setCost(trip.getCost() + (costPerMinute * minutesElapsed));
+                // Actualiza el último momento facturado
+                trip.setLastBilledTime(now);
                 tripRepository.save(trip);
             } else {
                 // Notificar al usuario y apagar el monopatín si se quedó sin saldo

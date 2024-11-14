@@ -2,11 +2,13 @@ package arquitectura.grupo19.admin_microservice.services;
 
 import arquitectura.grupo19.admin_microservice.dto.AdminDto;
 import arquitectura.grupo19.admin_microservice.dto.ScooterDto;
+import arquitectura.grupo19.admin_microservice.dto.ScooterStatusCountDto;
 import arquitectura.grupo19.admin_microservice.dto.StopDto;
 import arquitectura.grupo19.admin_microservice.entities.Admin;
 import arquitectura.grupo19.admin_microservice.exceptions.NotFoundException;
 import arquitectura.grupo19.admin_microservice.feignClients.ScooterFeignClient;
 import arquitectura.grupo19.admin_microservice.feignClients.StopFeignClient;
+import arquitectura.grupo19.admin_microservice.feignClients.TripFeignClient;
 import arquitectura.grupo19.admin_microservice.feignClients.UserFeignClient;
 import arquitectura.grupo19.admin_microservice.repositories.AdminRepository;
 
@@ -17,23 +19,33 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class AdminService {
 
+    // Precios actuales
+    private double farePerMinute = 40;
+    private double fareIncreasePercentage = 0.20; //20% de recargo
+    private LocalDate priceChangeDate; // Fecha a partir de la cual se aplican los nuevos precios
+
     @Autowired
     AdminRepository adminRepository;
-
     @Autowired
     ScooterFeignClient scooterFeignClient;
-
-    private final double FARE_PER_MINUTE = 40;
-    private final double FARE_INCREASE_PERCENTAGE = 0.20; // 20% de recargo
     @Autowired
     private StopFeignClient stopFeignClient;
     @Autowired
     private UserFeignClient userFeignClient;
+    @Autowired
+    private TripFeignClient tripFeignClient;
+
+    // Establecer el precio inicial
+    public void setInitialPricing(double fare, double surchargePercentage) {
+        this.farePerMinute = fare;
+        this.fareIncreasePercentage = surchargePercentage;
+    }
 
     @Transactional
     public AdminDto saveAdmin(AdminDto adminDto){
@@ -103,15 +115,39 @@ public class AdminService {
     }
 
     public double getCostTrip(){
-        return FARE_PER_MINUTE;
+        return farePerMinute;
     }
 
     public double getCostTripWithSurcharge(){
-        return FARE_PER_MINUTE * (1 + FARE_INCREASE_PERCENTAGE);
+        return farePerMinute * (1 + fareIncreasePercentage);
     }
 
     public void cancelUserAccount(long userId){
-        userFeignClient.deleteUser(userId);
+        userFeignClient.toggleAccountStatus(userId);
+    }
+
+    public List<ScooterDto> getScootersWithTrips(int year, int minTrips) {
+        return scooterFeignClient.getScootersWithTrips(year, minTrips);
+    }
+
+    public double getTotalBilledInPeriod(int year, int startMonth, int endMonth) {
+        return tripFeignClient.getTotalBilledInPeriod(year, startMonth, endMonth);
+    }
+
+    public ScooterStatusCountDto getScooterStatusCounts() {
+        return scooterFeignClient.getScooterStatusCounts();
+    }
+
+    // Ajustar el precio y programar el cambio para una fecha futura
+    public void adjustPricing(double newFare, double newSurchargePercentage, LocalDate adjustmentDate) {
+        // Solo actualizamos los precios si la fecha de ajuste es futura
+        if (LocalDate.now().isBefore(adjustmentDate)) {
+            this.farePerMinute = newFare;
+            this.fareIncreasePercentage = newSurchargePercentage;
+            this.priceChangeDate = adjustmentDate;
+        } else {
+            throw new IllegalArgumentException("La fecha de ajuste debe ser futura.");
+        }
     }
 
 	// ********************************************************************************************************************

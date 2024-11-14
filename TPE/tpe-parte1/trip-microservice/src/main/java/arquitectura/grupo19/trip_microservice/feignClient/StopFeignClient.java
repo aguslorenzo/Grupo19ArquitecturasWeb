@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@FeignClient(name = "stop-microservice", url="http://localhost:8081/stops")
+@FeignClient(name = "stop-microservice", url="http://localhost:8086/stops")
 public interface StopFeignClient {
 
     @GetMapping

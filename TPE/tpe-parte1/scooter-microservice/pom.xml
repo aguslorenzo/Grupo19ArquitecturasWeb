@@ -67,7 +67,13 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.5.0</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>arquitectura.grupo19</groupId>
+            <artifactId>report-microservice</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

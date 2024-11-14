@@ -5,6 +5,8 @@ import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.entities.User;
 import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
 import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
+import arquitectura.grupo19.user_microservice.feignClients.MapFeignClient;
+import arquitectura.grupo19.user_microservice.models.ScooterLocation;
 import arquitectura.grupo19.user_microservice.repositories.PaymentAccountRepository;
 import arquitectura.grupo19.user_microservice.repositories.UserRepository;
 import arquitectura.grupo19.user_microservice.exceptions.NotFoundException;
@@ -19,10 +21,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PaymentAccountRepository paymentAccountRepository;
+    private final MapFeignClient mapFeignClient;
 
-    public UserService(UserRepository userRepository, PaymentAccountRepository paymentAccountRepository) {
+    public UserService(UserRepository userRepository, PaymentAccountRepository paymentAccountRepository, MapFeignClient mapFeignClient) {
         this.userRepository = userRepository;
         this.paymentAccountRepository = paymentAccountRepository;
+        this.mapFeignClient = mapFeignClient;
     }
 
     @Transactional
@@ -71,14 +75,17 @@ public class UserService {
     /*****************************************************************/
 
     @Transactional
-    public User addPaymentAccountToUser(Long userId, PaymentAccount paymentAccount) {
+    public User addPaymentAccountToUser(Long userId, Long paymentAccountId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Guardar o asignar el PaymentAccount a la base de datos si aún no existe
-        paymentAccountRepository.save(paymentAccount);
+        PaymentAccount pA = paymentAccountRepository.findById(paymentAccountId)
+                .orElseThrow(() -> new RuntimeException("Payment account not found"));
 
-        user.getPaymentAccounts().add(paymentAccount);
+        // Guardar o asignar el PaymentAccount a la base de datos si aún no existe
+        paymentAccountRepository.save(pA);
+
+        user.getPaymentAccounts().add(pA);
         return userRepository.save(user); // Guarda el usuario con la nueva cuenta de pago
     }
 
@@ -109,6 +116,17 @@ public class UserService {
         System.out.println("Enviando correo a " + user.get().getEmail() + ": " + message);
     }
 
+    @Transactional
+    public void toggleAccountStatus(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
+        user.setActive(!user.isActive());
+        userRepository.save(user);
+    }
+
+    public List<ScooterLocation> findNearbyScooters(double latitude, double longitude, double radius) {
+        return mapFeignClient.findScootersNearby(latitude, longitude, radius);
+    }
+
     /*******************************************************************************/
 
     private User convertDtoToEntity(UserDto userDto) {
@@ -118,7 +136,6 @@ public class UserService {
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setCellphone(userDto.getCellphone());
-        //user.setPaymentAccounts(userDto.getPaymentAccounts());
         return user;
     }
 
@@ -129,7 +146,6 @@ public class UserService {
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setCellphone(user.getCellphone());
-        //userDto.setPaymentAccounts(user.getPaymentAccounts());
         return userDto;
     }
 }

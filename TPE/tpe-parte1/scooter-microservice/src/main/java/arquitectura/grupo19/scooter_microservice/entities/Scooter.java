@@ -17,7 +17,8 @@ public class Scooter {
     private long id;
 
     @Column(nullable = false)
-    private String gpsLocation;
+    private double latitude;
+    private double longitude;
     private int kilometers;
     private int usageTime;
     private int activeTime;

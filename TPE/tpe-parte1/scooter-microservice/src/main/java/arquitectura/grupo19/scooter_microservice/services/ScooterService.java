@@ -1,27 +1,41 @@
 package arquitectura.grupo19.scooter_microservice.services;
 
 import arquitectura.grupo19.scooter_microservice.dto.ScooterDto;
+import arquitectura.grupo19.scooter_microservice.dto.ScooterStatusCountDto;
+import arquitectura.grupo19.scooter_microservice.dto.StopDto;
 import arquitectura.grupo19.scooter_microservice.entities.Scooter;
 import arquitectura.grupo19.scooter_microservice.entities.ScooterState;
 import arquitectura.grupo19.scooter_microservice.exceptions.NotFoundException;
+import arquitectura.grupo19.scooter_microservice.feignClient.ReportFeignClient;
+import arquitectura.grupo19.scooter_microservice.feignClient.StopFeignClient;
+import arquitectura.grupo19.scooter_microservice.feignClient.TripFeignClient;
 import arquitectura.grupo19.scooter_microservice.repositories.ScooterRepository;
+
+import arquitectura.grupo19.report_microservice.dto.ReportDto;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static arquitectura.grupo19.scooter_microservice.services.constants.MaintenanceConfig.MAX_KM_TRAVELED;
+import static arquitectura.grupo19.scooter_microservice.services.constants.MaintenanceConfig.MAX_USAGE_TIME_MINUTES;
 
 @Service
 public class ScooterService {
 
     private final ScooterRepository scooterRepository;
-    private static final int MAX_USAGE_TIME_MINUTES = 43200; // 30 días
-    private static final double MAX_KM_TRAVELED = 1000.0;
+    private final ReportFeignClient reportFeignClient;
+    private final TripFeignClient tripFeignClient;
+    private final StopFeignClient stopFeignClient;
 
-    public ScooterService(ScooterRepository scooterRepository) {
+    public ScooterService(ScooterRepository scooterRepository, ReportFeignClient reportFeignClient, TripFeignClient tripFeignClient, StopFeignClient stopFeignClient) {
         this.scooterRepository = scooterRepository;
+        this.reportFeignClient = reportFeignClient;
+        this.tripFeignClient = tripFeignClient;
+        this.stopFeignClient = stopFeignClient;
     }
 
     @Transactional
@@ -103,6 +117,7 @@ public class ScooterService {
             scooter.setCurrentTripId(tripId);
             scooterRepository.save(scooter);
         }
+
         return convertEntityToDto(scooter);
     }
 
@@ -141,10 +156,16 @@ public class ScooterService {
     }
 
     // Comprobar si el monopatín está en una ubicación permitida
-    public boolean checkIfScooterIsInAllowedLocation(Long scooterId, String location) {
-        Scooter scooter = scooterRepository.findById(scooterId).orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
-        // TODO implementar la lógica para verificar si la ubicación es permitida.
-        return scooter.getGpsLocation().equals(location);
+    public boolean checkIfScooterIsInAllowedLocation(Long scooterId) {
+        Scooter scooter = scooterRepository.findById(scooterId)
+                .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+
+        // Obtener todas las ubicaciones permitidas de stops
+        List<StopDto> allowedStops = stopFeignClient.getAllStops();
+
+        // Verificar si la ubicación del monopatín coincide con alguna de las ubicaciones de stops permitidos
+        return allowedStops.stream()
+                .anyMatch(stop -> stop.getLatitude() == scooter.getLatitude() && stop.getLongitude() == scooter.getLongitude());
     }
 
     // Comprobar si el monopatín está disponible
@@ -186,6 +207,48 @@ public class ScooterService {
         return scooter.getActiveTime();
     }
 
+    public boolean checkMaintenanceStatus(Long scooterId) {
+        // Obtener el reporte de kilómetros y tiempo de uso del microservicio de reportes
+        ReportDto report = reportFeignClient.getUsageReportByScooter(scooterId, true);
+
+        // Verificar si cumple con los umbrales de mantenimiento
+        boolean needsMaintenance = report.getKilometers() >= MAX_KM_TRAVELED ||
+                report.getUsageTime() >= MAX_USAGE_TIME_MINUTES;
+
+        if (needsMaintenance) {
+            // Actualizar el estado del monopatín a "En Mantenimiento"
+            Scooter scooter = scooterRepository.findById(scooterId)
+                    .orElseThrow(() -> new NotFoundException("Scooter no encontrado"));
+            scooter.setState(ScooterState.IN_MAINTENANCE);
+            scooterRepository.save(scooter);
+        }
+
+        return needsMaintenance;
+    }
+
+    public List<ScooterDto> findScootersWithTrips(int year, int minTrips) {
+        // Listado de id de los scooters que cumplen con los requisitos (year y cantidadViajes >= minTrips)
+        List<Long> scooterIds = tripFeignClient.getScootersWithMinTrips(year, minTrips);
+
+        // Obtenemos los scooters a partir de la lista de ids
+        List<Scooter> scooters = scooterRepository.findAllById(scooterIds);
+
+        return scooters.stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    public ScooterStatusCountDto getScooterStatusCounts() {
+        int inUse = scooterRepository.countByState(ScooterState.IN_USE);
+        int inMaintenance = scooterRepository.countByState(ScooterState.IN_MAINTENANCE);
+
+        ScooterStatusCountDto statusCount = new ScooterStatusCountDto();
+        statusCount.setInUse(inUse);
+        statusCount.setInMaintenance(inMaintenance);
+
+        return statusCount;
+    }
+
     //***********************************************************************************************************
     
     private Scooter convertDtoToEntity(ScooterDto scooterDto) {
@@ -193,7 +256,8 @@ public class ScooterService {
     	scooter.setState(scooterDto.getState());
     	scooter.setKilometers(scooterDto.getKilometers());
     	scooter.setActiveTime(scooterDto.getActiveTime());
-        scooter.setGpsLocation(scooterDto.getGpsLocation());
+        scooter.setLatitude(scooterDto.getLatitude());
+        scooter.setLongitude(scooterDto.getLongitude());
         return scooter;
     }
 
@@ -202,6 +266,8 @@ public class ScooterService {
     	scooterDto.setState(scooter.getState());
     	scooterDto.setKilometers(scooter.getKilometers());
     	scooterDto.setActiveTime(scooter.getActiveTime());
+        scooterDto.setLatitude(scooter.getLatitude());
+        scooterDto.setLongitude(scooter.getLongitude());
         return scooterDto;
     }
 }
