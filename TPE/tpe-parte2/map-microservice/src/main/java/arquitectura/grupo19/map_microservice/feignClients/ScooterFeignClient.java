@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "scooter-microservice", url="http://localhost:8087/scooters")
+@FeignClient("SCOOTER-MICROSERVICE")
 public interface ScooterFeignClient {
 
     /**
@@ -17,8 +17,6 @@ public interface ScooterFeignClient {
     @GetMapping("/scooters/{id}")
     ScooterDto getScooterById(@PathVariable("id") Long id);
 
-    @GetMapping("scooters/latitud/{latitude}/longitud/{longitude}/radio/{radio}")
-    List<ScooterDto> getScootersByLocation(@PathVariable("latitude") double latitude,
-                                           @PathVariable("longitude") double longitude,
-                                           @PathVariable("radio") double radio);
+    @GetMapping("/scooters/latitude/{latitude}/longitude/{longitude}/radio/{radio}")
+    List<ScooterDto> getScootersByLocation(@PathVariable double latitude, @PathVariable double longitude, @PathVariable double radio);
 }

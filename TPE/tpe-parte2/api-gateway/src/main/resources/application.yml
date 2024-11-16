@@ -12,6 +12,10 @@ spring:
           uri: lb://MAP-MICROSERVICE
           predicates:
             - Path=/map-microservice/**
+        - id: scooter-microservice
+          uri: lb://SCOOTER-MICROSERVICE
+          predicates:
+            - Path=/scooter-microservice/**
 
       discovery:
         locator:

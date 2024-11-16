@@ -10,7 +10,7 @@ import java.util.List;
 @FeignClient("MAP-MICROSERVICE")
 public interface MapFeignClient {
 
-    @GetMapping("maps/scooters/nearby")
+    @GetMapping("/maps/scooters/nearby")
     List<ScooterLocation> findScootersNearby(@RequestParam("latitude") double latitude,
                                              @RequestParam("longitude") double longitude,
                                              @RequestParam("radius") double radius);
