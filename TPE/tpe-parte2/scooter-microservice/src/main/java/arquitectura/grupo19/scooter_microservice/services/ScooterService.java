@@ -11,7 +11,7 @@ import arquitectura.grupo19.scooter_microservice.feignClient.StopFeignClient;
 import arquitectura.grupo19.scooter_microservice.feignClient.TripFeignClient;
 import arquitectura.grupo19.scooter_microservice.repositories.ScooterRepository;
 
-import arquitectura.grupo19.report_microservice.dto.ReportDto;
+import arquitectura.grupo19.scooter_microservice.dto.ReportDto;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
