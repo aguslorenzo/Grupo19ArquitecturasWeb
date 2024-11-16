@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "map-microservice", url="http://localhost:8088/maps")
+@FeignClient("MAP-MICROSERVICE")
 public interface MapFeignClient {
 
-    @GetMapping("/scooters/nearby")
+    @GetMapping("maps/scooters/nearby")
     List<ScooterLocation> findScootersNearby(@RequestParam("latitude") double latitude,
                                              @RequestParam("longitude") double longitude,
                                              @RequestParam("radius") double radius);

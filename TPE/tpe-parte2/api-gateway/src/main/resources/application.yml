@@ -3,10 +3,19 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      routes:
+        - id: user-microservice
+          uri: lb://USER-MICROSERVICE
+          predicates:
+            - Path=/user-microservice/**
+        - id: map-microservice
+          uri: lb://MAP-MICROSERVICE
+          predicates:
+            - Path=/map-microservice/**
+
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
-
 server:
   port: 8765
