@@ -249,6 +249,13 @@ public class ScooterService {
         return statusCount;
     }
 
+    public List<ScooterDto> getScootersByLocation(double latitude, double longitude, double radio){
+        List<Scooter> scooters = scooterRepository.getScootersByLocation(latitude, longitude, radio);
+        return scooters.stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+    }
+
     //***********************************************************************************************************
     
     private Scooter convertDtoToEntity(ScooterDto scooterDto) {

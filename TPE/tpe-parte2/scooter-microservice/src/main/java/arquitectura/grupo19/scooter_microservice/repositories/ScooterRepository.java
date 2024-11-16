@@ -24,4 +24,7 @@ public interface ScooterRepository extends JpaRepository<Scooter, Long> {
     /** No necesita query, lo resuelve JPA a partir del nombre*/
     int countByState(ScooterState state);
 
+    @Query("SELECT s FROM Scooter s WHERE s.latitude <= (:latitude + :radio) AND s.latitude > (:latitude - :radio)" +
+            "AND s.longitude <= (:longitude + :radio) AND s.longitude > (:longitude - :radio) ")
+    List<Scooter> getScootersByLocation(double latitude, double longitude, double radio);
 }

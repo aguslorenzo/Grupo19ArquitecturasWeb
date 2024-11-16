@@ -10,12 +10,12 @@ import java.util.List;
 public interface MapRepository extends JpaRepository<ScooterLocation, Long> {
 
     @Query(value = "SELECT s FROM ScooterLocation s WHERE " +
-            "(6371 * acos(cos(radians(:latitude)) * cos(radians(SUBSTRING_INDEX(gps_location, ',', 1))) " +
-            "* cos(radians(SUBSTRING_INDEX(gps_location, ',', -1)) - radians(:longitude)) " +
-            "+ sin(radians(:latitude)) * sin(radians(SUBSTRING_INDEX(gps_location, ',', 1))))) < :radius",
-            nativeQuery = true)
+            "(6371 * acos(cos(radians(:latitude)) * cos(radians(s.latitude)) " +
+            "* cos(radians(s.longitude) - radians(:longitude)) " +
+            "+ sin(radians(:latitude)) * sin(radians(s.latitude)))) < :radius")
     List<ScooterLocation> findScootersNearby(@Param("latitude") double latitude,
                                              @Param("longitude") double longitude,
                                              @Param("radius") double radius);
+
 }
 

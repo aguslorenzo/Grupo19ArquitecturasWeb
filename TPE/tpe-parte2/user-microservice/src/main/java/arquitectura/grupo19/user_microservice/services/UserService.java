@@ -4,6 +4,7 @@ import arquitectura.grupo19.user_microservice.dto.UserDto;
 import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.entities.User;
 import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
+import arquitectura.grupo19.user_microservice.exceptions.PaymentAccountNotFoundException;
 import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
 import arquitectura.grupo19.user_microservice.feignClients.MapFeignClient;
 import arquitectura.grupo19.user_microservice.models.ScooterLocation;
@@ -29,11 +30,10 @@ public class UserService {
         this.mapFeignClient = mapFeignClient;
     }
 
-    @Transactional
-    public UserDto saveUser(UserDto userDto){
-        User user = convertDtoToEntity(userDto);
-        User save = userRepository.save(user);
-        return convertEntityToDto(save);
+    @Transactional(readOnly = true)
+    public List<UserDto> getUsers(){
+        return userRepository.findAll()
+                .stream().map(UserDto::new).toList();
     }
 
     @Transactional(readOnly = true) // Para que no guarde el estado y tengamos un mejor rendimiento de la consulta.
@@ -43,10 +43,11 @@ public class UserService {
                 .orElseThrow(()->new NotFoundException("User", id));
     }
 
-    @Transactional(readOnly = true)
-    public List<UserDto> getUsers(){
-        return userRepository.findAll()
-                .stream().map(UserDto::new).toList();
+    @Transactional
+    public UserDto saveUser(UserDto userDto){
+        User user = convertDtoToEntity(userDto);
+        User save = userRepository.save(user);
+        return convertEntityToDto(save);
     }
 
     public void updateUser(Long id, UserDto userDto){
@@ -77,14 +78,12 @@ public class UserService {
     @Transactional
     public User addPaymentAccountToUser(Long userId, Long paymentAccountId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with id " + userId + " not found"));
 
         PaymentAccount pA = paymentAccountRepository.findById(paymentAccountId)
-                .orElseThrow(() -> new RuntimeException("Payment account not found"));
+                .orElseThrow(() -> new PaymentAccountNotFoundException("Payment account with id " + paymentAccountId + " not found"));
 
-        // Guardar o asignar el PaymentAccount a la base de datos si aún no existe
-        paymentAccountRepository.save(pA);
-
+        // Agregar la cuenta de pago al usuario
         user.getPaymentAccounts().add(pA);
         return userRepository.save(user); // Guarda el usuario con la nueva cuenta de pago
     }

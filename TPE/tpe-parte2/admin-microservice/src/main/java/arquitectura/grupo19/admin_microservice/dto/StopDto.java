@@ -16,10 +16,12 @@ public class StopDto {
     @NotEmpty(message = "La dirección es un campo requerido")
     private String directionDescription;
 
-    private String location;
+    private double latitude;
+    private double longitude;
 
     public StopDto(Stop stop) {
         this.directionDescription = stop.getDirectionDescription();
-        this.location = stop.getLocation();
+        this.latitude = stop.getLatitude();
+        this.longitude = stop.getLongitude();
     }
 }

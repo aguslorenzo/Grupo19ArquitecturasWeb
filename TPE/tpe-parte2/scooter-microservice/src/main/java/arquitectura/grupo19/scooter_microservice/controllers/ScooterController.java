@@ -18,6 +18,33 @@ public class ScooterController {
     @Autowired
     private ScooterService scooterService;
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<ScooterDto> getScooters() {
+        return scooterService.getScooters();
+    }
+
+    @GetMapping("/{id}")
+    public ScooterDto getScooterById(@PathVariable Long id) {
+        return scooterService.getScooterById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void saveScooter(@RequestBody ScooterDto scooterDto) {
+        scooterService.saveScooter(scooterDto);
+    }
+
+    @PutMapping("/{id}")
+    public void updateScooter(@PathVariable Long id, @RequestBody ScooterDto scooterDto) {
+        scooterService.updateScooter(id, scooterDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ScooterDto deleteScooter(@PathVariable Long id) {
+        return scooterService.deleteScooter(id);
+    }
+
 
     @PostMapping("/{id}/start/trip/{tripId}")
     public ScooterDto startScooter(@PathVariable("id") Long id, @PathVariable("tripId") Long tripId) {
@@ -106,33 +133,8 @@ public class ScooterController {
         return scooterService.getScooterStatusCounts();
     }
 
-    /******************************************************************************/
-
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public List<ScooterDto> getScooters() {
-        return scooterService.getScooters();
+    @GetMapping("scooters/latitude/{latitude}/longitude/{longitude}/radio/{radio}")
+    public List<ScooterDto> getScootersByLocation(@PathVariable double latitude, @PathVariable double longitude, @PathVariable double radio){
+        return scooterService.getScootersByLocation(latitude, longitude, radio);
     }
-
-    @GetMapping("/{id}")
-    public ScooterDto getScooterById(@PathVariable Long id) {
-        return scooterService.getScooterById(id);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void saveScooter(@RequestBody ScooterDto scooterDto) {
-    	scooterService.saveScooter(scooterDto);
-    }
-
-    @PutMapping("/{id}")
-    public void updateScooter(@PathVariable Long id, @RequestBody ScooterDto scooterDto) {
-    	scooterService.updateScooter(id, scooterDto);
-    }
-
-    @DeleteMapping("/{id}")
-    public ScooterDto deleteScooter(@PathVariable Long id) {
-        return scooterService.deleteScooter(id);
-    }
-
 }

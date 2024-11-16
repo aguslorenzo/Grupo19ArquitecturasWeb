@@ -2,11 +2,8 @@ spring:
   application:
     name: map-microservice
 
-  config:
-    import: optional:configserver:http://localhost:8081
-
   datasource:
-    url: jdbc:h2:mem:db-scooter
+    url: jdbc:h2:mem:db-map
     driver-class-name: org.h2.Driver
     username: sa
     password:
