@@ -1,7 +1,7 @@
 package arquitectura.grupo19.scooter_microservice.services;
 
 
-import arquitectura.grupo19.report_microservice.dto.ReportDto;
+import arquitectura.grupo19.scooter_microservice.dto.ReportDto;
 import arquitectura.grupo19.scooter_microservice.entities.Scooter;
 import arquitectura.grupo19.scooter_microservice.entities.ScooterState;
 import arquitectura.grupo19.scooter_microservice.feignClient.ReportFeignClient;

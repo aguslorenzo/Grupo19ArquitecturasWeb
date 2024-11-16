@@ -1,6 +1,6 @@
-package arquitectura.grupo19.report_microservice.dto;
+package arquitectura.grupo19.scooter_microservice.dto;
 
-import arquitectura.grupo19.report_microservice.entities.Report;
+import arquitectura.grupo19.scooter_microservice.models.Report;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
