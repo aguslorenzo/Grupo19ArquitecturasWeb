@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-@FeignClient(name = "scooter-microservice",url="http://localhost:8080/scooters")
+@FeignClient("SCOOTER-MICROSERVICE")
 public interface ScooterFeignClient {
 
-    @GetMapping("/{id}")
+    @GetMapping("scooters/{id}")
     Scooter getScooterById(@PathVariable long id);
 
-    @PatchMapping("/{id}/stop")
+    @PatchMapping("scooters/{id}/stop")
     void deactivateScooter(@PathVariable long id);
 
-    @GetMapping("/{id}/available")
+    @GetMapping("scooters/{id}/available")
     boolean isAvailable(@PathVariable long id);
 
-    @PostMapping("/{id}/triptime/{time}")
+    @PostMapping("scooters/{id}/triptime/{time}")
     void addTimeOfUse(@PathVariable long id, @PathVariable int time);
 }
