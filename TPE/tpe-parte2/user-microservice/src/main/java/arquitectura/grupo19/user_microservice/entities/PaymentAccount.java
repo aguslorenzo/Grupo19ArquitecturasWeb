@@ -20,7 +20,7 @@ public class PaymentAccount {
     private double balance; //saldo
     private LocalDate dischargeDate; //fecha de alta
 
-    @JsonBackReference // Evita la serialización infinita
+    @JsonBackReference
     @ManyToMany(mappedBy = "paymentAccounts")
     private List<User> users;
 

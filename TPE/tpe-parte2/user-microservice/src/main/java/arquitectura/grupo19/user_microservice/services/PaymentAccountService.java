@@ -26,13 +26,6 @@ public class PaymentAccountService {
                 .stream().map(PaymentAccountDto::new).toList();
     }
 
-    @Transactional(readOnly = true) // Para que no guarde el estado y tengamos un mejor rendimiento de la consulta.
-    public PaymentAccountDto getPaymentAccountById(Long id){
-        return paymentAccountRepository.findById(id)
-                .map(PaymentAccountDto::new)
-                .orElseThrow(()->new NotFoundException("Payment Account", id));
-    }
-
     @Transactional
     public PaymentAccountDto savePaymentAccount(PaymentAccountDto paymentAccountDto){
         PaymentAccount paymentAccount = convertDtoToEntity(paymentAccountDto);

@@ -24,10 +24,6 @@ public class PaymentAccountController {
         return paymentAccountService.getPaymentAccounts();
     }
 
-    @GetMapping("/{id}")
-    public PaymentAccountDto getPaymentAccountById(@PathVariable Long id) {
-        return paymentAccountService.getPaymentAccountById(id);
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
