@@ -16,7 +16,10 @@ spring:
           uri: lb://SCOOTER-MICROSERVICE
           predicates:
             - Path=/scooter-microservice/**
-
+        - id: admin-microservice
+          uri: lb://ADMIN-MICROSERVICE
+          predicates:
+            - Path=/admin-microservice/**
       discovery:
         locator:
           enabled: true

@@ -31,13 +31,15 @@ public class UserDto {
     @NotNull(message = "El número de celular es requerido")
     @NotEmpty( message = "El número de celular es un campo requerido")
     private String cellphone;
+    private boolean isActive;
 
     public UserDto(User user) {
         this.username = user.getUsername();
-        this.firstName = user.getFistName();
+        this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.cellphone = user.getCellphone();
+        this.isActive = user.isActive();
     }
 
 }

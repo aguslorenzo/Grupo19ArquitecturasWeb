@@ -57,7 +57,7 @@ public class UserService {
 
         // Actualizar los campos del usuario con los datos nuevos
         user.setUsername(userDto.getUsername());
-        user.setFistName(userDto.getFirstName());
+        user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setCellphone(userDto.getCellphone());
@@ -131,7 +131,7 @@ public class UserService {
     private User convertDtoToEntity(UserDto userDto) {
         User user = new User();
         user.setUsername(userDto.getUsername());
-        user.setFistName(userDto.getFirstName());
+        user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setCellphone(userDto.getCellphone());
@@ -141,7 +141,7 @@ public class UserService {
     private UserDto convertEntityToDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setUsername(user.getUsername());
-        userDto.setFirstName(user.getFistName());
+        userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
         userDto.setEmail(user.getEmail());
         userDto.setCellphone(user.getCellphone());
