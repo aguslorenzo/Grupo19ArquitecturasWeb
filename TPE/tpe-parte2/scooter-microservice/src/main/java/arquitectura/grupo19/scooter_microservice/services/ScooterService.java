@@ -270,6 +270,7 @@ public class ScooterService {
 
     private ScooterDto convertEntityToDto(Scooter scooter) {
     	ScooterDto scooterDto = new ScooterDto();
+        scooterDto.setId(scooter.getId());
     	scooterDto.setState(scooter.getState());
     	scooterDto.setKilometers(scooter.getKilometers());
     	scooterDto.setActiveTime(scooter.getActiveTime());

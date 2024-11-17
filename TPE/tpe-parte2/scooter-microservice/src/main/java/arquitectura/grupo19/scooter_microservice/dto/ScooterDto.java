@@ -14,6 +14,7 @@ import java.time.Duration;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScooterDto {
+    private Long id;
 
     @NotNull(message = "El estado es requerido")
     private ScooterState state;

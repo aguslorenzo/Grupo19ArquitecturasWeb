@@ -8,11 +8,11 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor // Crea un constructor sin argumentos
+@NoArgsConstructor
 @AllArgsConstructor
 public class ScooterLocation {
     @Id
-    private Long scooterId;
+    private Long id;
     private double latitude;
     private double longitude;
     private String state;

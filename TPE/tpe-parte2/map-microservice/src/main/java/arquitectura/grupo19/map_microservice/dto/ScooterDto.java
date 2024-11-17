@@ -4,11 +4,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScooterDto {
+
+    private Long id;
 
     @NotNull(message = "El estado es requerido")
     private ScooterState state;

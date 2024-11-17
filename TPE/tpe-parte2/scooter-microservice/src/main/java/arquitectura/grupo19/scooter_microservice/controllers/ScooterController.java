@@ -133,7 +133,7 @@ public class ScooterController {
         return scooterService.getScooterStatusCounts();
     }
 
-    @GetMapping("/latitude/{latitude}/longitude/{longitude}/radio/{radio}")
+    @GetMapping("/latitude/{latitude}/longitude/{longitude}/radio/{radio}") //TODO deberia ser query como en los demas servicios (user y map)
     public List<ScooterDto> getScootersByLocation(@PathVariable double latitude, @PathVariable double longitude, @PathVariable double radio){
         return scooterService.getScootersByLocation(latitude, longitude, radio);
     }
