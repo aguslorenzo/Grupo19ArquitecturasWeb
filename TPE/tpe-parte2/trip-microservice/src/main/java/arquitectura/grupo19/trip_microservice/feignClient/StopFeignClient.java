@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@FeignClient(name = "stop-microservice", url="http://localhost:8086/stops")
+@FeignClient("STOP-MICROSERVICE")
 public interface StopFeignClient {
 
-    @GetMapping
+    @GetMapping("stops")
     List<Stop> getAllStops();
 
 }

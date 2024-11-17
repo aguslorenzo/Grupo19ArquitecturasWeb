@@ -19,7 +19,6 @@ public class TripController {
         this.tripService = tripService;
     }
 
-    // Método para generar un viaje
     @PostMapping
     public ResponseEntity<?> createTrip(@RequestBody @Valid TripRequestDto tripRequestDTO){
         TripResponseDto result = tripService.createTrip(tripRequestDTO);
