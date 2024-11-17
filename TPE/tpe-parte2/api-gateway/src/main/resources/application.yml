@@ -20,6 +20,10 @@ spring:
           uri: lb://ADMIN-MICROSERVICE
           predicates:
             - Path=/admin-microservice/**
+        - id: trip-microservice
+          uri: lb://TRIP-MICROSERVICE
+          predicates:
+            - Path=/trip-microservice/**
       discovery:
         locator:
           enabled: true
