@@ -2,7 +2,6 @@ package arquitectura.grupo19.scooter_microservice.dto;
 
 import arquitectura.grupo19.scooter_microservice.entities.Scooter;
 import arquitectura.grupo19.scooter_microservice.entities.ScooterState;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +28,7 @@ public class ScooterDto {
     private double longitude;
 
     public ScooterDto(Scooter scooter) {
+        this.id = scooter.getId();
         this.state = scooter.getState();
         this.kilometers = scooter.getKilometers();
         this.activeTime = scooter.getActiveTime();
