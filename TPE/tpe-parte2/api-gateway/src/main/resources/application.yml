@@ -28,6 +28,10 @@ spring:
           uri: lb://REPORT-MICROSERVICE
           predicates:
             - Path=/report-microservice/**
+        - id: stop-microservice
+          uri: lb://STOP-MICROSERVICE
+          predicates:
+            - Path=/stop-microservice/**
       discovery:
         locator:
           enabled: true
