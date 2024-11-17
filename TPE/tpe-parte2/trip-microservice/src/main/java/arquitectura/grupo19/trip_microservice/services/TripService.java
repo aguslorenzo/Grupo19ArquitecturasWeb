@@ -165,7 +165,8 @@ public class TripService {
 
     // Validar si el usuario ya tiene un viaje activo
     private boolean validateUserActiveTrip(long userId, TripResponseDto responseDto) {
-        if (tripRepository.existsByUserIdAndEndDateTimeIsNull(userId)) {
+        boolean hasActiveTrip = tripRepository.existsByUserIdAndEndDateTimeIsNull(userId);
+        if (hasActiveTrip) {
             responseDto.setMessage("El usuario ya tiene un viaje activo.");
             responseDto.setSuccess(false);
             return false;

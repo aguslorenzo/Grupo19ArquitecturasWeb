@@ -1,5 +1,6 @@
 package arquitectura.grupo19.trip_microservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import jakarta.validation.constraints.NotNull;
@@ -21,5 +22,5 @@ public class TripRequestDto {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
-    private double kmTraveled;
+    //private double kmTraveled;
 }
