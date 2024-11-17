@@ -24,6 +24,10 @@ spring:
           uri: lb://TRIP-MICROSERVICE
           predicates:
             - Path=/trip-microservice/**
+        - id: report-microservice
+          uri: lb://REPORT-MICROSERVICE
+          predicates:
+            - Path=/report-microservice/**
       discovery:
         locator:
           enabled: true
