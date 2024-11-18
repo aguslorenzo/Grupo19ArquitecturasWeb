@@ -3,12 +3,12 @@ package arquitectura.grupo19.trip_microservice.feignClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@FeignClient(name = "admin-microservice", url="http://localhost:8085/admins")
+@FeignClient("ADMIN-MICROSERVICE")
 public interface AdminFeignClient {
 
-    @GetMapping("/cost")
+    @GetMapping("admins/cost")
     double getCostTrip();
 
-    @GetMapping("/costwithsurcharge")
+    @GetMapping("admins/cost-with-surcharge")
     double getCostTripWithSurcharge();
 }

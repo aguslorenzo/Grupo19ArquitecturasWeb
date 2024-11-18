@@ -73,7 +73,7 @@ public class AdminController {
         return adminService.getCostTrip();
     }
 
-    @GetMapping("/costwithsurcharge")
+    @GetMapping("/cost-with-surcharge")
     public double getCostTripWithSurcharge() {
         return adminService.getCostTripWithSurcharge();
     }
@@ -81,8 +81,6 @@ public class AdminController {
     /**
      * b) Como administrador quiero poder anular cuentas para inhabilitar el uso momentáneo de la
      * misma.
-     * pd: acá es delete pero en user-microservice es put porque se actualiza la variable isActive de true a false
-     * si en definitiva lo que hace cancelUserAccount es un put, tiene que ser un put
      */
     @PutMapping("/user/{userId}")
     public void cancelUserAccount(@PathVariable long userId) {
