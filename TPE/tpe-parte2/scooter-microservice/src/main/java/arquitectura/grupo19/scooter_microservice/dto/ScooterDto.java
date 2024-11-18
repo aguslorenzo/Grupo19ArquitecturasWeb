@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -27,6 +28,11 @@ public class ScooterDto {
     private double latitude;
     private double longitude;
 
+    private int usageTime;
+    private int inactiveTime;
+    private LocalDateTime pauseStartTime;
+    private Long currentTripId;
+
     public ScooterDto(Scooter scooter) {
         this.id = scooter.getId();
         this.state = scooter.getState();
@@ -34,5 +40,9 @@ public class ScooterDto {
         this.activeTime = scooter.getActiveTime();
         this.latitude = scooter.getLatitude();
         this.longitude = scooter.getLongitude();
+        this.usageTime = scooter.getUsageTime();
+        this.inactiveTime = scooter.getInactiveTime();
+        this.pauseStartTime = scooter.getPauseStartTime();
+        this.currentTripId = scooter.getCurrentTripId();
     }
 }
