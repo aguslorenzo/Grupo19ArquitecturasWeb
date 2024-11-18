@@ -67,7 +67,6 @@ public class TripService {
         tripRepository.save(trip);
 
         tripBillingService.startBilling(trip);
-        System.out.println("pase el startbilling");
 
         return mapToTripResponseDto(trip, "Viaje creado exitosamente");
     }
