@@ -19,8 +19,9 @@ public class TripRequestDto {
     private Long scooterId;
 
     @NotNull( message = "La fecha de inicio es un campo obligatorio.")
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private String startDateTime;
 
-    //private double kmTraveled;
+    @NotNull( message = "La hora de inicio es un campo obligatorio.")
+    private String startTime;
+
 }

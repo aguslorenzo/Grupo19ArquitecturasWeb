@@ -16,7 +16,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,18 +49,17 @@ public class TripService {
         if(!validateUser(tripRequestDto.getUserId(), responseDto)) return responseDto;
         if (!validateScooter(tripRequestDto.getScooterId(), responseDto)) return responseDto;
         if (!validateUserActiveTrip(tripRequestDto.getUserId(), responseDto)) return responseDto;
-        if (!validateStartDate(tripRequestDto.getStartDateTime(), responseDto)) return responseDto;
+        if (!validateStartDate(parseDate(tripRequestDto.getStartDateTime(),tripRequestDto.getStartTime()), responseDto)) return responseDto;
         if (!tripBillingService.hasSufficientBalance(tripRequestDto.getUserId())) {
             responseDto.setMessage("No hay suficiente saldo en las cuentas asociadas.");
             responseDto.setSuccess(false);
             return responseDto;
         }
 
-        // Crear viaje
         Trip trip = new Trip();
         trip.setUserId(tripRequestDto.getUserId());
         trip.setScooterId(tripRequestDto.getScooterId());
-        trip.setStartDateTime(tripRequestDto.getStartDateTime());
+        trip.setStartDateTime(parseDate(tripRequestDto.getStartDateTime(),tripRequestDto.getStartTime()));
         tripRepository.save(trip);
 
         tripBillingService.startBilling(trip);
@@ -217,5 +220,20 @@ public class TripService {
         responseDto.setMessage(message);
         responseDto.setSuccess(true);
         return responseDto;
+    }
+
+    private LocalDateTime parseDate(String date,String time) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        try {
+            LocalDate localDate = LocalDate.parse(date, dateFormatter);
+
+            LocalTime localTime = LocalTime.parse(time, timeFormatter);
+
+            return LocalDateTime.of(localDate, localTime);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("La fecha u hora proporcionada no tiene el formato esperado: dd/MM/yyyy y HH:mm", e);
+        }
     }
 }
