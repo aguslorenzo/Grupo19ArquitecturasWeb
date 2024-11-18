@@ -1,5 +1,6 @@
 package arquitectura.grupo19.trip_microservice.services;
 
+import arquitectura.grupo19.trip_microservice.dto.TripDto;
 import arquitectura.grupo19.trip_microservice.dto.TripRequestDto;
 import arquitectura.grupo19.trip_microservice.dto.TripResponseDto;
 import arquitectura.grupo19.trip_microservice.entities.Trip;
@@ -41,7 +42,11 @@ public class TripService {
         this.tripBillingService = tripBillingService;
         this.stopFeignClient = stopFeignClient;
     }
-
+    @Transactional(readOnly = true)
+    public List<TripDto> getTrips(){
+        return tripRepository.findAll()
+                .stream().map(TripDto::new).toList();
+    }
     @Transactional
     public TripResponseDto createTrip(@Valid TripRequestDto tripRequestDto) {
         TripResponseDto responseDto = new TripResponseDto();

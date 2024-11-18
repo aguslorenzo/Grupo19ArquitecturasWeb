@@ -1,9 +1,12 @@
 package arquitectura.grupo19.trip_microservice.controllers;
 
+import arquitectura.grupo19.trip_microservice.dto.TripDto;
 import arquitectura.grupo19.trip_microservice.dto.TripRequestDto;
 import arquitectura.grupo19.trip_microservice.dto.TripResponseDto;
+import arquitectura.grupo19.trip_microservice.repositories.TripRepository;
 import arquitectura.grupo19.trip_microservice.services.TripService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,13 @@ public class TripController {
     public TripController(TripService tripService) {
         this.tripService = tripService;
     }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<TripDto> getTrips() {
+        return tripService.getTrips();
+    }
+
 
     @PostMapping
     public ResponseEntity<?> createTrip(@RequestBody @Valid TripRequestDto tripRequestDTO){
