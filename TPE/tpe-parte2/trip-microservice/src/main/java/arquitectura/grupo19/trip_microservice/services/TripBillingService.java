@@ -37,6 +37,9 @@ public class TripBillingService {
 
     private void handleTripBilling(Trip trip) {
         LocalDateTime now = LocalDateTime.now();
+        if (trip.getLastBilledTime() == null) {
+            trip.setLastBilledTime(trip.getStartDateTime()); // Ejemplo: usa la hora de inicio
+        }
         long minutesElapsed = Duration.between(trip.getLastBilledTime(), now).toMinutes();
 
         if (minutesElapsed > 0) {
@@ -75,6 +78,7 @@ public class TripBillingService {
     }
 
     public void startBilling(Trip trip) {
+        System.out.println("entre a startbilling");
         handleTripBilling(trip);
     }
 

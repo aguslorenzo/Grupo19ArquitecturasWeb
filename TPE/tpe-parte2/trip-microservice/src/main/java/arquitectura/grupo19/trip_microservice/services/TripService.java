@@ -55,7 +55,6 @@ public class TripService {
             responseDto.setSuccess(false);
             return responseDto;
         }
-
         Trip trip = new Trip();
         trip.setUserId(tripRequestDto.getUserId());
         trip.setScooterId(tripRequestDto.getScooterId());
@@ -63,6 +62,7 @@ public class TripService {
         tripRepository.save(trip);
 
         tripBillingService.startBilling(trip);
+        System.out.println("pase el startbilling");
 
         return mapToTripResponseDto(trip, "Viaje creado exitosamente");
     }
