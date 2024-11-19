@@ -40,17 +40,15 @@ public class ScooterService {
 
     @Transactional
     public ScooterDto saveScooter(ScooterDto scooterDto){
-        // Convertir el DTO a entidad Scooter
+        if (!validateLocation(scooterDto.getLatitude(), scooterDto.getLongitude())) {
+            throw new IllegalArgumentException("Invalid scooter location.");
+        }
     	Scooter scooter = convertDtoToEntity(scooterDto);
-
-        // Si pasa las validaciones, guardar parada en base de datos
         Scooter save = scooterRepository.save(scooter);
-
-        // Retornar DTO
         return convertEntityToDto(save);
     }
 
-    @Transactional(readOnly = true) // Para que no guarde el estado y tengamos un mejor rendimiento de la consulta.
+    @Transactional(readOnly = true)
     public ScooterDto getScooterById(Long id){
         return scooterRepository.findById(id)
                 .map(ScooterDto::new)
@@ -254,6 +252,12 @@ public class ScooterService {
         return scooters.stream()
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
+    }
+
+    public boolean validateLocation(double latitude, double longitude){
+        List<StopDto> stops = stopFeignClient.getAllStops();
+        return stops.stream()
+                .anyMatch(stop -> stop.getLatitude() == latitude && stop.getLongitude() == longitude);
     }
 
     //***********************************************************************************************************
