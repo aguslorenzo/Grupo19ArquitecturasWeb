@@ -62,16 +62,15 @@ public class ScooterService {
     }
 
     public void updateScooter(Long id, ScooterDto scooterDto){
-        // Buscar scooter por id
         Scooter scooter = scooterRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Scooter", id));
 
-        // Actualizar los campos de scooter con los datos nuevos
         scooter.setState(scooterDto.getState());
         scooter.setKilometers(scooterDto.getKilometers());
-        //scooter.setActiveTime(scooterDto.getActiveTime());
+        scooter.setActiveTime(scooterDto.getActiveTime());
+        scooter.setLatitude(scooterDto.getLatitude());
+        scooter.setLongitude(scooterDto.getLongitude());
 
-        // Guardar los cambios
         scooterRepository.save(scooter);
     }
 
@@ -121,7 +120,12 @@ public class ScooterService {
 
     // Apagar el monopatín
     public ScooterDto deactivateScooter(Long scooterId) {
-        Scooter scooter = scooterRepository.findById(scooterId).orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+        Scooter scooter = scooterRepository.findById(scooterId)
+                .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
+
+        if (!validateLocation(scooter.getLatitude(), scooter.getLongitude())) {
+            throw new IllegalArgumentException("Scooter location is invalid");
+        }
         if (scooter.isActive()) {
             scooter.setActive(false);
             scooter.setState(ScooterState.INACTIVE);
