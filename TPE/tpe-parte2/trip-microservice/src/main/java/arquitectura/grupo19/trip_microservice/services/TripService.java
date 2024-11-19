@@ -50,6 +50,7 @@ public class TripService {
     @Transactional
     public TripResponseDto createTrip(@Valid TripRequestDto tripRequestDto) {
         TripResponseDto responseDto = new TripResponseDto();
+        Scooter scooter = scooterFeignClient.getScooterById(tripRequestDto.getScooterId());
 
         if(!validateUser(tripRequestDto.getUserId(), responseDto)) return responseDto;
         if (!validateScooter(tripRequestDto.getScooterId(), responseDto)) return responseDto;
@@ -64,6 +65,9 @@ public class TripService {
         trip.setUserId(tripRequestDto.getUserId());
         trip.setScooterId(tripRequestDto.getScooterId());
         trip.setStartDateTime(parseDate(tripRequestDto.getStartDateTime(),tripRequestDto.getStartTime()));
+        trip.setStartLatitude(scooter.getLatitude());
+        trip.setStartLongitude(scooter.getLongitude());
+
         tripRepository.save(trip);
 
         tripBillingService.startBilling(trip);
