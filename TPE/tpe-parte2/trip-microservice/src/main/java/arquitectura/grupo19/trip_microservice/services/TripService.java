@@ -166,11 +166,14 @@ public class TripService {
 
     private boolean validateScooter(long scooterId, TripResponseDto responseDto) {
         Scooter scooter = scooterFeignClient.getScooterById(scooterId);
-        System.out.println("encontre el scooter " + scooterId);
+
         if (scooter == null || !scooterFeignClient.isAvailable(scooterId)) {
             responseDto.setMessage("El monopatín no está disponible.");
             responseDto.setSuccess(false);
             return false;
+        }
+        else {
+            scooterFeignClient.toggleStatus(scooterId);
         }
         return true;
     }
