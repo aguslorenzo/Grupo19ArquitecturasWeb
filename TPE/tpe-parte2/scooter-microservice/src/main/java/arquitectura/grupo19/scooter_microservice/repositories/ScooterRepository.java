@@ -27,4 +27,10 @@ public interface ScooterRepository extends JpaRepository<Scooter, Long> {
     @Query("SELECT s FROM Scooter s WHERE s.latitude <= (:latitude + :radio) AND s.latitude > (:latitude - :radio)" +
             "AND s.longitude <= (:longitude + :radio) AND s.longitude > (:longitude - :radio) ")
     List<Scooter> getScootersByLocation(double latitude, double longitude, double radio);
+
+    @Query("SELECT s.latitude FROM Scooter s WHERE s.id = :id")
+    double getLatitude(long id);
+
+    @Query("SELECT s.longitude FROM Scooter s WHERE s.id = :id")
+    double getLongitude(long id);
 }

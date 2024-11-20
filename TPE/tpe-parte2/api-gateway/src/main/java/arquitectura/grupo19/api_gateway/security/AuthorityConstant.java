@@ -1,10 +1,10 @@
 package arquitectura.grupo19.api_gateway.security;
 
-public final class AuthotityConstant {
+public final class AuthorityConstant {
 
-    private AuthotityConstant() {}
+    private AuthorityConstant() {}
 
     public static final String _ADMIN = "ADMIN";
-    public static final String _USER = "USER";
     public static final String _MAINTENANCE = "MAINTENANCE";
+    public static final String _USER = "USER";
 }

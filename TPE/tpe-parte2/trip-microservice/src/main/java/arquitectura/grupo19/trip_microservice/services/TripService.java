@@ -28,6 +28,8 @@ import java.util.Optional;
 @Service
 public class TripService {
 
+    private static final double TOLERANCE = 0.0001; // Define el margen de tolerancia para las paradas
+
     private final TripRepository tripRepository;
     private final UserFeignClient userFeignClient;
     private final ScooterFeignClient scooterFeignClient;
@@ -88,10 +90,19 @@ public class TripService {
 
         Trip trip = tripOptional.get();
 
+        // Obtener latitud y longitud actual del scooter
+        long scooterId = trip.getScooterId();
+        trip.setEndLatitude(scooterFeignClient.getLatitude(scooterId));
+        trip.setEndLongitude(scooterFeignClient.getLongitude(scooterId));
+
         // 1. Validar si el monopatín está en una parada permitida
         List<Stop> stops = stopFeignClient.getAllStops();
         boolean atPermittedStop = stops.stream()
-                .anyMatch(stop -> stop.getLatitude() == trip.getEndLatitude() && stop.getLongitude() == trip.getEndLongitude());
+                .anyMatch(stop -> isWithinRange(
+                        stop.getLatitude(), stop.getLongitude(),
+                        trip.getEndLatitude(), trip.getEndLongitude(),
+                        TOLERANCE
+                ));
 
         if (!atPermittedStop) {
             responseDto.setMessage("El monopatín debe estar en una parada permitida para finalizar el viaje.");
@@ -103,8 +114,7 @@ public class TripService {
         trip.setEndDateTime(LocalDateTime.now());
         trip.setKmTraveled(calculateKilometers(trip.getStartLatitude(), trip.getStartLongitude(), trip.getEndLatitude(), trip.getEndLongitude()));
 
-        // 3. Obtener el monopatín y actualizar los datos acumulativos
-        long scooterId = trip.getScooterId();
+        // 3. Actualizar los datos acumulativos
         Duration duration = Duration.between(trip.getStartDateTime(), trip.getEndDateTime());
         int tripDuration = (int) duration.toMinutes();
         scooterFeignClient.addTimeOfUse(scooterId, tripDuration);
@@ -117,6 +127,10 @@ public class TripService {
         tripRepository.save(trip);
 
         return mapToTripResponseDto(trip, "Finalizó el viaje");
+    }
+
+    private boolean isWithinRange(double lat1, double lon1, double lat2, double lon2, double tolerance) {
+        return Math.abs(lat1 - lat2) <= tolerance && Math.abs(lon1 - lon2) <= tolerance;
     }
 
     @Transactional
@@ -225,6 +239,11 @@ public class TripService {
         responseDto.setUserId(trip.getUserId());
         responseDto.setStartDateTime(trip.getStartDateTime());
         responseDto.setEndDateTime(trip.getEndDateTime());
+        responseDto.setStartLatitude(trip.getStartLatitude());
+        responseDto.setStartLongitude(trip.getStartLongitude());
+        responseDto.setEndLatitude(trip.getEndLatitude());
+        responseDto.setEndLongitude(trip.getEndLongitude());
+        responseDto.setKmRecorridos(trip.getKmTraveled());
         responseDto.setMessage(message);
         responseDto.setSuccess(true);
         return responseDto;

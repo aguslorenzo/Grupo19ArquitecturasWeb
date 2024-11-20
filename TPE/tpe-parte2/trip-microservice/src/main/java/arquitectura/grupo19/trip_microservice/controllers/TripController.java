@@ -38,7 +38,14 @@ public class TripController {
     @PatchMapping("/endtrip/{tripId}")
     public ResponseEntity<?> endTrip(@PathVariable long tripId){
         TripResponseDto result = tripService.endTrip(tripId);
-        return buildResponse(result);
+        if (!result.isSuccess()) {
+            if ("El viaje no existe".equals(result.getMessage())) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
+            } else if ("El monopatín debe estar en una parada permitida para finalizar el viaje.".equals(result.getMessage())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+            }
+        }
+        return ResponseEntity.ok(result);
     }
 
     @PutMapping("/{tripId}/updateamount")

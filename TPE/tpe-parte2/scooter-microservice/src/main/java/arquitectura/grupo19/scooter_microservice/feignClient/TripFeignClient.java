@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient("TRIP-MICROSERVICE")
+@FeignClient(name = "trip-microservice", url="http://localhost:8082/trips")
 public interface TripFeignClient {
 
-    @PutMapping("trips/{tripId}/updateamount")
+    @PutMapping("/{tripId}/updateamount")
     void updateTripWithAdditionalCharge(@PathVariable("tripId") Long tripId);
 
-    @GetMapping("trips/scooters-by-trips")
+    @GetMapping("/scooters-by-trips")
     List<Long> getScootersWithMinTrips(@RequestParam("year") int year, @RequestParam("minTrips") int minTrips);
 }

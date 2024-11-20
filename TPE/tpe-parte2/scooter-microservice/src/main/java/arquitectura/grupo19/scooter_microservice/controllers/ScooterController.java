@@ -137,4 +137,14 @@ public class ScooterController {
     public List<ScooterDto> getScootersByLocation(@PathVariable double latitude, @PathVariable double longitude, @PathVariable double radio){
         return scooterService.getScootersByLocation(latitude, longitude, radio);
     }
+
+    @GetMapping("/{id}/latitude")
+    public double getLatitude(@PathVariable long id){
+        return scooterService.getLatitude(id);
+    }
+
+    @GetMapping("/{id}/longitude")
+    public double getLongitude(@PathVariable long id){
+        return scooterService.getLongitude(id);
+    }
 }

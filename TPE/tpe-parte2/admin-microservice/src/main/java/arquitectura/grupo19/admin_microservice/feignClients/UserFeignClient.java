@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
-@FeignClient("USER-MICROSERVICE")
+@FeignClient(name = "user-microservice", url="http://localhost:8084/users")
 public interface UserFeignClient {
 
-    @PutMapping("users/{id}/toggle-status")
+    @PutMapping("/{id}/toggle-status")
     void toggleAccountStatus(@PathVariable("id") long id);
 }

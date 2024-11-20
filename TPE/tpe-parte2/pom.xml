@@ -24,7 +24,6 @@
 	</properties>
 
 	<modules>
-		<module>config-service</module>
 		<module>eureka-service</module>
 		<module>api-gateway</module>
 		<module>user-microservice</module>

@@ -1,17 +1,23 @@
 package arquitectura.grupo19.api_gateway.config;
 
-import arquitectura.grupo19.api_gateway.security.AuthotityConstant;
+import arquitectura.grupo19.api_gateway.entities.AuthUser;
+import arquitectura.grupo19.api_gateway.repositories.AuthUserRepository;
+import arquitectura.grupo19.api_gateway.security.AuthorityConstant;
 import arquitectura.grupo19.api_gateway.security.jwt.JwtFilter;
-import arquitectura.grupo19.api_gateway.security.jwt.TokenProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,11 +27,47 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+    @Autowired
+    private AuthUserRepository authUserRepository;
 
-    private final TokenProvider tokenProvider;
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtFilter jwtFilter) throws Exception {
+        return http
+                .csrf(csrf -> csrf.disable())
 
-    public SecurityConfig( TokenProvider tokenProvider ) {
-        this.tokenProvider = tokenProvider;
+                .authorizeHttpRequests( auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/role/**").permitAll()
+                        .requestMatchers("/admins/**").hasAuthority(AuthorityConstant._ADMIN) //el orden va de más específica a menos específica
+                        .requestMatchers( "/reports/**").hasAuthority( AuthorityConstant._MAINTENANCE )
+                        .requestMatchers("/maps/**", "/trips/**", "/stops/**", "/scooters/**", "/users/**").hasAnyAuthority(AuthorityConstant._USER)
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(sessionManager -> sessionManager
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(this.authenticationProvider())
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
+
+    @Bean
+    public UserDetailsService userDetailService() {
+        return username -> {
+            AuthUser user = authUserRepository.findUserEntityByUsername(username);
+
+            if (user == null) {
+                throw new UsernameNotFoundException("AuthUser not found");
+            }
+            return user;
+        };
     }
 
     @Bean
@@ -33,39 +75,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /**
-     * Configura la cadena de filtros de seguridad para gestionar la autenticación y autorización en la aplicación.
-     *
-     * @param http el objeto {@link HttpSecurity} proporcionado por Spring Security para personalizar las reglas de seguridad HTTP.
-     * @return un {@link SecurityFilterChain} que contiene la configuración de seguridad de la aplicación.
-     * @throws Exception si ocurre algún error al configurar la seguridad.
-     */
     @Bean
-    public SecurityFilterChain filterChain( final HttpSecurity http ) throws Exception {
-        // Desactivar la protección CSRF (Cross-Site Request Forgery) ya que la aplicación no maneja formularios de inicio de sesión.
-        http.csrf( AbstractHttpConfigurer::disable );
-
-        // Configurar la política de sesión como STATELESS, para no mantener sesiones de usuario.
-        http.sessionManagement( s -> s.sessionCreationPolicy( SessionCreationPolicy.STATELESS ) );
-
-        // Definir reglas de acceso para distintas rutas
-        http
-            .securityMatcher("/**" )
-            .authorizeHttpRequests( auth -> auth
-                    .requestMatchers(HttpMethod.POST, "/authenticate").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                    .requestMatchers( HttpMethod.POST,"/admins").hasAuthority( AuthotityConstant._ADMIN )//el orden va de más específica a menos específica
-                    .requestMatchers( "/reports/**").hasAuthority( AuthotityConstant._MAINTENANCE )
-                    .requestMatchers("/maps/**", "/trips/**", "/stops/**", "/scooters/**").hasAnyAuthority(AuthotityConstant._USER)
-                    .anyRequest().authenticated()
-            )
-                //Habilita la autenticación básica HTTP
-            .httpBasic( Customizer.withDefaults() )
-
-                // Agrega un filtro personalizado (JwtFilter). Este filtro valida el JWT en las solicitudes entrantes para autenticar usuarios.
-            .addFilterBefore( new JwtFilter( this.tokenProvider ), UsernamePasswordAuthenticationFilter.class );
-
-        return http.build();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
 }

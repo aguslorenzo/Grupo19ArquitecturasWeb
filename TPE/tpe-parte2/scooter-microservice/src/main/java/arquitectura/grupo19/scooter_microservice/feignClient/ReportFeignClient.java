@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient("REPORT-MICROSERVICE")
+@FeignClient(name = "report-microservice", url="http://localhost:8083/reports")
 public interface ReportFeignClient {
 
-    @GetMapping("reports/scooter/{scooterId}/usage-report")
+    @GetMapping("/scooter/{scooterId}/usage-report")
     ReportDto getUsageReportByScooter(@PathVariable("scooterId") Long scooterId,
                                       @RequestParam("includePauseTimes") boolean includePauseTimes);
 }

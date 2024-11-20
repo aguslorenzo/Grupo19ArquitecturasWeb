@@ -15,6 +15,8 @@ import arquitectura.grupo19.scooter_microservice.dto.ReportDto;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -262,6 +264,14 @@ public class ScooterService {
         List<StopDto> stops = stopFeignClient.getAllStops();
         return stops.stream()
                 .anyMatch(stop -> stop.getLatitude() == latitude && stop.getLongitude() == longitude);
+    }
+
+    public double getLatitude(long id){
+        return scooterRepository.getLatitude(id);
+    }
+
+    public double getLongitude(long id){
+        return scooterRepository.getLongitude(id);
     }
 
     //***********************************************************************************************************

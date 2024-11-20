@@ -1,40 +1,20 @@
 spring:
   application:
     name: api-gateway
-  cloud:
-    gateway:
-      routes:
-        - id: user-microservice
-          uri: lb://USER-MICROSERVICE
-          predicates:
-            - Path=/user-microservice/**
-        - id: map-microservice
-          uri: lb://MAP-MICROSERVICE
-          predicates:
-            - Path=/map-microservice/**
-        - id: scooter-microservice
-          uri: lb://SCOOTER-MICROSERVICE
-          predicates:
-            - Path=/scooter-microservice/**
-        - id: admin-microservice
-          uri: lb://ADMIN-MICROSERVICE
-          predicates:
-            - Path=/admin-microservice/**
-        - id: trip-microservice
-          uri: lb://TRIP-MICROSERVICE
-          predicates:
-            - Path=/trip-microservice/**
-        - id: report-microservice
-          uri: lb://REPORT-MICROSERVICE
-          predicates:
-            - Path=/report-microservice/**
-        - id: stop-microservice
-          uri: lb://STOP-MICROSERVICE
-          predicates:
-            - Path=/stop-microservice/**
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/auth?createDatabaseIfNotExist=true
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+  main:
+    web-application-type: servlet # Fuerza el uso de WebMVC
+
 server:
   port: 8765
