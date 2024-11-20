@@ -1,12 +1,12 @@
 package arquitectura.grupo19.user_microservice.controllers;
 
+import arquitectura.grupo19.user_microservice.dto.TripResponseDto;
 import arquitectura.grupo19.user_microservice.dto.UserDto;
 import arquitectura.grupo19.user_microservice.entities.User;
 import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
 import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
 import arquitectura.grupo19.user_microservice.models.ScooterLocation;
 import arquitectura.grupo19.user_microservice.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("users")
 public class UserController {
 
-    @Autowired
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -100,5 +99,15 @@ public class UserController {
                                                    @RequestParam double longitude,
                                                    @RequestParam double radius) {
         return userService.findNearbyScooters(latitude, longitude, radius);
+    }
+
+    /*****************************************************************/
+    @PostMapping("/start-trip/user/{userId}/scooter/{scooterId}")
+    public TripResponseDto startTrip(@PathVariable Long userId, @PathVariable Long scooterId) {
+        return userService.startTrip(userId, scooterId);
+    }
+    @PutMapping("/stop-trip/trip/{tripId}/scooter/{scooterId}")
+    public ResponseEntity<?> stopTrip(@PathVariable long tripId, @PathVariable long scooterId){
+        return userService.stopTrip(tripId,scooterId);
     }
 }

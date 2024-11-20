@@ -50,23 +50,22 @@ public class TripService {
                 .stream().map(TripDto::new).toList();
     }
     @Transactional
-    public TripResponseDto createTrip(@Valid TripRequestDto tripRequestDto) {
+    public TripResponseDto createTrip(Long userId, Long scooterId) {
         TripResponseDto responseDto = new TripResponseDto();
-        Scooter scooter = scooterFeignClient.getScooterById(tripRequestDto.getScooterId());
+        Scooter scooter = scooterFeignClient.getScooterById(scooterId);
 
-        if(!validateUser(tripRequestDto.getUserId(), responseDto)) return responseDto;
-        if (!validateScooter(tripRequestDto.getScooterId(), responseDto)) return responseDto;
-        if (!validateUserActiveTrip(tripRequestDto.getUserId(), responseDto)) return responseDto;
-        if (!validateStartDate(parseDate(tripRequestDto.getStartDateTime(),tripRequestDto.getStartTime()), responseDto)) return responseDto;
-        if (!tripBillingService.hasSufficientBalance(tripRequestDto.getUserId())) {
+        if(!validateUser(userId, responseDto)) return responseDto;
+        if (!validateScooter(scooterId, responseDto)) return responseDto;
+        if (!validateUserActiveTrip(userId, responseDto)) return responseDto;
+        if (!tripBillingService.hasSufficientBalance(userId)) {
             responseDto.setMessage("No hay suficiente saldo en las cuentas asociadas.");
             responseDto.setSuccess(false);
             return responseDto;
         }
         Trip trip = new Trip();
-        trip.setUserId(tripRequestDto.getUserId());
-        trip.setScooterId(tripRequestDto.getScooterId());
-        trip.setStartDateTime(parseDate(tripRequestDto.getStartDateTime(),tripRequestDto.getStartTime()));
+        trip.setUserId(userId);
+        trip.setScooterId(scooterId);
+        trip.setStartDateTime(LocalDateTime.now());
         trip.setStartLatitude(scooter.getLatitude());
         trip.setStartLongitude(scooter.getLongitude());
 
@@ -77,8 +76,9 @@ public class TripService {
         return mapToTripResponseDto(trip, "Viaje creado exitosamente");
     }
 
+
     @Transactional
-    public TripResponseDto endTrip(long tripId) {
+    public TripResponseDto endTrip(long tripId, long scooterId) {
         TripResponseDto responseDto = new TripResponseDto();
         Optional<Trip> tripOptional = tripRepository.findById(tripId);
 
@@ -90,18 +90,15 @@ public class TripService {
 
         Trip trip = tripOptional.get();
 
-        // Obtener latitud y longitud actual del scooter
-        long scooterId = trip.getScooterId();
-        trip.setEndLatitude(scooterFeignClient.getLatitude(scooterId));
-        trip.setEndLongitude(scooterFeignClient.getLongitude(scooterId));
+        trip.setEndLatitude(scooterFeignClient.getScooterById(scooterId).getLatitude());
+        trip.setEndLongitude(scooterFeignClient.getScooterById(scooterId).getLongitude());
 
         // 1. Validar si el monopatín está en una parada permitida
         List<Stop> stops = stopFeignClient.getAllStops();
         boolean atPermittedStop = stops.stream()
                 .anyMatch(stop -> isWithinRange(
                         stop.getLatitude(), stop.getLongitude(),
-                        trip.getEndLatitude(), trip.getEndLongitude(),
-                        TOLERANCE
+                        trip.getEndLatitude(), trip.getEndLongitude()
                 ));
 
         if (!atPermittedStop) {
@@ -114,12 +111,13 @@ public class TripService {
         trip.setEndDateTime(LocalDateTime.now());
         trip.setKmTraveled(calculateKilometers(trip.getStartLatitude(), trip.getStartLongitude(), trip.getEndLatitude(), trip.getEndLongitude()));
 
-        // 3. Actualizar los datos acumulativos
+        // 3. Obtener el monopatín y actualizar los datos acumulativos
+        long scooter = trip.getScooterId();
         Duration duration = Duration.between(trip.getStartDateTime(), trip.getEndDateTime());
         int tripDuration = (int) duration.toMinutes();
-        scooterFeignClient.addTimeOfUse(scooterId, tripDuration);
+        scooterFeignClient.addTimeOfUse(scooter, tripDuration);
 
-        // 3. Si se aplicó un recargo, revertirlo
+        // 4. Si se aplicó un recargo, revertirlo
         if (trip.isAdditionalChargeApplied()) {
             trip.setAdditionalChargeApplied(false);
         }
@@ -127,10 +125,6 @@ public class TripService {
         tripRepository.save(trip);
 
         return mapToTripResponseDto(trip, "Finalizó el viaje");
-    }
-
-    private boolean isWithinRange(double lat1, double lon1, double lat2, double lon2, double tolerance) {
-        return Math.abs(lat1 - lat2) <= tolerance && Math.abs(lon1 - lon2) <= tolerance;
     }
 
     @Transactional
@@ -232,7 +226,6 @@ public class TripService {
         return EARTH_RADIUS_KM * c;
     }
 
-
     private TripResponseDto mapToTripResponseDto(Trip trip, String message) {
         TripResponseDto responseDto = new TripResponseDto();
         responseDto.setScooterId(trip.getScooterId());
@@ -262,5 +255,9 @@ public class TripService {
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("La fecha u hora proporcionada no tiene el formato esperado: dd/MM/yyyy y HH:mm", e);
         }
+    }
+
+    private boolean isWithinRange(double lat1, double lon1, double lat2, double lon2) {
+        return Math.abs(lat1 - lat2) <= TOLERANCE && Math.abs(lon1 - lon2) <= TOLERANCE;
     }
 }

@@ -1,0 +1,12 @@
+package arquitectura.grupo19.user_microservice.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ScooterDto {
+    private Long id;
+}

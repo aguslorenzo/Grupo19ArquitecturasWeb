@@ -15,8 +15,6 @@ import arquitectura.grupo19.scooter_microservice.dto.ReportDto;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,7 +43,7 @@ public class ScooterService {
         if (!validateLocation(scooterDto.getLatitude(), scooterDto.getLongitude())) {
             throw new IllegalArgumentException("Invalid scooter location.");
         }
-    	Scooter scooter = convertDtoToEntity(scooterDto);
+        Scooter scooter = convertDtoToEntity(scooterDto);
         Scooter save = scooterRepository.save(scooter);
         return convertEntityToDto(save);
     }
@@ -82,27 +80,32 @@ public class ScooterService {
         scooterRepository.delete(scooter);
         return convertEntityToDto(scooter);
     }
-    
+
     //SERVICIOS DE CONSULTAS DE MONOPATINES**********************************************************************
 
-	public void putScooterOnMaintenance(Long id) {
-		 // Buscar scooter por id
+    public void putScooterOnMaintenance(Long id) {
+        // Buscar scooter por id
         Scooter scooter = scooterRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Scooter", id));
         scooter.setState(ScooterState.IN_MAINTENANCE); //cambiar estado
         scooterRepository.save(scooter); //guardar cambios
-	}
-	
-	public void putScooterAvailable(Long id) {
-		 // Buscar scooter por id
+    }
+
+    public void toggleStatus(Long id) {
         Scooter scooter = scooterRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Scooter", id));
-        scooter.setState(ScooterState.AVAILABLE); //cambiar estado
-        scooterRepository.save(scooter); //guardar cambios
-	}
+
+        if (scooter.getState() == ScooterState.IN_USE) {
+            scooter.setState(ScooterState.AVAILABLE);
+        } else if (scooter.getState() == ScooterState.AVAILABLE) {
+            scooter.setState(ScooterState.IN_USE);
+        }
+
+        scooterRepository.save(scooter);
+    }
 
     // Encender el monopatín
-    public ScooterDto activateScooter(Long scooterId, Long tripId) {
+    public void activateScooter(Long scooterId) {
         Scooter scooter = scooterRepository.findById(scooterId).orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
 
         // Verificar si el monopatín está en mantenimiento
@@ -110,18 +113,11 @@ public class ScooterService {
             throw new IllegalStateException("Scooter is in maintenance and cannot be activated");
         }
 
-        if (!scooter.isActive()) {
-            scooter.setActive(true);
-            scooter.setState(ScooterState.IN_USE);
-            scooter.setCurrentTripId(tripId);
-            scooterRepository.save(scooter);
-        }
-
-        return convertEntityToDto(scooter);
+        convertEntityToDto(scooter);
     }
 
     // Apagar el monopatín
-    public ScooterDto deactivateScooter(Long scooterId) {
+    public void deactivateScooter(Long scooterId) {
         Scooter scooter = scooterRepository.findById(scooterId)
                 .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
 
@@ -130,10 +126,9 @@ public class ScooterService {
         }
         if (scooter.isActive()) {
             scooter.setActive(false);
-            scooter.setState(ScooterState.INACTIVE);
+            scooter.setState(ScooterState.AVAILABLE);
             scooterRepository.save(scooter);
         }
-        return convertEntityToDto(scooter);
     }
 
     // Pausar el monopatín
@@ -264,14 +259,6 @@ public class ScooterService {
         List<StopDto> stops = stopFeignClient.getAllStops();
         return stops.stream()
                 .anyMatch(stop -> stop.getLatitude() == latitude && stop.getLongitude() == longitude);
-    }
-
-    public double getLatitude(long id){
-        return scooterRepository.getLatitude(id);
-    }
-
-    public double getLongitude(long id){
-        return scooterRepository.getLongitude(id);
     }
 
     //***********************************************************************************************************

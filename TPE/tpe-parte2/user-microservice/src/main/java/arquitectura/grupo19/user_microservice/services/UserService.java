@@ -1,16 +1,20 @@
 package arquitectura.grupo19.user_microservice.services;
 
 import arquitectura.grupo19.user_microservice.dto.UserDto;
+import arquitectura.grupo19.user_microservice.dto.TripResponseDto;
 import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
 import arquitectura.grupo19.user_microservice.entities.User;
 import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
 import arquitectura.grupo19.user_microservice.exceptions.PaymentAccountNotFoundException;
 import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
 import arquitectura.grupo19.user_microservice.feignClients.MapFeignClient;
+import arquitectura.grupo19.user_microservice.feignClients.ScooterFeignClient;
+import arquitectura.grupo19.user_microservice.feignClients.TripFeignClient;
 import arquitectura.grupo19.user_microservice.models.ScooterLocation;
 import arquitectura.grupo19.user_microservice.repositories.PaymentAccountRepository;
 import arquitectura.grupo19.user_microservice.repositories.UserRepository;
 import arquitectura.grupo19.user_microservice.exceptions.NotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +27,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final PaymentAccountRepository paymentAccountRepository;
     private final MapFeignClient mapFeignClient;
+    private final ScooterFeignClient scooterFeignClient;
+    private final TripFeignClient tripFeignClient;
 
-    public UserService(UserRepository userRepository, PaymentAccountRepository paymentAccountRepository, MapFeignClient mapFeignClient) {
+    public UserService(UserRepository userRepository, PaymentAccountRepository paymentAccountRepository, MapFeignClient mapFeignClient, ScooterFeignClient scooterFeignClient, TripFeignClient tripFeignClient) {
         this.userRepository = userRepository;
         this.paymentAccountRepository = paymentAccountRepository;
         this.mapFeignClient = mapFeignClient;
+        this.scooterFeignClient = scooterFeignClient;
+        this.tripFeignClient = tripFeignClient;
     }
 
     @Transactional(readOnly = true)
@@ -51,18 +59,15 @@ public class UserService {
     }
 
     public void updateUser(Long id, UserDto userDto){
-        // Buscar usuario por id
         User user = userRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("User", id));
 
-        // Actualizar los campos del usuario con los datos nuevos
         user.setUsername(userDto.getUsername());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setCellphone(userDto.getCellphone());
 
-        // Guardar los cambios
         userRepository.save(user);
     }
 
@@ -83,9 +88,8 @@ public class UserService {
         PaymentAccount pA = paymentAccountRepository.findById(paymentAccountId)
                 .orElseThrow(() -> new PaymentAccountNotFoundException("Payment account with id " + paymentAccountId + " not found"));
 
-        // Agregar la cuenta de pago al usuario
         user.getPaymentAccounts().add(pA);
-        return userRepository.save(user); // Guarda el usuario con la nueva cuenta de pago
+        return userRepository.save(user);
     }
 
     @Transactional
@@ -126,6 +130,17 @@ public class UserService {
         return mapFeignClient.findScootersNearby(latitude, longitude, radius);
     }
 
+    @Transactional
+    public TripResponseDto startTrip(Long userId, Long scooterId) {
+        scooterFeignClient.activateScooter(scooterId);
+        return tripFeignClient.createTrip(userId, scooterId);
+    }
+
+    @Transactional
+    public ResponseEntity<?> stopTrip (Long tripId, Long scooterId){
+        scooterFeignClient.stopScooter(scooterId);
+        return tripFeignClient.endTrip(tripId, scooterId);
+    }
     /*******************************************************************************/
 
     private User convertDtoToEntity(UserDto userDto) {

@@ -1,8 +1,12 @@
 package arquitectura.grupo19.api_gateway.gateway;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,7 +25,7 @@ public class GatewayController {
     }
 
     @PostMapping(value = "admins/**")
-    public ResponseEntity<String> postRedirectAdmin(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> postRedirectAdmin(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8085" + request.getRequestURI();
 
         HttpHeaders headers = new HttpHeaders();
@@ -59,7 +63,7 @@ public class GatewayController {
     }
 
     @PostMapping(value = "maps/**")
-    public ResponseEntity<String> postRedirectMap(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> postRedirectMap(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8088" + request.getRequestURI();
 
         HttpHeaders headers = new HttpHeaders();
@@ -97,7 +101,7 @@ public class GatewayController {
     }
 
     @PostMapping(value = "reports/**")
-    public ResponseEntity<String> postRedirectReport(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> postRedirectReport(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8083" + request.getRequestURI();
 
         HttpHeaders headers = new HttpHeaders();
@@ -135,7 +139,7 @@ public class GatewayController {
     }
 
     @PostMapping(value = "scooters/**")
-    public ResponseEntity<String> postRedirectScooter(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> postRedirectScooter(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8087" + request.getRequestURI();
 
         HttpHeaders headers = new HttpHeaders();
@@ -173,7 +177,7 @@ public class GatewayController {
     }
 
     @PostMapping(value = "stops/**")
-    public ResponseEntity<String> postRedirectStop(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> postRedirectStop(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8086" + request.getRequestURI();
 
         HttpHeaders headers = new HttpHeaders();
@@ -211,7 +215,7 @@ public class GatewayController {
     }
 
     @PostMapping(value = "trips/**")
-    public ResponseEntity<String> postRedirectTrip(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> postRedirectTrip(HttpServletRequest request, @RequestBody(required = false) String body) {
 
         System.out.println("Cuerpo recibido en Gateway: " + body); // Debug
         String url = "http://localhost:8082" + request.getRequestURI();
@@ -235,7 +239,7 @@ public class GatewayController {
     }
 
     @PutMapping(value = "trips/**")
-    public ResponseEntity<String> putRedirectTrip(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> putRedirectTrip(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8082" + request.getRequestURI();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -252,8 +256,6 @@ public class GatewayController {
 
     //USER
 
-        //USERS
-
     @GetMapping(value = "users/**")
     public ResponseEntity<String> redirectUser(HttpServletRequest request) {
         String url = "http://localhost:8084" + request.getRequestURI();
@@ -262,14 +264,36 @@ public class GatewayController {
     }
 
     @PostMapping(value = "users/**")
-    public ResponseEntity<String> postRedirectUser(
-            HttpServletRequest request,
-            @RequestBody(required = false) String body) {
+    public ResponseEntity<String> postRedirectUser(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8084" + request.getRequestURI();
+
+        // Agregar los parámetros que se enviarán en el cuerpo
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("userId", "1");
+        map.add("scooterId", "1");
+
+        // Convertir el Map a JSON
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonBody = null;
+        try {
+            jsonBody = objectMapper.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();  // Maneja el error de conversión a JSON
+        }
+
+        System.out.println("Estoy en postRedirect (GATEWAY CONTROLLER). JSONBODY= "+jsonBody);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(body, headers);
-        return restTemplate.postForEntity(url, entity, String.class);
+
+        // Verifica si el cuerpo está presente y si es necesario, se agrega al HttpEntity
+        HttpEntity<String> entity;
+        if (body != null && !body.isEmpty()) {
+            entity = new HttpEntity<>(body, headers);  // Si el cuerpo está presente, lo agregamos
+        } else {
+            entity = new HttpEntity<>(headers);  // Si no hay cuerpo, solo agregamos los headers
+        }
+        return restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
     }
 
     @PutMapping(value = "users/**")
@@ -298,7 +322,7 @@ public class GatewayController {
     }
 
     @PostMapping(value = "payment-accounts/**")
-    public ResponseEntity<String> postRedirectPayment(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> postRedirectPayment(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8084" + request.getRequestURI();
 
         HttpHeaders headers = new HttpHeaders();

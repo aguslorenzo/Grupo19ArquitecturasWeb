@@ -1,11 +1,8 @@
 package arquitectura.grupo19.trip_microservice.controllers;
 
 import arquitectura.grupo19.trip_microservice.dto.TripDto;
-import arquitectura.grupo19.trip_microservice.dto.TripRequestDto;
 import arquitectura.grupo19.trip_microservice.dto.TripResponseDto;
-import arquitectura.grupo19.trip_microservice.repositories.TripRepository;
 import arquitectura.grupo19.trip_microservice.services.TripService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,24 +25,16 @@ public class TripController {
         return tripService.getTrips();
     }
 
-
-    @PostMapping
-    public ResponseEntity<?> createTrip(@RequestBody @Valid TripRequestDto tripRequestDTO){
-        TripResponseDto result = tripService.createTrip(tripRequestDTO);
+    @PostMapping("/{userId}/{scooterId}")
+    public ResponseEntity<?> createTrip(@PathVariable long userId, @PathVariable long scooterId){
+        TripResponseDto result = tripService.createTrip(userId,scooterId);
         return buildResponse(result);
     }
 
-    @PatchMapping("/endtrip/{tripId}")
-    public ResponseEntity<?> endTrip(@PathVariable long tripId){
-        TripResponseDto result = tripService.endTrip(tripId);
-        if (!result.isSuccess()) {
-            if ("El viaje no existe".equals(result.getMessage())) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
-            } else if ("El monopatín debe estar en una parada permitida para finalizar el viaje.".equals(result.getMessage())) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
-            }
-        }
-        return ResponseEntity.ok(result);
+    @PutMapping("/endtrip/{tripId}/{scooterId}")
+    public ResponseEntity<?> endTrip(@PathVariable long tripId, @PathVariable long scooterId){
+        TripResponseDto result = tripService.endTrip(tripId, scooterId);
+        return buildResponse(result);
     }
 
     @PutMapping("/{tripId}/updateamount")

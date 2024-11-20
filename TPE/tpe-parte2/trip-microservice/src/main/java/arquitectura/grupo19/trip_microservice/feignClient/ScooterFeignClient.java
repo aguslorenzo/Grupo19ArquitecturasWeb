@@ -22,9 +22,4 @@ public interface ScooterFeignClient {
     @PostMapping("/{id}/triptime/{time}")
     void addTimeOfUse(@PathVariable long id, @PathVariable int time);
 
-    @GetMapping("/{id}/latitude")
-    double getLatitude(@PathVariable long id);
-
-    @GetMapping("/{id}/longitude")
-    double getLongitude(@PathVariable long id);
 }

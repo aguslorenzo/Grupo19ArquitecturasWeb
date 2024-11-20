@@ -46,14 +46,14 @@ public class ScooterController {
     }
 
 
-    @PostMapping("/{id}/start/trip/{tripId}")
-    public ScooterDto startScooter(@PathVariable("id") Long id, @PathVariable("tripId") Long tripId) {
-        return scooterService.activateScooter(id, tripId);
+    @PostMapping("/{scooterId}/start-scooter")
+    public void activateScooter(@PathVariable("scooterId") Long id) {
+        scooterService.activateScooter(id);
     }
 
-    @PostMapping("/{id}/stop")
-    public ScooterDto stopScooter(@PathVariable Long id) {
-        return scooterService.deactivateScooter(id);
+    @PutMapping("/{id}/stop")
+    public void stopScooter(@PathVariable Long id) {
+        scooterService.deactivateScooter(id);
     }
 
     @PostMapping("/{id}/pause")
@@ -65,7 +65,7 @@ public class ScooterController {
     public ScooterDto restartScooter(@PathVariable Long id) {
         return scooterService.restartScooter(id);
     }
-    
+
     @GetMapping("/{id}/check-location")
     public boolean isScooterInAllowedLocation(@PathVariable Long id) {
         return scooterService.checkIfScooterIsInAllowedLocation(id);
@@ -76,9 +76,9 @@ public class ScooterController {
         scooterService.putScooterOnMaintenance(id);
     }
 
-    @PutMapping("/available/{id}")
-    public void putScooterAvailable(@PathVariable Long id) {
-        scooterService.putScooterAvailable(id);
+    @PutMapping("/toggle-status/{id}")
+    public void toggleStatus(@PathVariable Long id) {
+        scooterService.toggleStatus(id);
     }
 
 
@@ -138,13 +138,4 @@ public class ScooterController {
         return scooterService.getScootersByLocation(latitude, longitude, radio);
     }
 
-    @GetMapping("/{id}/latitude")
-    public double getLatitude(@PathVariable long id){
-        return scooterService.getLatitude(id);
-    }
-
-    @GetMapping("/{id}/longitude")
-    public double getLongitude(@PathVariable long id){
-        return scooterService.getLongitude(id);
-    }
 }
