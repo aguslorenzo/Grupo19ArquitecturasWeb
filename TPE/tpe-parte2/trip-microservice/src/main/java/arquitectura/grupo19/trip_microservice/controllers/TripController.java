@@ -29,9 +29,9 @@ public class TripController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<?> createTrip(@RequestBody @Valid TripRequestDto tripRequestDTO){
-        TripResponseDto result = tripService.createTrip(tripRequestDTO);
+    @PostMapping("/{userId}/{scooterId}")
+    public ResponseEntity<?> createTrip(@PathVariable long userId, @PathVariable long scooterId){
+        TripResponseDto result = tripService.createTrip(userId,scooterId);
         return buildResponse(result);
     }
 

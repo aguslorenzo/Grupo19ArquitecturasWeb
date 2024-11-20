@@ -78,7 +78,6 @@ public class TripBillingService {
     }
 
     public void startBilling(Trip trip) {
-        System.out.println("entre a startbilling");
         handleTripBilling(trip);
     }
 

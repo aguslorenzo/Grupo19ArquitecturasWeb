@@ -46,9 +46,9 @@ public class ScooterController {
     }
 
 
-    @PostMapping("/{id}/start/trip/{tripId}")
-    public ScooterDto startScooter(@PathVariable("id") Long id, @PathVariable("tripId") Long tripId) {
-        return scooterService.activateScooter(id, tripId);
+    @PostMapping("/{scooterId}/start-scooter")
+    public void activateScooter(@PathVariable("scooterId") Long id) {
+        scooterService.activateScooter(id);
     }
 
     @PostMapping("/{id}/stop")

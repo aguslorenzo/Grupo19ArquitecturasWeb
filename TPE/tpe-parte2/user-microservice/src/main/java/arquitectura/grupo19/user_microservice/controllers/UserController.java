@@ -1,5 +1,6 @@
 package arquitectura.grupo19.user_microservice.controllers;
 
+import arquitectura.grupo19.user_microservice.dto.TripResponseDto;
 import arquitectura.grupo19.user_microservice.dto.UserDto;
 import arquitectura.grupo19.user_microservice.entities.User;
 import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
@@ -100,5 +101,11 @@ public class UserController {
                                                    @RequestParam double longitude,
                                                    @RequestParam double radius) {
         return userService.findNearbyScooters(latitude, longitude, radius);
+    }
+
+    /*****************************************************************/
+    @PostMapping("/start-trip/user/{userId}/scooter/{scooterId}")
+    public TripResponseDto startTrip(@PathVariable long userId, @PathVariable long scooterId) {
+        return userService.startTrip(userId, scooterId);
     }
 }

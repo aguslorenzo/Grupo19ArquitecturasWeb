@@ -100,7 +100,7 @@ public class ScooterService {
 	}
 
     // Encender el monopatín
-    public ScooterDto activateScooter(Long scooterId, Long tripId) {
+    public void activateScooter(Long scooterId) {
         Scooter scooter = scooterRepository.findById(scooterId).orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
 
         // Verificar si el monopatín está en mantenimiento
@@ -108,14 +108,14 @@ public class ScooterService {
             throw new IllegalStateException("Scooter is in maintenance and cannot be activated");
         }
 
-        if (!scooter.isActive()) {
+        /*if (!scooter.isActive()) {
             scooter.setActive(true);
             scooter.setState(ScooterState.IN_USE);
-            scooter.setCurrentTripId(tripId);
+            //scooter.setCurrentTripId(tripId);
             scooterRepository.save(scooter);
-        }
+        }*/
 
-        return convertEntityToDto(scooter);
+        convertEntityToDto(scooter);
     }
 
     // Apagar el monopatín

@@ -48,23 +48,22 @@ public class TripService {
                 .stream().map(TripDto::new).toList();
     }
     @Transactional
-    public TripResponseDto createTrip(@Valid TripRequestDto tripRequestDto) {
+    public TripResponseDto createTrip(Long userId, Long scooterId) {
         TripResponseDto responseDto = new TripResponseDto();
-        Scooter scooter = scooterFeignClient.getScooterById(tripRequestDto.getScooterId());
+        Scooter scooter = scooterFeignClient.getScooterById(scooterId);
 
-        if(!validateUser(tripRequestDto.getUserId(), responseDto)) return responseDto;
-        if (!validateScooter(tripRequestDto.getScooterId(), responseDto)) return responseDto;
-        if (!validateUserActiveTrip(tripRequestDto.getUserId(), responseDto)) return responseDto;
-        if (!validateStartDate(parseDate(tripRequestDto.getStartDateTime(),tripRequestDto.getStartTime()), responseDto)) return responseDto;
-        if (!tripBillingService.hasSufficientBalance(tripRequestDto.getUserId())) {
+        if(!validateUser(userId, responseDto)) return responseDto;
+        if (!validateScooter(scooterId, responseDto)) return responseDto;
+        if (!validateUserActiveTrip(userId, responseDto)) return responseDto;
+        if (!tripBillingService.hasSufficientBalance(userId)) {
             responseDto.setMessage("No hay suficiente saldo en las cuentas asociadas.");
             responseDto.setSuccess(false);
             return responseDto;
         }
         Trip trip = new Trip();
-        trip.setUserId(tripRequestDto.getUserId());
-        trip.setScooterId(tripRequestDto.getScooterId());
-        trip.setStartDateTime(parseDate(tripRequestDto.getStartDateTime(),tripRequestDto.getStartTime()));
+        trip.setUserId(userId);
+        trip.setScooterId(scooterId);
+        trip.setStartDateTime(LocalDateTime.now());
         trip.setStartLatitude(scooter.getLatitude());
         trip.setStartLongitude(scooter.getLongitude());
 
@@ -162,10 +161,12 @@ public class TripService {
             return false;
         }
         return true;
+
     }
 
     private boolean validateScooter(long scooterId, TripResponseDto responseDto) {
         Scooter scooter = scooterFeignClient.getScooterById(scooterId);
+        System.out.println("encontre el scooter " + scooterId);
         if (scooter == null || !scooterFeignClient.isAvailable(scooterId)) {
             responseDto.setMessage("El monopatín no está disponible.");
             responseDto.setSuccess(false);
@@ -176,12 +177,14 @@ public class TripService {
 
     // Validar si el usuario ya tiene un viaje activo
     private boolean validateUserActiveTrip(long userId, TripResponseDto responseDto) {
+        System.out.println("entre a validateuseractivetrip ");
         boolean hasActiveTrip = tripRepository.existsByUserIdAndEndDateTimeIsNull(userId);
         if (hasActiveTrip) {
             responseDto.setMessage("El usuario ya tiene un viaje activo.");
             responseDto.setSuccess(false);
             return false;
         }
+        System.out.println("pase validacion de useractivetirp");
         return true;
     }
 
