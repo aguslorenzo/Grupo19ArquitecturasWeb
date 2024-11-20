@@ -56,12 +56,12 @@ public class ScooterController {
        scooterService.deactivateScooter(id);
     }
 
-    @PostMapping("/{id}/pause")
+    @PutMapping("/{id}/pause")
     public ScooterDto pauseScooter(@PathVariable Long id) {
         return scooterService.pauseScooter(id);
     }
 
-    @PostMapping("/{id}/restart")
+    @PutMapping("/{id}/restart")
     public ScooterDto restartScooter(@PathVariable Long id) {
         return scooterService.restartScooter(id);
     }

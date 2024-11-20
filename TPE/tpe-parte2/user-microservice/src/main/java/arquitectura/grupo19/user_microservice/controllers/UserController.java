@@ -1,10 +1,12 @@
 package arquitectura.grupo19.user_microservice.controllers;
 
+import arquitectura.grupo19.user_microservice.dto.ScooterDto;
 import arquitectura.grupo19.user_microservice.dto.TripResponseDto;
 import arquitectura.grupo19.user_microservice.dto.UserDto;
 import arquitectura.grupo19.user_microservice.entities.User;
 import arquitectura.grupo19.user_microservice.exceptions.InsufficientFundsException;
 import arquitectura.grupo19.user_microservice.exceptions.UserNotFoundException;
+import arquitectura.grupo19.user_microservice.feignClients.ScooterFeignClient;
 import arquitectura.grupo19.user_microservice.models.ScooterLocation;
 import arquitectura.grupo19.user_microservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,5 +113,14 @@ public class UserController {
     @PutMapping("/stop-trip/trip/{tripId}/scooter/{scooterId}")
     public ResponseEntity<?> stopTrip(@PathVariable long tripId, @PathVariable long scooterId){
         return userService.stopTrip(tripId,scooterId);
+    }
+    @PutMapping("/{id}/pause-scooter")
+    public ScooterDto pauseScooter(@PathVariable Long scooterId) {
+        return userService.pauseScooter(scooterId);
+    }
+
+    @PutMapping("/{id}/restart-scooter")
+    public ScooterDto restartScooter(@PathVariable Long scooterId) {
+        return userService.restartScooter(scooterId);
     }
 }

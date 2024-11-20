@@ -1,5 +1,6 @@
 package arquitectura.grupo19.user_microservice.services;
 
+import arquitectura.grupo19.user_microservice.dto.ScooterDto;
 import arquitectura.grupo19.user_microservice.dto.UserDto;
 import arquitectura.grupo19.user_microservice.dto.TripResponseDto;
 import arquitectura.grupo19.user_microservice.entities.PaymentAccount;
@@ -137,6 +138,12 @@ public class UserService {
     public ResponseEntity<?> stopTrip (Long tripId, Long scooterId){
         scooterFeignClient.stopScooter(scooterId);
         return tripFeignClient.endTrip(tripId, scooterId);
+    }
+    public ScooterDto pauseScooter(Long scooterId){
+        return scooterFeignClient.pauseScooter(scooterId);
+    }
+    public ScooterDto restartScooter(Long scooterId){
+        return scooterFeignClient.restartScooter(scooterId);
     }
     /*******************************************************************************/
 

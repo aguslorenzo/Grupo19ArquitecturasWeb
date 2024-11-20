@@ -13,5 +13,9 @@ public interface ScooterFeignClient {
 
     @PutMapping("scooters/{id}/stop")
     void stopScooter(@PathVariable Long id);
+    @PutMapping("scooters/{id}/pause")
+    ScooterDto pauseScooter(@PathVariable Long id);
+    @PutMapping("scooters/{id}/restart")
+    ScooterDto restartScooter(@PathVariable Long id);
 
 }
