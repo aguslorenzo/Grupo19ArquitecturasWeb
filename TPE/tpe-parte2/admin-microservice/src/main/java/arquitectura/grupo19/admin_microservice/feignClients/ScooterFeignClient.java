@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@FeignClient(name = "scooter-microservice", url="http://localhost:8080/scooters")
+@FeignClient("SCOOTER-MICROSERVICE")
 public interface ScooterFeignClient {
 
-    @GetMapping("/{id}")
+    @GetMapping("scooters/{id}")
     ScooterDto getScooterById(@PathVariable Long id);
 
-    @PostMapping
+    @PostMapping("scooters")
     @ResponseStatus(HttpStatus.CREATED)
     void saveScooter(@RequestBody ScooterDto scooterDto);
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("scooters/{id}")
     ScooterDto deleteScooter(@PathVariable long id);
 
     @GetMapping("/trips")

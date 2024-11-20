@@ -6,14 +6,14 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "stop-microservice", url="http://localhost:8081/stops")
+@FeignClient("STOP-MICROSERVICE")
 public interface StopFeignClient {
 
-    @PostMapping
+    @PostMapping("stops")
     @ResponseStatus(HttpStatus.CREATED)
     void saveStop(@RequestBody StopDto stopDto);
 
-    @DeleteMapping("/stops/{id}")
+    @DeleteMapping("stops/{id}")
     StopDto deleteStop(@PathVariable long id);
 
 }
