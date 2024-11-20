@@ -14,6 +14,7 @@ import arquitectura.grupo19.user_microservice.models.ScooterLocation;
 import arquitectura.grupo19.user_microservice.repositories.PaymentAccountRepository;
 import arquitectura.grupo19.user_microservice.repositories.UserRepository;
 import arquitectura.grupo19.user_microservice.exceptions.NotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -130,11 +131,12 @@ public class UserService {
     }
 
     public TripResponseDto startTrip(Long userId, Long scooterId) {
-        System.out.println("userid " + userId + " scooterid " + scooterId);
-
         scooterFeignClient.activateScooter(scooterId);
-
         return tripFeignClient.createTrip(userId, scooterId);
+    }
+    public ResponseEntity<?> stopTrip (Long tripId, Long scooterId){
+        scooterFeignClient.stopScooter(scooterId);
+        return tripFeignClient.endTrip(tripId, scooterId);
     }
     /*******************************************************************************/
 

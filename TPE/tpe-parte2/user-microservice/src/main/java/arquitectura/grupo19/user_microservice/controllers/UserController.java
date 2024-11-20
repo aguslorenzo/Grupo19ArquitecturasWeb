@@ -108,4 +108,8 @@ public class UserController {
     public TripResponseDto startTrip(@PathVariable long userId, @PathVariable long scooterId) {
         return userService.startTrip(userId, scooterId);
     }
+    @PutMapping("/stop-trip/trip/{tripId}/scooter/{scooterId}")
+    public ResponseEntity<?> stopTrip(@PathVariable long tripId, @PathVariable long scooterId){
+        return userService.stopTrip(tripId,scooterId);
+    }
 }

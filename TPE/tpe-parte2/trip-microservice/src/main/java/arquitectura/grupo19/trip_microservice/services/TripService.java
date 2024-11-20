@@ -75,7 +75,8 @@ public class TripService {
     }
 
     @Transactional
-    public TripResponseDto endTrip(long tripId) {
+    public TripResponseDto endTrip(long tripId, long scooterId) {
+        System.out.println("entre a endtrip");
         TripResponseDto responseDto = new TripResponseDto();
         Optional<Trip> tripOptional = tripRepository.findById(tripId);
 
@@ -87,6 +88,8 @@ public class TripService {
 
         Trip trip = tripOptional.get();
 
+        trip.setEndLatitude(scooterFeignClient.getScooterById(scooterId).getLatitude());
+        trip.setEndLongitude(scooterFeignClient.getScooterById(scooterId).getLongitude());
         // 1. Validar si el monopatín está en una parada permitida
         List<Stop> stops = stopFeignClient.getAllStops();
         boolean atPermittedStop = stops.stream()
@@ -103,10 +106,10 @@ public class TripService {
         trip.setKmTraveled(calculateKilometers(trip.getStartLatitude(), trip.getStartLongitude(), trip.getEndLatitude(), trip.getEndLongitude()));
 
         // 3. Obtener el monopatín y actualizar los datos acumulativos
-        long scooterId = trip.getScooterId();
+        long scooter = trip.getScooterId();
         Duration duration = Duration.between(trip.getStartDateTime(), trip.getEndDateTime());
         int tripDuration = (int) duration.toMinutes();
-        scooterFeignClient.addTimeOfUse(scooterId, tripDuration);
+        scooterFeignClient.addTimeOfUse(scooter, tripDuration);
 
         // 3. Si se aplicó un recargo, revertirlo
         if (trip.isAdditionalChargeApplied()) {

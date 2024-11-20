@@ -91,12 +91,17 @@ public class ScooterService {
         scooterRepository.save(scooter); //guardar cambios
 	}
 	
-	public void putScooterAvailable(Long id) {
-		 // Buscar scooter por id
+	public void toggleStatus(Long id) {
         Scooter scooter = scooterRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Scooter", id));
-        scooter.setState(ScooterState.AVAILABLE); //cambiar estado
-        scooterRepository.save(scooter); //guardar cambios
+
+        if (scooter.getState() == ScooterState.IN_USE) {
+            scooter.setState(ScooterState.AVAILABLE);
+        } else if (scooter.getState() == ScooterState.AVAILABLE) {
+            scooter.setState(ScooterState.IN_USE);
+        }
+
+        scooterRepository.save(scooter);
 	}
 
     // Encender el monopatín
@@ -108,18 +113,11 @@ public class ScooterService {
             throw new IllegalStateException("Scooter is in maintenance and cannot be activated");
         }
 
-        /*if (!scooter.isActive()) {
-            scooter.setActive(true);
-            scooter.setState(ScooterState.IN_USE);
-            //scooter.setCurrentTripId(tripId);
-            scooterRepository.save(scooter);
-        }*/
-
         convertEntityToDto(scooter);
     }
 
     // Apagar el monopatín
-    public ScooterDto deactivateScooter(Long scooterId) {
+    public void deactivateScooter(Long scooterId) {
         Scooter scooter = scooterRepository.findById(scooterId)
                 .orElseThrow(() -> new IllegalArgumentException("Scooter not found"));
 
@@ -128,10 +126,9 @@ public class ScooterService {
         }
         if (scooter.isActive()) {
             scooter.setActive(false);
-            scooter.setState(ScooterState.INACTIVE);
+            scooter.setState(ScooterState.AVAILABLE);
             scooterRepository.save(scooter);
         }
-        return convertEntityToDto(scooter);
     }
 
     // Pausar el monopatín

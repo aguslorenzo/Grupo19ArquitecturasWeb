@@ -28,16 +28,15 @@ public class TripController {
         return tripService.getTrips();
     }
 
-
     @PostMapping("/{userId}/{scooterId}")
     public ResponseEntity<?> createTrip(@PathVariable long userId, @PathVariable long scooterId){
         TripResponseDto result = tripService.createTrip(userId,scooterId);
         return buildResponse(result);
     }
 
-    @PatchMapping("/endtrip/{tripId}")
-    public ResponseEntity<?> endTrip(@PathVariable long tripId){
-        TripResponseDto result = tripService.endTrip(tripId);
+    @PutMapping("/endtrip/{tripId}/{scooterId}")
+    public ResponseEntity<?> endTrip(@PathVariable long tripId, @PathVariable long scooterId){
+        TripResponseDto result = tripService.endTrip(tripId, scooterId);
         return buildResponse(result);
     }
 

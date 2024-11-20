@@ -10,8 +10,7 @@ import java.util.List;
 
 @Repository
 public interface TripRepository extends JpaRepository<Trip, Long> {
-        boolean existsByUserIdAndEndDateTimeIsNull(Long userId);
-
+    boolean existsByUserIdAndEndDateTimeIsNull(Long userId);
     // TODO implementar query
     @Query("")
     List<Trip> findByEndDateTimeIsNull();

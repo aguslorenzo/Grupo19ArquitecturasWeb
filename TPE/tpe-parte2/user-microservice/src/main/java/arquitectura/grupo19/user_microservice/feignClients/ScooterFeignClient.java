@@ -4,12 +4,14 @@ import arquitectura.grupo19.user_microservice.dto.ScooterDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @FeignClient("SCOOTER-MICROSERVICE")
 public interface ScooterFeignClient {
     @PostMapping("scooters/{scooterId}/start-scooter")
     void activateScooter(@PathVariable("scooterId") Long id);
 
-    /*@PostMapping("/start-scooter/{userId}/{scooterId}")
-    void activateScooter(@PathVariable("userId") Long userId, @PathVariable("scooterId") Long scooterId);*/
+    @PutMapping("scooters/{id}/stop")
+    void stopScooter(@PathVariable Long id);
+
 }

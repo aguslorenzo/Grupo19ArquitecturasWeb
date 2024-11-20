@@ -51,9 +51,9 @@ public class ScooterController {
         scooterService.activateScooter(id);
     }
 
-    @PostMapping("/{id}/stop")
-    public ScooterDto stopScooter(@PathVariable Long id) {
-        return scooterService.deactivateScooter(id);
+    @PutMapping("/{id}/stop")
+    public void stopScooter(@PathVariable Long id) {
+       scooterService.deactivateScooter(id);
     }
 
     @PostMapping("/{id}/pause")
@@ -76,9 +76,9 @@ public class ScooterController {
         scooterService.putScooterOnMaintenance(id);
     }
 
-    @PutMapping("/available/{id}")
-    public void putScooterAvailable(@PathVariable Long id) {
-        scooterService.putScooterAvailable(id);
+    @PutMapping("/toggle-status/{id}")
+    public void toggleStatus(@PathVariable Long id) {
+        scooterService.toggleStatus(id);
     }
 
 
