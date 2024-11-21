@@ -38,7 +38,7 @@ public class GatewayController {
     }
 
     @PutMapping(value = "admins/**")
-    public ResponseEntity<String> putRedirectAdmin(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> putRedirectAdmin(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8085" + request.getRequestURI();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -76,7 +76,7 @@ public class GatewayController {
     }
 
     @PutMapping(value = "maps/**")
-    public ResponseEntity<String> putRedirectMap(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> putRedirectMap(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8088" + request.getRequestURI();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -118,7 +118,7 @@ public class GatewayController {
     }
 
     @PutMapping(value = "reports/**")
-    public ResponseEntity<String> putRedirectReport(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> putRedirectReport(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8083" + request.getRequestURI();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -156,7 +156,7 @@ public class GatewayController {
     }
 
     @PutMapping(value = "scooters/**")
-    public ResponseEntity<String> putRedirectScooter(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> putRedirectScooter(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8087" + request.getRequestURI();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -194,7 +194,7 @@ public class GatewayController {
     }
 
     @PutMapping(value = "stops/**")
-    public ResponseEntity<String> putRedirectStop(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> putRedirectStop(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8086" + request.getRequestURI();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -301,7 +301,7 @@ public class GatewayController {
     }
 
     @PutMapping(value = "users/**")
-    public ResponseEntity<String> putRedirectUser(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> putRedirectUser(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8084" + request.getRequestURI();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -339,7 +339,7 @@ public class GatewayController {
     }
 
     @PutMapping(value = "payment-accounts/**")
-    public ResponseEntity<String> putRedirectPayment(HttpServletRequest request, @RequestBody String body) {
+    public ResponseEntity<String> putRedirectPayment(HttpServletRequest request, @RequestBody(required = false) String body) {
         String url = "http://localhost:8084" + request.getRequestURI();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
