@@ -22,7 +22,7 @@ public class StopController {
     }
 
     @GetMapping("/{id}")
-    public StopDto getStopById(@PathVariable Long id) {
+    public StopDto getStopById(@PathVariable String id) {
         return stopService.getStopById(id);
     }
 
@@ -33,12 +33,12 @@ public class StopController {
     }
 
     @PutMapping("/{id}")
-    public void updateStop(@PathVariable Long id, @RequestBody StopDto stopDto) {
+    public void updateStop(@PathVariable String id, @RequestBody StopDto stopDto) {
     	stopService.updateStop(id, stopDto);
     }
 
     @DeleteMapping("/{id}")
-    public StopDto deleteStop(@PathVariable Long id) {
+    public StopDto deleteStop(@PathVariable String id) {
         return stopService.deleteStop(id);
     }
 
