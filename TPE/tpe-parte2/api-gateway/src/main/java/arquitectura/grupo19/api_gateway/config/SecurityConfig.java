@@ -40,7 +40,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/role/**").permitAll()
                         .requestMatchers("/admins/**").hasAuthority(AuthorityConstant._ADMIN) //el orden va de más específica a menos específica
                         .requestMatchers( "/reports/**").hasAuthority( AuthorityConstant._MAINTENANCE )
-                        .requestMatchers("/maps/**", "/trips/**", "/stops/**", "/scooters/**", "/users/**").hasAnyAuthority(AuthorityConstant._USER)
+                        //.requestMatchers("/maps/**", "/trips/**", "/stops/**", "/scooters/**", "/users/**").hasAnyAuthority(AuthorityConstant._USER)
+                        .requestMatchers("/maps/**", "/trips/**", "/stops/**", "/scooters/**", "/users/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager -> sessionManager

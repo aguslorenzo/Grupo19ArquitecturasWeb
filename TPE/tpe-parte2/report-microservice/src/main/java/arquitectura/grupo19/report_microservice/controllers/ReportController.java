@@ -34,7 +34,8 @@ public class ReportController {
      * configurarse para incluir (o no) los tiempos de pausa.
      */
     @GetMapping("/scooter/{id}/usage-report")
-    public ReportDto getUsageReportByScooter(@PathVariable Long id, @RequestParam boolean includePauseTimes) {
+    public ReportDto getUsageReportByScooter(@PathVariable Long id,
+                                             @RequestParam(required = false, defaultValue = "false") boolean includePauseTimes) {
         return reportService.generateUsageReportByScooter(id, includePauseTimes);
     }
 

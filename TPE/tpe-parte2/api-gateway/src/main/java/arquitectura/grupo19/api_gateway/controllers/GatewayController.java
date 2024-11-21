@@ -1,4 +1,4 @@
-package arquitectura.grupo19.api_gateway.gateway;
+package arquitectura.grupo19.api_gateway.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -95,9 +95,13 @@ public class GatewayController {
 
     @GetMapping(value = "reports/**")
     public ResponseEntity<String> redirectReport(HttpServletRequest request) {
-        String url = "http://localhost:8083" + request.getRequestURI();
+        String baseUrl = "http://localhost:8083" + request.getRequestURI();
 
-        return restTemplate.getForEntity(url, String.class);
+        // Obtener los parámetros query y agregarlos a la URL
+        String queryString = request.getQueryString();
+        String fullUrl = (queryString != null) ? baseUrl + "?" + queryString : baseUrl;
+
+        return restTemplate.getForEntity(fullUrl, String.class);
     }
 
     @PostMapping(value = "reports/**")
