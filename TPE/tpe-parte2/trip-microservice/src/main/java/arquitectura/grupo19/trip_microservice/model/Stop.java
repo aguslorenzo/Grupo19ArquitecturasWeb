@@ -13,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 public class Stop {
     @Id
-    private long id;
+    private String id;
     private String directionDescription;
     private double latitude;
     private double longitude;

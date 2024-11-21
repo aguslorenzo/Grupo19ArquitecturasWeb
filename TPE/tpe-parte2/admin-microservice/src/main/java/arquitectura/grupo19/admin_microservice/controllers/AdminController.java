@@ -64,7 +64,7 @@ public class AdminController {
     }
 
     @DeleteMapping("/stop/{stopId}")
-    public StopDto deleteStop(@PathVariable long stopId) {
+    public StopDto deleteStop(@PathVariable String stopId) {
         return adminService.deleteStop(stopId);
     }
 

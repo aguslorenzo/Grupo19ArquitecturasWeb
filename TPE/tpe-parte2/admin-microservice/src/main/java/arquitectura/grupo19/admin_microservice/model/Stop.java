@@ -10,7 +10,7 @@ import java.util.Locale;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Stop {
-    private long id;
+    private String id;
     private String directionDescription;
     private double latitude;
     private double longitude;

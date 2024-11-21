@@ -110,7 +110,7 @@ public class AdminService {
         stopFeignClient.saveStop(stop);
     }
 
-    public StopDto deleteStop(long stopId) {
+    public StopDto deleteStop(String stopId) {
         return stopFeignClient.deleteStop(stopId);
     }
 

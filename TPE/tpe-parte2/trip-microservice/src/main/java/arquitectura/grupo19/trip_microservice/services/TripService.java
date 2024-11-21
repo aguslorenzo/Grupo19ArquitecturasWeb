@@ -1,7 +1,6 @@
 package arquitectura.grupo19.trip_microservice.services;
 
 import arquitectura.grupo19.trip_microservice.dto.TripDto;
-import arquitectura.grupo19.trip_microservice.dto.TripRequestDto;
 import arquitectura.grupo19.trip_microservice.dto.TripResponseDto;
 import arquitectura.grupo19.trip_microservice.entities.Trip;
 import arquitectura.grupo19.trip_microservice.feignClient.ScooterFeignClient;
@@ -11,7 +10,6 @@ import arquitectura.grupo19.trip_microservice.model.Scooter;
 import arquitectura.grupo19.trip_microservice.model.Stop;
 import arquitectura.grupo19.trip_microservice.model.User;
 import arquitectura.grupo19.trip_microservice.repositories.TripRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

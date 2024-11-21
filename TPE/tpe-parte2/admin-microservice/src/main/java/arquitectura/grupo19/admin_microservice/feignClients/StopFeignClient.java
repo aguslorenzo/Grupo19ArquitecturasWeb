@@ -13,6 +13,6 @@ public interface StopFeignClient {
     void saveStop(@RequestBody StopDto stopDto);
 
     @DeleteMapping("/{id}")
-    StopDto deleteStop(@PathVariable long id);
+    StopDto deleteStop(@PathVariable String id);
 
 }
