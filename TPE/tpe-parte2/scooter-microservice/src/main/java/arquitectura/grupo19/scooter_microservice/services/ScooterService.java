@@ -129,6 +129,7 @@ public class ScooterService {
             scooter.setState(ScooterState.AVAILABLE);
             scooterRepository.save(scooter);
         }
+        System.out.println("LLEGÓ HASTA ACÁ: deactivateScooter");
     }
 
     // Pausar el monopatín
