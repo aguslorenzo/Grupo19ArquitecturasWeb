@@ -1,12 +1,10 @@
 package arquitectura.grupo19.stop_microservice.entities;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.xml.stream.Location;
-import java.util.Locale;
-
-@Entity
+@Document(collection = "stops")
 @Getter
 @Setter
 @ToString
@@ -14,12 +12,8 @@ import java.util.Locale;
 @AllArgsConstructor
 public class Stop {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(nullable = false)
+    private String id;
     private String directionDescription;
-    @Column(nullable = false)
     private double latitude;
-    @Column(nullable = false)
     private double longitude;
 }

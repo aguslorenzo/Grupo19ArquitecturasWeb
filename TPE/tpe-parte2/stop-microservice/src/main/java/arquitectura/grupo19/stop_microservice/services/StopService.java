@@ -31,7 +31,7 @@ public class StopService {
     }
 
     @Transactional(readOnly = true) // Para que no guarde el estado y tengamos un mejor rendimiento de la consulta.
-    public StopDto getStopById(Long id){
+    public StopDto getStopById(String id){
         return stopRepository.findById(id)
                 .map(StopDto::new)
                 .orElseThrow(()->new NotFoundException("Stop", id));
@@ -43,7 +43,7 @@ public class StopService {
                 .stream().map(StopDto::new).toList();
     }
 
-    public void updateStop(Long id, StopDto stopDto){
+    public void updateStop(String id, StopDto stopDto){
         // Buscar parada por id
         Stop stop = stopRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Stop", id));
@@ -56,7 +56,7 @@ public class StopService {
         stopRepository.save(stop);
     }
 
-    public StopDto deleteStop(Long id){
+    public StopDto deleteStop(String id){
         Stop stop = stopRepository.findById(id)
                 .orElseThrow(()->new NotFoundException("Stop", id));
         stopRepository.delete(stop);

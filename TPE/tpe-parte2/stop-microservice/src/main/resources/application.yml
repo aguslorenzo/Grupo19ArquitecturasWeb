@@ -4,9 +4,8 @@ spring:
 
   data:
     mongodb:
-      database: db-stop
-      host: localhost
-      port: 27017
+      uri: mongodb://root:password@localhost:27017/db-stop?authSource=admin
+
 
 server:
   port: 8086

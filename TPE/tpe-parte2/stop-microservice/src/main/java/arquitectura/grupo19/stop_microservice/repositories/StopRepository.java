@@ -1,10 +1,9 @@
 package arquitectura.grupo19.stop_microservice.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import arquitectura.grupo19.stop_microservice.entities.Stop;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
-import arquitectura.grupo19.stop_microservice.entities.Stop;
-
 @Repository
-public interface StopRepository extends JpaRepository<Stop, Long> {
+public interface StopRepository extends MongoRepository<Stop, String> {
 }
