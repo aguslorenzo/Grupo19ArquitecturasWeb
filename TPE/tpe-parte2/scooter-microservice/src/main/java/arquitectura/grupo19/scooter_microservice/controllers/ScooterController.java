@@ -65,7 +65,7 @@ public class ScooterController {
     public ScooterDto restartScooter(@PathVariable Long id) {
         return scooterService.restartScooter(id);
     }
-
+    
     @GetMapping("/{id}/check-location")
     public boolean isScooterInAllowedLocation(@PathVariable Long id) {
         return scooterService.checkIfScooterIsInAllowedLocation(id);
@@ -137,5 +137,4 @@ public class ScooterController {
     public List<ScooterDto> getScootersByLocation(@PathVariable double latitude, @PathVariable double longitude, @PathVariable double radio){
         return scooterService.getScootersByLocation(latitude, longitude, radio);
     }
-
 }
